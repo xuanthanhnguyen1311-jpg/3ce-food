@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3CE FOODS | Ăn vặt không no - Không lo bị péoooo</title>
     
-    <!-- Sử dụng đúng Font chữ Plus Jakarta Sans giống trong ảnh thiết kế -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -36,17 +36,15 @@
         }
     </script>
 
-    <!-- Font Awesome cho Icon -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         body { background-color: theme('colors.bgMain'); }
-        /* Tùy chỉnh thanh cuộn */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #DE5C8E; border-radius: 4px; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
-        
         .transition-all { transition: all 0.3s ease; }
         .hidden-cart { transform: translateX(100%); }
         .show-cart { transform: translateX(0); }
@@ -62,13 +60,11 @@
     <!-- NAVBAR HEADER -->
     <header class="bg-bgMain sticky top-0 z-40 border-b border-borderLight/50 shadow-sm">
         <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
-            <!-- Logo -->
             <a href="#" class="flex items-center gap-1.5 cursor-pointer">
                 <span class="bg-brandPink text-white px-2.5 py-1 rounded-xl font-black text-xl tracking-wider">3CE</span>
                 <span class="text-brandPink font-black text-2xl tracking-tight">FOODS.</span>
             </a>
 
-            <!-- Navigation -->
             <nav class="hidden md:flex items-center gap-8 font-bold text-[15px] text-brandDark">
                 <a href="#" class="hover:text-brandPink transition-colors">Trang chủ</a>
                 <a href="#thuc-don" class="hover:text-brandPink transition-colors">Thực đơn</a>
@@ -77,7 +73,6 @@
                 <a href="#faq" class="hover:text-brandPink transition-colors">FAQ</a>
             </nav>
 
-            <!-- Cart Button -->
             <button onclick="toggleCart()" class="flex items-center gap-2 bg-white border border-borderLight hover:border-brandPink px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-all">
                 <span class="text-lg">🛍️</span>
                 <span id="cart-badge" class="bg-brandPink text-white text-[11px] font-black w-[22px] h-[22px] rounded-full flex items-center justify-center">0</span>
@@ -88,8 +83,6 @@
     <!-- HERO SECTION -->
     <section class="max-w-6xl mx-auto px-6 pt-6 pb-4">
         <div class="bg-heroBg rounded-[2.5rem] p-8 md:p-14 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10">
-            
-            <!-- Left Text Content -->
             <div class="max-w-lg z-10">
                 <div class="inline-block bg-white text-greenText font-bold text-[10px] px-3.5 py-1.5 rounded-full mb-6 tracking-widest shadow-sm border border-[#E4F1E8]">
                     ♡ LITTLE BITES, BIG HAPPINESS
@@ -100,7 +93,6 @@
                 <p class="text-brandGray font-medium text-[15px] leading-relaxed mb-8 max-w-[400px]">
                     3CE FOODS mang đến thế giới mì trộn đậm vị, món ăn vặt mê ly và những ly trà mát lạnh. Chọn món yêu thích, để tụi mình chuẩn bị một bữa ngon thật vui nhé!
                 </p>
-                
                 <div class="flex flex-wrap items-center gap-4">
                     <a href="#thuc-don" class="bg-brandPink text-white font-bold text-[15px] px-7 py-3.5 rounded-full shadow-md hover:bg-[#c94b7a] transition-all flex items-center gap-2">
                         Khám phá thực đơn <i class="fas fa-arrow-right text-sm"></i>
@@ -111,11 +103,9 @@
                 </div>
             </div>
 
-            <!-- Right Graphic -->
             <div class="relative w-full max-w-sm flex items-center justify-center min-h-[300px]">
                 <div class="absolute w-[320px] h-[320px] bg-gradient-to-tr from-[#FCDCE6] to-white/70 rounded-full blur-sm"></div>
                 <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Steaming%20Bowl.png" alt="Mì Trộn" class="relative z-10 w-56 transform hover:scale-105 transition-transform duration-500 drop-shadow-xl" />
-                
                 <div class="absolute top-4 right-0 bg-white px-4 py-2.5 rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] text-xs font-bold text-brandDark flex items-center gap-1.5 z-20">
                     💖 Mê từ miếng đầu
                 </div>
@@ -125,23 +115,23 @@
             </div>
         </div>
 
-        <!-- 3 Feature Cards -->
+        <!-- Features -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6">
-            <div class="bg-white p-5 rounded-2xl border border-borderLight flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+            <div class="bg-white p-5 rounded-2xl border border-borderLight flex items-center gap-4 shadow-sm">
                 <div class="w-12 h-12 rounded-full bg-[#FCF5F3] flex items-center justify-center text-xl shrink-0">🍜</div>
                 <div>
                     <h3 class="font-bold text-brandDark text-[15px]">Menu đa dạng</h3>
                     <p class="text-[13px] text-brandGray mt-0.5">Mì ngon, cơm nóng, ăn vặt đủ vị</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-borderLight flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+            <div class="bg-white p-5 rounded-2xl border border-borderLight flex items-center gap-4 shadow-sm">
                 <div class="w-12 h-12 rounded-full bg-[#FEF4F7] flex items-center justify-center text-xl shrink-0">💖</div>
                 <div>
                     <h3 class="font-bold text-brandDark text-[15px]">Chọn món cực dễ</h3>
                     <p class="text-[13px] text-brandGray mt-0.5">Thêm món vào giỏ chỉ với một chạm</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-borderLight flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+            <div class="bg-white p-5 rounded-2xl border border-borderLight flex items-center gap-4 shadow-sm">
                 <div class="w-12 h-12 rounded-full bg-[#F4F7F5] flex items-center justify-center text-xl shrink-0">🛵</div>
                 <div>
                     <h3 class="font-bold text-brandDark text-[15px]">Đặt món tiện lợi</h3>
@@ -167,3 +157,294 @@
             <select id="sort-select" onchange="handleSort()" class="w-full md:w-auto px-5 py-3.5 bg-white border border-borderLight rounded-2xl text-[15px] font-bold text-brandDark focus:outline-none focus:border-brandPink shadow-sm cursor-pointer outline-none">
                 <option value="default">Sắp xếp: Mặc định</option>
                 <option value="price-low">Giá: Thấp đến Cao</option>
+                <option value="price-high">Giá: Cao đến Thấp</option>
+            </select>
+        </div>
+
+        <div id="category-tabs" class="flex overflow-x-auto gap-3 pb-2 mb-8 hide-scrollbar"></div>
+
+        <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq" class="max-w-6xl mx-auto px-6 py-12">
+        <div class="mb-8">
+            <div class="inline-block bg-white text-greenText font-bold text-[10px] px-3.5 py-1.5 rounded-full mb-4 tracking-widest border border-[#E4F1E8]">NEED A LITTLE HELP?</div>
+            <h2 class="text-3xl md:text-[2.5rem] font-black text-brandDark tracking-tight mb-2">Câu hỏi thường gặp</h2>
+            <p class="text-brandGray text-[15px] font-medium">Một vài thông tin hữu ích trước khi bạn đặt món.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
+                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
+                    <div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Làm thế nào để đặt món?</div>
+                </div>
+                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
+                    Bạn chỉ cần thêm món vào giỏ, bấm "Tiến hành đặt món" và nhập thông tin hoặc nhắn trực tiếp qua nút Chat màu xanh bên góc phải màn hình nhé!
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
+                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
+                    <div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Giá trên website đã bao gồm phí giao hàng chưa?</div>
+                </div>
+                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
+                    Mức giá chưa bao gồm phí ship. Phí ship sẽ được quán báo cụ thể dựa trên khoảng cách từ quán tới chỗ bạn.
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
+                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
+                    <div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Tôi có thể yêu cầu ghi chú món ăn không?</div>
+                </div>
+                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
+                    Dạ hoàn toàn được ạ! Khách iu có thể báo "ít cay, không hành, nhiều sốt..." lúc gửi đơn đặt món.
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
+                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
+                    <div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Thông tin cá nhân của tôi được sử dụng thế nào?</div>
+                </div>
+                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
+                    Thông tin của bạn (số điện thoại, địa chỉ) chỉ dùng duy nhất cho việc giao đồ ăn, đảm bảo bảo mật tuyệt đối 100%.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="footer" class="bg-footerBg text-white pt-16 pb-8 mt-10">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
+            <div class="pr-4">
+                <h3 class="font-black text-[22px] mb-3 flex items-center gap-1.5"><span class="text-brandPink">3CE</span> FOODS <span class="text-brandPink font-normal">♡</span></h3>
+                <p class="font-bold text-[15px] mb-2 leading-snug">Ăn vặt không no - Không lo bị péoooo</p>
+                <p class="text-[#A29A9C] text-sm leading-relaxed font-medium mt-4">Một góc nhỏ xinh cho những chiếc bụng mê đồ ngon.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-[16px] mb-5">Khám phá</h4>
+                <ul class="space-y-3 text-[14px] text-[#A29A9C] font-medium">
+                    <li><a href="#" class="hover:text-white transition-colors">Trang chủ</a></li>
+                    <li><a href="#thuc-don" class="hover:text-white transition-colors">Thực đơn</a></li>
+                    <li><a href="#footer" class="hover:text-white transition-colors">Về chúng tôi</a></li>
+                    <li><a href="#footer" class="hover:text-white transition-colors">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-[16px] mb-5">Hỗ trợ khách hàng</h4>
+                <ul class="space-y-3 text-[14px] text-[#A29A9C] font-medium">
+                    <li><a href="#faq" class="hover:text-white transition-colors">Câu hỏi thường gặp</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Chính sách chăm sóc khách hàng</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Chính sách hoạt động</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Chính sách và quy định</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Chính sách bảo mật thông tin</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-[16px] mb-5">Kết nối</h4>
+                <ul class="space-y-3 text-[14px] text-[#A29A9C] font-medium">
+                    <li><a href="#" class="hover:text-white transition-colors">Facebook 3CE FOODS</a></li>
+                    <li><button onclick="openContactModal()" class="hover:text-white transition-colors text-left">Góc nhỏ tâm tình</button></li>
+                    <li><p>Hotline & địa chỉ</p></li>
+                    <li><a href="#thuc-don" class="text-white hover:text-brandPink transition-colors">Đặt món ngay ♡</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto px-6 mt-14 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between text-[13px] text-[#A29A9C] font-medium gap-4">
+            <p>© 2026 3CE FOODS. All rights reserved.</p>
+            <p>Made with ♡ and a little sprinkle of happiness.</p>
+        </div>
+    </footer>
+
+    <!-- FLOATING CHAT BUTTON -->
+    <button onclick="openContactModal()" class="fixed bottom-6 right-6 w-14 h-14 bg-[#4C8F66] text-white rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 hover:bg-[#3D7552] flex items-center justify-center text-2xl z-30 transition-all">
+        💬
+    </button>
+
+    <!-- SIDEBAR GIỎ HÀNG -->
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-brandDark/40 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+    <div id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-md bg-white h-full shadow-2xl z-50 transition-all duration-300 hidden-cart flex flex-col">
+        <div class="p-6 border-b border-borderLight flex justify-between items-center bg-[#FDF5F8]">
+            <h2 class="text-[20px] font-black text-brandDark flex items-center gap-2">
+                🛍️ Giỏ hàng
+            </h2>
+            <button onclick="toggleCart()" class="text-gray-400 hover:text-brandDark text-xl font-bold">✕</button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+        <div class="p-6 border-t border-borderLight bg-white shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.03)]">
+            <div class="flex justify-between items-center mb-5">
+                <span class="font-bold text-brandGray text-[15px]">Tổng cộng:</span>
+                <span id="cart-total" class="font-black text-2xl text-brandPink">0đ</span>
+            </div>
+            <button onclick="openCheckoutModal()" class="w-full bg-brandPink hover:bg-[#c94b7a] text-white font-bold text-[16px] py-4 rounded-2xl transition-all shadow-md">
+                Tiến hành đặt món
+            </button>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div id="checkout-modal" class="fixed inset-0 bg-brandDark/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-md p-8 shadow-2xl relative">
+            <button onclick="closeModal('checkout-modal')" class="absolute top-6 right-6 text-gray-400 hover:text-brandDark font-bold">✕</button>
+            <h3 class="text-2xl font-black text-brandDark mb-2">Thông tin đặt món 🛵</h3>
+            <p class="text-[13px] text-brandGray mb-6 font-medium">Nhập thông tin giao hàng để quán ship cho bạn nha!</p>
+            <form onsubmit="event.preventDefault(); alert('🎉 Đặt hàng thành công! Quán sẽ gọi cho bạn ngay!'); cart=[]; updateCartUI(); closeModal('checkout-modal');" class="space-y-4">
+                <input required placeholder="Tên của bạn..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium focus:outline-none focus:border-brandPink" />
+                <input required placeholder="Số điện thoại..." type="tel" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium focus:outline-none focus:border-brandPink" />
+                <input required placeholder="Địa chỉ giao hàng..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium focus:outline-none focus:border-brandPink" />
+                <textarea placeholder="Ghi chú (không bắt buộc)..." rows="2" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium focus:outline-none focus:border-brandPink resize-none"></textarea>
+                <button type="submit" class="w-full bg-brandPink text-white font-bold py-3.5 rounded-xl shadow-md">Gửi đơn ngay</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="fixed inset-0 bg-brandDark/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-md p-8 shadow-2xl relative">
+            <button onclick="closeModal('contact-modal')" class="absolute top-6 right-6 text-gray-400 hover:text-brandDark font-bold">✕</button>
+            <h3 class="text-2xl font-black text-brandDark mb-2">Góc nhỏ tâm tình 💌</h3>
+            <p class="text-[13px] text-brandGray mb-6 font-medium">Bạn có góp ý hay nhắn nhủ gì tới 3CE FOODS không?</p>
+            <form onsubmit="event.preventDefault(); alert('💖 3CE FOODS đã nhận được lời nhắn của bạn!'); closeModal('contact-modal');" class="space-y-4">
+                <input required placeholder="Số điện thoại của bạn..." type="tel" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium focus:outline-none focus:border-brandPink" />
+                <textarea required placeholder="Bạn muốn nói gì với tụi mình nè..." rows="3" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium focus:outline-none focus:border-brandPink resize-none"></textarea>
+                <button type="submit" class="w-full bg-[#4C8F66] text-white font-bold py-3.5 rounded-xl shadow-md">Gửi tâm tình</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Danh sách đầy đủ 26 món ăn theo đúng yêu cầu
+        const menuData = [
+            // MÌ TRỘN INDOMIE
+            { id: 'm1', category: 'Mì trộn Indomie', badge: 'Ngự Yến', name: 'Mì trộn Indomie Long Môn Ngự Yến', price: 40000, desc: 'Bao gồm sợi mì Indomie dai mềm thấm đẫm sốt trộn độc quyền, rau củ tươi giòn, xúc xích thơm béo, cá viên dai ngon, tôm surimi đậm vị, viên mực xoắn sần sật và hải sản phô mai béo ngậy.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Steaming%20Bowl.png' },
+            { id: 'm2', category: 'Mì trộn Indomie', badge: 'Tứ Hải', name: 'Mì trộn Indomie Tứ Hải Hội Tụ', price: 35000, desc: 'Bao gồm sợi mì Indomie dai ngon quyện cùng sốt trộn đậm đà, rau củ tươi xanh, xúc xích thơm lừng, cá viên dai giòn và tôm surimi hấp dẫn.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Steaming%20Bowl.png' },
+            { id: 'm3', category: 'Mì trộn Indomie', badge: 'Ngọc Thực', name: 'Mì trộn Indomie Thanh Vân Ngọc Thực', price: 20000, desc: 'Bao gồm sợi mì Indomie dai mềm óng ánh sốt trộn đậm vị, kết hợp cùng rau củ tươi xanh thanh mát.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Leafy%20Green.png' },
+            
+            // MÌ CAY
+            { id: 'm4', category: 'Mì cay', badge: 'Đế Vương', name: 'Mì cay Đế vương bò Wagyu', price: 65000, desc: 'Bao gồm mì, bắp cải, ngô non, xúc xích béo ngậy, thịt bò thơm mềm.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Pot%20of%20Food.png' },
+            { id: 'm5', category: 'Mì cay', badge: 'Thiên Địa', name: 'Mì thập cẩm Hải Sơn Thiên Địa', price: 80000, desc: 'Bao gồm mì, nước súp đỏ sóng sánh, tôm tươi, mực giòn, bò ba chỉ béo mềm, xúc xích đậm vị.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Fried%20Shrimp.png' },
+            { id: 'm6', category: 'Mì cay', badge: 'Busan', name: 'Mì cay Busan Xúc Xích', price: 45000, desc: 'Bao gồm mì dai ngon, xúc xích thơm lừng, rau củ tươi xanh.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Hot%20Dog.png' },
+            { id: 'm7', category: 'Mì cay', badge: 'Tứ Xuyên', name: 'Mì cay bò Vương Giả Tứ Xuyên', price: 60000, desc: 'Bao gồm mì dai ngon chuẩn vị, thịt bò mềm tan, nước lèo hầm đậm đà 8 tiếng.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Pot%20of%20Food.png' },
+            
+            // MÌ TƯƠNG ĐEN & MÌ Ý
+            { id: 'm8', category: 'Mì tương đen', badge: 'Hắc Long', name: 'Mì Hắc Long Bá Vương', price: 45000, desc: 'Bao gồm mì dai ngon, sốt tương đen đậm đà, rau củ tươi giòn, hòa quyện cùng hương vị mặn ngọt đặc trưng.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Spaghetti.png' },
+            { id: 'm9', category: 'Mì Ý', badge: 'Hoàng Kim', name: 'Mì Ý Bò Bằm Hoàng Kim', price: 50000, desc: 'Bao gồm mì Ý dai mềm, sốt cà chua bò bằm đậm đà, thịt bò thơm ngon, hòa quyện cùng hương vị béo ngậy hấp dẫn.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Spaghetti.png' },
+            
+            // CƠM
+            { id: 'c1', category: 'Cơm', badge: 'Kim Ngưu', name: 'Cơm Rang Kim Ngưu Khai Vị', price: 45000, desc: 'Bao gồm cơm rang tơi giòn, dưa cải chua thanh, thịt bò mềm thơm, hòa quyện cùng gia vị đậm đà.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Curry%20Rice.png' },
+            { id: 'c2', category: 'Cơm', badge: 'Kim Kê', name: 'Cơm Gà Kim Kê Ngự Yến', price: 50000, desc: 'Bao gồm cơm nóng dẻo thơm, thịt gà chiên vàng giòn, nước mắm đậm đà, thấm vị hấp dẫn.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Poultry%20Leg.png' },
+            { id: 'c3', category: 'Cơm', badge: 'Hoàng Triều', name: 'Bibimbap Kim Ngọc Hoàng Triều', price: 55000, desc: 'Bao gồm cơm trắng dẻo thơm, thịt bò xào đậm vị, trứng ốp la béo ngậy, cà rốt, dưa leo, rau cải tươi xanh, nấm, kim chi chua cay và sốt Bibimbap đặc trưng.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Cooked%20Rice.png' },
+            
+            // ĐỒ UỐNG
+            { id: 'u1', category: 'Đồ uống', badge: 'Trà Đào', name: 'Hồng Nhan Tuyết Lệ – Trà đào', price: 20000, desc: 'Bao gồm trà thơm dịu nhẹ, đào ngâm ngọt thanh, kết hợp cùng đá mát lạnh, mang đến hương vị tươi mát.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Tropical%20Drink.png' },
+            { id: 'u2', category: 'Đồ uống', badge: 'Trà Chanh', name: 'Thanh Long Xuất Hải – Trà chanh', price: 15000, desc: 'Bao gồm trà thanh mát, nước cốt chanh tươi, vị chua ngọt hài hòa, giải khát sảng khoái.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Lemon.png' },
+            { id: 'u3', category: 'Đồ uống', badge: 'Trà Tắc', name: 'Bích Ngọc Tiên Trà – Trà tắc', price: 15000, desc: 'Bao gồm trà thơm dịu, tắc tươi chua nhẹ, vị ngọt thanh dễ uống.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Tropical%20Drink.png' },
+            { id: 'u4', category: 'Đồ uống', badge: 'Trà Dâu', name: 'Hỏa Diệm Sơn – Trà dâu', price: 25000, desc: 'Bao gồm trà thơm mát, dâu tây ngọt dịu, vị chua ngọt hài hòa, màu sắc hấp dẫn.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Strawberry.png' },
+            { id: 'u5', category: 'Đồ uống', badge: 'Trà Sữa', name: 'Tuyết Sơn Ngọc Ẩn – Trà sữa', price: 25000, desc: 'Bao gồm trà thơm đậm vị, sữa béo ngậy, vị ngọt dịu, kết hợp cùng đá mát lạnh.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Bubble%20Tea.png' },
+            
+            // ĐỒ ĂN VẶT
+            { id: 'v1', category: 'Đồ ăn vặt', badge: 'Hoàng Kim', name: 'Khoai tây chiên Kim Giáp Hoàng Kim', price: 25000, desc: 'Bao gồm khoai tây vàng giòn, ngoài giòn trong mềm, thơm bùi hấp dẫn (25.000đ/đĩa).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/French%20Fries.png' },
+            { id: 'v2', category: 'Đồ ăn vặt', badge: 'Mãn Đường', name: 'Khoai lắc phô mai Kim Ngọc Mãn Đường', price: 30000, desc: 'Bao gồm khoai tây chiên giòn lắc phô mai béo ngậy, đậm vị (30.000đ/đĩa).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Cheese%20Wedge.png' },
+            { id: 'v3', category: 'Đồ ăn vặt', badge: 'Hồng Môn', name: 'Nem chua Trần Công Châu Hồng Môn', price: 6000, desc: 'Bao gồm nem chua dai giòn, chua nhẹ, đậm vị truyền thống (6.000đ/cái).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Hot%20Dog.png' },
+            { id: 'v4', category: 'Đồ ăn vặt', badge: 'Kim Tâm', name: 'Phô mai que Bạch Ngọc Kim Tâm', price: 8000, desc: 'Bao gồm phô mai kéo sợi béo ngậy, bọc vỏ vàng giòn (8.000đ/cái).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Baguette%20Bread.png' },
+            { id: 'v5', category: 'Đồ ăn vặt', badge: 'Tử Ngọc', name: 'Khoai môn Lệ Phố Tử Ngọc', price: 30000, desc: 'Bao gồm khoai môn bùi thơm, vỏ giòn, nhân mềm ngọt (30.000đ/đĩa).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Roasted%20Sweet%20Potato.png' },
+            { id: 'v6', category: 'Đồ ăn vặt', badge: 'Ngự Tiệc', name: 'Ngô chiên Kim Châu Ngự Tiệc', price: 30000, desc: 'Bao gồm ngô vàng giòn, thơm ngọt, đậm đà gia vị (30.000đ/đĩa).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Ear%20of%20Corn.png' },
+            { id: 'v7', category: 'Đồ ăn vặt', badge: 'Hỏa Long', name: 'Cút lộn xào me Hỏa Long Châu', price: 50000, desc: 'Bao gồm trứng cút lộn béo bùi, sốt me chua ngọt, rau răm và lạc rang (50.000đ/đĩa).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Egg.png' },
+            { id: 'v8', category: 'Đồ ăn vặt', badge: 'Hoàng Cung', name: 'Bánh tráng nướng Hỏa Phụng Hoàng Cung', price: 25000, desc: 'Bao gồm bánh tráng giòn, trứng, xúc xích và topping thơm ngon (25.000đ/cái).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Pizza.png' },
+            { id: 'v9', category: 'Đồ ăn vặt', badge: 'Thập Bát Vị', name: 'Viên chiên Ngự Lâm Thập Bát Vị', price: 10000, desc: 'Bao gồm các loại viên chiên nóng giòn, dai ngon, ăn kèm sốt chấm đậm vị (10.000đ/xiên).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Oden.png' }
+        ];
+
+        const categories = ['Tất cả món', 'Mì trộn Indomie', 'Mì cay', 'Mì tương đen', 'Mì Ý', 'Cơm', 'Đồ uống', 'Đồ ăn vặt'];
+        let activeCategory = 'Tất cả món';
+        let searchQuery = '';
+        let sortOption = 'default';
+        let cart = [];
+
+        const formatPrice = (price) => new Intl.NumberFormat('vi-VN').format(price) + 'đ';
+
+        // TABS
+        function renderTabs() {
+            document.getElementById('category-tabs').innerHTML = categories.map(cat => `
+                <button onclick="selectCategory('${cat}')" class="px-6 py-2.5 rounded-full font-bold text-[14px] whitespace-nowrap transition-all ${activeCategory === cat ? 'bg-brandPink text-white border border-brandPink' : 'bg-white text-brandGray border border-borderLight hover:border-brandPink'}">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+        function selectCategory(cat) { activeCategory = cat; renderTabs(); renderMenu(); }
+        function handleSearch() { searchQuery = document.getElementById('search-input').value.toLowerCase(); renderMenu(); }
+        function handleSort() { sortOption = document.getElementById('sort-select').value; renderMenu(); }
+
+        // MENU RENDER
+        function renderMenu() {
+            const grid = document.getElementById('menu-grid');
+            let filtered = menuData.filter(i => (activeCategory === 'Tất cả món' || i.category === activeCategory) && i.name.toLowerCase().includes(searchQuery));
+            if (sortOption === 'price-low') filtered.sort((a, b) => a.price - b.price);
+            if (sortOption === 'price-high') filtered.sort((a, b) => b.price - a.price);
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-white rounded-3xl overflow-hidden border border-borderLight shadow-sm flex flex-col group relative hover:shadow-md transition-shadow">
+                    <div class="bg-cardTop h-[180px] relative flex items-center justify-center p-6">
+                        <span class="absolute top-4 left-4 bg-white text-greenText text-[11px] font-bold px-3 py-1.5 rounded-[6px] shadow-sm tracking-wide">
+                            ${item.badge}
+                        </span>
+                        <img src="${item.image}" class="w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-md">
+                    </div>
+                    <div class="p-6 flex flex-col flex-1 bg-white">
+                        <h3 class="font-bold text-brandDark text-[18px] mb-2 leading-snug">${item.name}</h3>
+                        <p class="text-brandGray text-[14px] leading-relaxed line-clamp-3 mb-6 font-medium">${item.desc}</p>
+                        <div class="mt-auto flex justify-between items-center pt-2">
+                            <div>
+                                <span class="font-black text-brandPink text-[20px] tracking-tight">${formatPrice(item.price)}</span>
+                                <span class="text-brandGray/70 text-[13px] font-medium ml-0.5">/ phần</span>
+                            </div>
+                            <button onclick="addToCart('${item.id}')" class="bg-greenBtn text-greenText w-[42px] h-[42px] rounded-2xl flex items-center justify-center text-xl font-bold hover:bg-brandPink hover:text-white transition-colors">
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // CART LOGIC
+        function addToCart(id) {
+            const item = cart.find(i => i.id === id);
+            if (item) item.quantity++; else cart.push({ ...menuData.find(p => p.id === id), quantity: 1 });
+            updateCartUI();
+        }
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (item) { item.quantity += delta; if (item.quantity <= 0) cart = cart.filter(i => i.id !== id); updateCartUI(); }
+        }
+        function updateCartUI() {
+            document.getElementById('cart-badge').textContent = cart.reduce((sum, i) => sum + i.quantity, 0);
+            document.getElementById('cart-total').textContent = formatPrice(cart.reduce((sum, i) => sum + i.price * i.quantity, 0));
+            document.getElementById('cart-items').innerHTML = cart.length === 0 ? `<div class="text-center text-gray-400 font-medium mt-10">Giỏ hàng trống!</div>` : cart.map(item => `
+                <div class="flex gap-4 border-b border-borderLight pb-4">
+                    <img src="${item.image}" class="w-16 h-16 object-contain bg-cardTop rounded-xl p-2">
+                    <div class="flex-1 flex flex-col justify-between">
+                        <h4 class="font-bold text-brandDark text-[14px] leading-tight">${item.name}</h4>
+                        <div class="flex justify-between items-center mt-2">
+                            <p class="font-black text-brandPink text-[15px]">${formatPrice(item.price)}</p>
+                            <div class="flex gap-3 bg-[#F9F8F7] border border-borderLight px-2 py-1 rounded-lg items-center font-bold text-sm">
+                                <button onclick="changeQty('${item.id}', -1)" class="text-gray-400 hover:text-brandPink">-</button>
+                                <span>${item.quantity}</span>
+                                <button onclick="changeQty('${item.id}', 1)" class="text-gray-400 hover:text-greenText">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        function toggleCart() {
+            const sb = document.getElementById('cart-sidebar'), ov = document.getElementById('cart-overlay');
+            if (sb.classList.contains('hidden-cart')) { sb.classList.remove('hidden-cart', 'hidden'); sb.classList.add('show-cart'); ov.classList.remove('hidden'); }
+            else { sb.classList.remove('show-cart'); sb.classList.add('hidden-cart'); ov.classList.add('hidden'); setTimeout(() => sb.classList.add('hidden'), 300); }
+        }
+
+        function toggleFaq(el) { el.querySelector('div:last-child').classList.toggle('hidden'); }
+        function openCheckoutModal() { if(cart.length===0) return alert('Giỏ hàng trống bạn ơi!'); toggleCart(); document.getElementById('checkout-modal').classList.remove('hidden'); }
+        function openContactModal() { document.getElementById('contact-modal').classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        renderTabs(); renderMenu(); updateCartUI();
+    </script>
+</body>
+</html>
