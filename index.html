@@ -1,533 +1,273 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { 
-  ShoppingCart, 
-  X, 
-  Plus, 
-  Minus, 
-  ChevronRight, 
-  Heart, 
-  CheckCircle2, 
-  MessageCircle,
-  Facebook,
-  Phone,
-  MapPin,
-  Mail,
-  Send,
-  Trash2,
-  Menu as MenuIcon
-} from 'lucide-react';
-
-// --- MENU DATA ---
-const MENU_DATA = [
-  {
-    id: 'mi',
-    name: 'Mì',
-    items: [
-      { id: 'm1', name: 'Mì trộn Indomie Long Môn Ngự Yến', desc: 'Bao gồm sợi mì Indomie dai mềm thấm đẫm sốt trộn độc quyền, rau củ tươi giòn, xúc xích thơm béo, cá viên dai ngon, tôm surimi đậm vị, viên mực xoắn sần sật và hải sản phô mai béo ngậy, hòa quyện tạo nên đại tiệc hương vị bùng nổ trong từng đĩa mì.', price: 40000, img: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&q=80&w=600' },
-      { id: 'm2', name: 'Mì trộn Indomie Tứ Hải Hội Tụ', desc: 'Bao gồm sợi mì Indomie dai ngon quyện cùng sốt trộn đậm đà, rau củ tươi xanh, xúc xích thơm lừng, cá viên dai giòn và tôm surimi hấp dẫn, hội tụ tinh hoa topping trong một phần mì trộn đầy đặn, cuốn vị khó quên.', price: 35000, img: 'https://images.unsplash.com/photo-1600335895229-6e75511892c8?auto=format&fit=crop&q=80&w=600' },
-      { id: 'm3', name: 'Mì trộn Indomie Thanh Vân Ngọc Thực', desc: 'Bao gồm sợi mì Indomie dai mềm óng ánh sốt trộn đậm vị, kết hợp cùng rau củ tươi xanh thanh mát, tạo nên tuyệt phẩm đơn giản mà cuốn hút, nhẹ nhàng nhưng vẫn đậm đà khó cưỡng.', price: 20000, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&q=80&w=600' },
-      { id: 'm4', name: 'Mì cay Đế vương bò Wagyu', desc: 'Bao gồm mì, bắp cải, ngô non, xúc xích béo ngậy, thịt bò thơm mềm.', price: 65000, img: 'https://images.unsplash.com/photo-1598514982205-f36b96d1e8d4?auto=format&fit=crop&q=80&w=600' },
-      { id: 'm5', name: 'Mì thập cẩm Hải Sơn Thiên Địa', desc: 'Bao gồm mì, nước súp đỏ sóng sánh, tôm tươi, mực giòn, bò ba chỉ béo mềm, xúc xích đậm vị.', price: 80000, img: 'https://images.unsplash.com/photo-1626804475297-41609ea004eb?auto=format&fit=crop&q=80&w=600' },
-      { id: 'm6', name: 'Mì cay Busan Xúc Xích', desc: 'Bao gồm mì dai ngon, xúc xích thơm lừng, rau củ tươi xanh.', price: 45000, img: 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&q=80&w=600' },
-      { id: 'm7', name: 'Mì cay bò Vương Giả Tứ Xuyên', desc: 'Bao gồm mì dai ngon chuẩn vị, thịt bò mềm tan, nước lèo hầm đậm đà 8 tiếng.', price: 60000, img: 'https://images.unsplash.com/photo-1598515061611-37d45e7f1604?auto=format&fit=crop&q=80&w=600' },
-      { id: 'm8', name: 'Mì Hắc Long Bá Vương', desc: 'Bao gồm mì dai ngon, sốt tương đen đậm đà, rau củ tươi giòn, hòa quyện cùng hương vị mặn ngọt đặc trưng.', price: 50000, img: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&q=80&w=600' },
-      { id: 'm9', name: 'Mì Ý Bò Bằm Hoàng Kim', desc: 'Bao gồm mì Ý dai mềm, sốt cà chua bò bằm đậm đà, thịt bò thơm ngon, hòa quyện cùng hương vị béo ngậy hấp dẫn.', price: 55000, img: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&q=80&w=600' },
-    ]
-  },
-  {
-    id: 'com',
-    name: 'Cơm',
-    items: [
-      { id: 'c1', name: 'Cơm Rang Kim Ngưu Khai Vị', desc: 'Bao gồm cơm rang tơi giòn, dưa cải chua thanh, thịt bò mềm thơm, hòa quyện cùng gia vị đậm đà.', price: 45000, img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80&w=600' },
-      { id: 'c2', name: 'Cơm Gà Kim Kê Ngự Yến', desc: 'Bao gồm cơm nóng dẻo thơm, thịt gà chiên vàng giòn, nước mắm đậm đà, thấm vị hấp dẫn.', price: 55000, img: 'https://images.unsplash.com/photo-1600688640154-150689b9ccbb?auto=format&fit=crop&q=80&w=600' },
-      { id: 'c3', name: 'Bibimbap Kim Ngọc Hoàng Triều', desc: 'Bao gồm cơm trắng dẻo thơm, thịt bò xào đậm vị, trứng ốp la béo ngậy, cà rốt, dưa leo, rau cải tươi xanh, nấm thơm ngon, kim chi chua cay và sốt Bibimbap đặc trưng Hàn Quốc, hòa quyện tạo nên hương vị hấp dẫn khó cưỡng.', price: 60000, img: 'https://images.unsplash.com/photo-1553163147-622ab57be1c7?auto=format&fit=crop&q=80&w=600' },
-    ]
-  },
-  {
-    id: 'do-uong',
-    name: 'Đồ Uống',
-    items: [
-      { id: 'du1', name: 'Hồng Nhan Tuyết Lệ (Trà đào)', desc: 'Bao gồm trà thơm dịu nhẹ, đào ngâm ngọt thanh, kết hợp cùng đá mát lạnh, mang đến hương vị tươi mát.', price: 25000, img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=600' },
-      { id: 'du2', name: 'Thanh Long Xuất Hải (Trà chanh)', desc: 'Bao gồm trà thanh mát, nước cốt chanh tươi, vị chua ngọt hài hòa, giải khát sảng khoái.', price: 20000, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=600' },
-      { id: 'du3', name: 'Bích Ngọc Tiên Trà (Trà tắc)', desc: 'Bao gồm trà thơm dịu, tắc tươi chua nhẹ, vị ngọt thanh dễ uống.', price: 20000, img: 'https://images.unsplash.com/photo-1509315703195-529879416a70?auto=format&fit=crop&q=80&w=600' },
-      { id: 'du4', name: 'Hỏa Diệm Sơn (Trà dâu)', desc: 'Bao gồm trà thơm mát, dâu tây ngọt dịu, vị chua ngọt hài hòa, màu sắc hấp dẫn.', price: 25000, img: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&q=80&w=600' },
-      { id: 'du5', name: 'Tuyết Sơn Ngọc Ẩn (Trà sữa)', desc: 'Bao gồm trà thơm đậm vị, sữa béo ngậy, vị ngọt dịu, kết hợp cùng đá mát lạnh.', price: 30000, img: 'https://images.unsplash.com/photo-1588697669352-d04b39b039cb?auto=format&fit=crop&q=80&w=600' },
-    ]
-  },
-  {
-    id: 'an-vat',
-    name: 'Ăn Vặt',
-    items: [
-      { id: 'av1', name: 'Khoai tây chiên Kim Giáp Hoàng Kim', desc: 'Bao gồm khoai tây vàng giòn, ngoài giòn trong mềm, thơm bùi hấp dẫn.', price: 25000, img: 'https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&fit=crop&q=80&w=600' },
-      { id: 'av2', name: 'Khoai lắc phô mai Kim Ngọc Mãn Đường', desc: 'Bao gồm khoai tây chiên giòn lắc phô mai béo ngậy, đậm vị.', price: 30000, img: 'https://images.unsplash.com/photo-1630431341973-02e1b662ce3b?auto=format&fit=crop&q=80&w=600' },
-      { id: 'av3', name: 'Nem chua Trần Công Châu Hồng Môn', desc: 'Bao gồm nem chua dai giòn, chua nhẹ, đậm vị truyền thống.', price: 6000, img: 'https://images.unsplash.com/photo-1627042633145-b780684d09f6?auto=format&fit=crop&q=80&w=600' },
-      { id: 'av4', name: 'Phô mai que Bạch Ngọc Kim Tâm', desc: 'Bao gồm phô mai kéo sợi béo ngậy, bọc vỏ vàng giòn.', price: 8000, img: 'https://images.unsplash.com/photo-1536585149363-2287f3b5ebcd?auto=format&fit=crop&q=80&w=600' },
-      { id: 'av5', name: 'Khoai môn Lệ Phố Tử Ngọc', desc: 'Bao gồm khoai môn bùi thơm, vỏ giòn, nhân mềm ngọt.', price: 30000, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=600' },
-      { id: 'av6', name: 'Ngô chiên Kim Châu Ngự Tiệc', desc: 'Bao gồm ngô vàng giòn, thơm ngọt, đậm đà gia vị.', price: 30000, img: 'https://images.unsplash.com/photo-1508061461523-62580dfbf3d2?auto=format&fit=crop&q=80&w=600' },
-      { id: 'av7', name: 'Cút lộn xào me Hỏa Long Châu', desc: 'Bao gồm trứng cút lộn béo bùi, sốt me chua ngọt, rau răm và lạc rang.', price: 50000, img: 'https://images.unsplash.com/photo-1512152272829-4591a27e7fa1?auto=format&fit=crop&q=80&w=600' },
-      { id: 'av8', name: 'Bánh tráng nướng Hỏa Phụng Hoàng Cung', desc: 'Bao gồm bánh tráng giòn, trứng, xúc xích và topping thơm ngon.', price: 25000, img: 'https://images.unsplash.com/photo-1605634586526-9d665768e4a9?auto=format&fit=crop&q=80&w=600' },
-      { id: 'av9', name: 'Viên chiên Ngự Lâm Thập Bát Vị', desc: 'Bao gồm các loại viên chiên nóng giòn, dai ngon, ăn kèm sốt chấm đậm vị.', price: 10000, img: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&q=80&w=600' },
-    ]
-  }
-];
-
-const formatPrice = (price) => {
-  return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
-};
-
-export default function App() {
-  const [cart, setCart] = useState([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('tat-ca');
-  
-  // Chat state
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState([{ sender: 'bot', text: 'Chào bạn! 3CE FOODS có thể giúp gì cho bạn hôm nay ạ? 🌸' }]);
-  const [currentMessage, setCurrentMessage] = useState('');
-
-  // Toast State
-  const [toast, setToast] = useState({ show: false, message: '' });
-  const toastTimeout = useRef(null);
-
-  const showToast = (message) => {
-    if (toastTimeout.current) clearTimeout(toastTimeout.current);
-    setToast({ show: true, message });
-    toastTimeout.current = setTimeout(() => setToast({ show: false, message: '' }), 3000);
-  };
-
-  const addToCart = (item) => {
-    setCart((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
-      if (existing) {
-        return prev.map((i) => (i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i));
-      }
-      return [...prev, { ...item, quantity: 1 }];
-    });
-    showToast(`Đã thêm ${item.name} vào giỏ! 😋`);
-  };
-
-  const updateQuantity = (id, delta) => {
-    setCart((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          const newQ = item.quantity + delta;
-          return { ...item, quantity: newQ > 0 ? newQ : 1 };
-        }
-        return item;
-      })
-    );
-  };
-
-  const removeFromCart = (id) => setCart((prev) => prev.filter((i) => i.id !== id));
-
-  const handleSendChat = (e) => {
-    e.preventDefault();
-    if (!currentMessage.trim()) return;
-    setChatMessages([...chatMessages, { sender: 'user', text: currentMessage }]);
-    setCurrentMessage('');
-    setTimeout(() => {
-      setChatMessages((prev) => [...prev, { sender: 'bot', text: 'Dạ 3CE FOODS đã nhận được tin nhắn! Nhân viên sẽ phản hồi bạn ngay ạ. 💖' }]);
-    }, 1000);
-  };
-
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  
-  const allItems = MENU_DATA.flatMap(cat => cat.items);
-  const activeItems = activeTab === 'tat-ca' ? allItems : MENU_DATA.find(cat => cat.id === activeTab)?.items || [];
-  const tabsList = [{ id: 'tat-ca', name: 'Tất cả món' }, ...MENU_DATA.map(cat => ({ id: cat.id, name: cat.name }))];
-
-  return (
-    <div className="min-h-screen bg-pink-50 text-gray-800 font-sans selection:bg-emerald-200 selection:text-emerald-900">
-      
-      {/* --- STICKY HEADER --- */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-pink-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3 md:gap-4">
-            <div className="bg-gradient-to-br from-pink-400 to-pink-500 p-2 md:p-3 rounded-2xl text-white shadow-lg shadow-pink-200/50 flex-shrink-0">
-              <Heart size={24} className="animate-pulse" />
-            </div>
-            <div className="flex flex-col">
-              <h1 className="text-2xl md:text-3xl font-black tracking-tight text-pink-500">
-                3CE FOODS
-              </h1>
-              <p className="text-[10px] md:text-xs font-bold text-emerald-500 hidden sm:block uppercase tracking-wider">
-                Ăn vặt không no - Không lo bị péoooo ✨
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setIsCartOpen(true)}
-              className="relative flex items-center justify-center p-3 rounded-2xl bg-pink-50 text-pink-500 hover:bg-pink-100 transition-all active:scale-95 group"
-            >
-              <ShoppingCart size={22} className="group-hover:scale-110 transition-transform" />
-              <span className="hidden md:block ml-2 font-bold text-sm">Giỏ hàng</span>
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-emerald-400 text-white text-[11px] font-black h-5 w-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
-                  {totalItems}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* --- HERO SECTION --- */}
-      <section className="relative w-full py-16 md:py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-200 via-pink-100 to-emerald-50 z-0"></div>
-        
-        <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <div className="inline-block bg-white/60 backdrop-blur-md px-6 py-2 rounded-full border border-pink-200 text-pink-600 font-bold text-sm mb-6 shadow-sm">
-            <span className="mr-2">🎉</span> Chào mừng đến với thiên đường ẩm thực
-          </div>
-          <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-6 leading-tight">
-            Thưởng Thức Hương Vị <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-emerald-500">
-              Tuyệt Hảo Mỗi Ngày
-            </span>
-          </h2>
-          <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto font-medium">
-            Từ những tô mì trộn đậm đà đến những phần gà rán giòn rụm. 
-            3CE FOODS cam kết mang đến cho bạn bữa ăn ngon miệng và niềm vui trọn vẹn!
-          </p>
-          <button 
-            onClick={() => document.getElementById('menu-section').scrollIntoView({ behavior: 'smooth' })}
-            className="bg-pink-500 hover:bg-pink-600 text-white px-10 py-4 rounded-full font-black text-lg shadow-xl shadow-pink-500/30 transition-all hover:-translate-y-1 active:translate-y-0"
-          >
-            Đặt Món Ngay 🤤
-          </button>
-        </div>
-      </section>
-
-      {/* --- MENU SECTION --- */}
-      <main id="menu-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        
-        {/* Tabs */}
-        <div className="flex items-center overflow-x-auto gap-3 pb-4 mb-10 scrollbar-hide">
-          {tabsList.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-3.5 rounded-2xl font-bold text-sm whitespace-nowrap transition-all shadow-sm ${
-                activeTab === tab.id 
-                  ? 'bg-pink-500 text-white shadow-pink-500/40 shadow-lg scale-105 border-transparent' 
-                  : 'bg-white text-gray-600 hover:bg-pink-50 border border-pink-100 hover:border-pink-200'
-              }`}
-            >
-              {tab.name}
-            </button>
-          ))}
-        </div>
-
-        {/* Menu Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-          {activeItems.map((item) => (
-            <div 
-              key={item.id} 
-              className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-pink-100/50 transition-all duration-300 group flex flex-col border border-pink-50"
-            >
-              <div className="relative h-48 md:h-56 overflow-hidden bg-pink-50">
-                <img 
-                  src={item.img} 
-                  alt={item.name} 
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
-                  loading="lazy"
-                />
-              </div>
-              
-              <div className="p-5 md:p-6 flex flex-col flex-grow">
-                <h4 className="text-lg font-black text-gray-800 mb-2 leading-snug group-hover:text-pink-500 transition-colors">
-                  {item.name}
-                </h4>
-                <p className="text-sm text-gray-500 mb-6 line-clamp-3 flex-grow leading-relaxed">
-                  {item.desc}
-                </p>
-                
-                <div className="flex items-center justify-between mt-auto pt-4 border-t border-pink-50">
-                  <span className="text-xl font-black text-emerald-500">
-                    {formatPrice(item.price)}
-                  </span>
-                  <button 
-                    onClick={() => addToCart(item)}
-                    className="bg-pink-100 hover:bg-pink-500 text-pink-600 hover:text-white px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center gap-1 active:scale-95"
-                  >
-                    <Plus size={18} strokeWidth={3} /> <span className="hidden sm:inline">Thêm</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </main>
-
-      {/* --- GÓC NHỎ TÂM TÌNH (CONTACT FORM) --- */}
-      <section className="bg-white py-16 border-t border-pink-100">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-black text-pink-500 mb-4">Góc Nhỏ Tâm Tình 💌</h2>
-            <p className="text-gray-500 font-medium">Bạn có góp ý hay muốn nhắn gửi điều gì cho 3CE FOODS không? Hãy chia sẻ nhé!</p>
-          </div>
-          
-          <form className="bg-pink-50/50 p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6" onSubmit={(e) => { e.preventDefault(); showToast("Cảm ơn bạn đã gửi tâm tình cho chúng mình! 🥰"); }}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
-                  <Phone size={16} className="text-pink-400" /> Số điện thoại
-                </label>
-                <input 
-                  type="tel" 
-                  required
-                  placeholder="Nhập số điện thoại..." 
-                  className="w-full px-4 py-3 bg-white border border-pink-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-pink-400 transition-shadow"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
-                  <Mail size={16} className="text-pink-400" /> Email
-                </label>
-                <input 
-                  type="email" 
-                  placeholder="Nhập email (không bắt buộc)..." 
-                  className="w-full px-4 py-3 bg-white border border-pink-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-pink-400 transition-shadow"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
-                <MessageCircle size={16} className="text-pink-400" /> Bạn muốn nhắn gửi điều gì?
-              </label>
-              <textarea 
-                required
-                rows="4"
-                placeholder="Viết tâm tình của bạn ở đây nhé..." 
-                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-pink-400 transition-shadow resize-none"
-              ></textarea>
-            </div>
-            <button 
-              type="submit"
-              className="w-full bg-emerald-400 hover:bg-emerald-500 text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-400/30 transition-all hover:-translate-y-0.5 flex justify-center items-center gap-2"
-            >
-              Gửi Tâm Tình <Send size={20} />
-            </button>
-          </form>
-        </div>
-      </section>
-
-      {/* --- FOOTER --- */}
-      <footer className="bg-pink-100 pt-16 pb-8 border-t border-pink-200 text-pink-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 mb-12">
-            
-            {/* Column 1: About */}
-            <div className="space-y-4">
-              <h3 className="text-2xl font-black text-pink-600 mb-4 flex items-center gap-2">
-                3CE FOODS <Heart size={20} className="fill-pink-500 text-pink-500"/>
-              </h3>
-              <p className="font-bold text-sm italic">"Ăn vặt không no - Không lo bị péoooo"</p>
-              <div className="space-y-3 mt-6 text-sm font-medium">
-                <p className="flex items-start gap-3">
-                  <MapPin size={18} className="text-pink-500 mt-0.5 flex-shrink-0" />
-                  <span>Cung đường ẩm thực số 1, Quận Ăn Uống, TP. Hạnh Phúc</span>
-                </p>
-                <p className="flex items-center gap-3">
-                  <Phone size={18} className="text-pink-500 flex-shrink-0" />
-                  <span className="font-bold">Hotline: 1900 xxxx</span>
-                </p>
-              </div>
-            </div>
-
-            {/* Column 2: Policies */}
-            <div>
-              <h3 className="text-lg font-black text-pink-600 mb-6">Chính Sách</h3>
-              <ul className="space-y-3 text-sm font-medium">
-                <li><a href="#" className="hover:text-pink-600 hover:underline transition-all">Chính sách chăm sóc khách hàng</a></li>
-                <li><a href="#" className="hover:text-pink-600 hover:underline transition-all">Chính sách hoạt động</a></li>
-                <li><a href="#" className="hover:text-pink-600 hover:underline transition-all">Chính sách và quy định</a></li>
-                <li><a href="#" className="hover:text-pink-600 hover:underline transition-all">Chính sách bảo mật thông tin</a></li>
-              </ul>
-            </div>
-
-            {/* Column 3: Social */}
-            <div>
-              <h3 className="text-lg font-black text-pink-600 mb-6">Kết Nối Với Chúng Mình</h3>
-              <p className="text-sm font-medium mb-4">Theo dõi để không bỏ lỡ những ưu đãi ngọt ngào nhất!</p>
-              <a href="#" className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-2xl font-bold shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
-                <Facebook size={20} /> Đường liên kết qua Facebook
-              </a>
-            </div>
-            
-          </div>
-          
-          <div className="text-center text-sm font-medium text-pink-700/70 pt-8 border-t border-pink-200/50">
-            &copy; {new Date().getFullYear()} 3CE FOODS. All rights reserved. Designed with ❤️
-          </div>
-        </div>
-      </footer>
-
-      {/* --- CART SIDEBAR OVERLAY --- */}
-      <div 
-        className={`fixed inset-0 bg-gray-900/30 backdrop-blur-sm z-50 transition-opacity duration-300 ${
-          isCartOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
-        onClick={() => setIsCartOpen(false)}
-      ></div>
-
-      {/* --- CART SIDEBAR --- */}
-      <div 
-        className={`fixed top-0 right-0 h-full w-full sm:w-[450px] bg-white shadow-2xl z-50 flex flex-col transform transition-transform duration-400 ease-in-out ${
-          isCartOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        <div className="flex items-center justify-between p-6 border-b border-pink-100 bg-pink-50/50">
-          <h2 className="text-2xl font-black text-pink-600 flex items-center gap-2">
-            <ShoppingCart size={24} /> Giỏ Hàng
-            <span className="bg-white text-emerald-500 text-sm py-1 px-3 rounded-full font-bold shadow-sm ml-2">
-              {totalItems} món
-            </span>
-          </h2>
-          <button 
-            onClick={() => setIsCartOpen(false)}
-            className="p-2 text-gray-400 hover:bg-pink-100 hover:text-pink-500 rounded-full transition-colors"
-          >
-            <X size={24} />
-          </button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50/30">
-          {cart.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-gray-400 space-y-4">
-              <div className="bg-pink-50 p-6 rounded-full">
-                <ShoppingCart size={64} className="text-pink-200" />
-              </div>
-              <p className="text-lg font-bold text-gray-500">Giỏ hàng trống trơn! 🥺</p>
-              <button 
-                onClick={() => setIsCartOpen(false)}
-                className="text-emerald-500 font-bold hover:underline bg-emerald-50 px-6 py-2 rounded-full"
-              >
-                Cùng chọn món ngon nào!
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {cart.map((item) => (
-                <div key={item.id} className="flex gap-4 items-center bg-white p-4 rounded-2xl border border-pink-100 shadow-sm">
-                  <img src={item.img} alt={item.name} className="w-20 h-20 object-cover rounded-xl shadow-sm" />
-                  <div className="flex-1">
-                    <h4 className="font-bold text-gray-800 text-sm mb-1 leading-snug">{item.name}</h4>
-                    <p className="text-emerald-500 font-black text-sm mb-3">{formatPrice(item.price)}</p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center bg-pink-50 border border-pink-100 rounded-xl overflow-hidden">
-                        <button 
-                          onClick={() => updateQuantity(item.id, -1)}
-                          className="w-8 h-8 flex items-center justify-center text-pink-600 hover:bg-pink-200 transition-colors"
-                        >
-                          <Minus size={14} strokeWidth={3} />
-                        </button>
-                        <span className="w-8 text-center font-bold text-sm text-gray-800">{item.quantity}</span>
-                        <button 
-                          onClick={() => updateQuantity(item.id, 1)}
-                          className="w-8 h-8 flex items-center justify-center text-pink-600 hover:bg-pink-200 transition-colors"
-                        >
-                          <Plus size={14} strokeWidth={3} />
-                        </button>
-                      </div>
-                      <button 
-                        onClick={() => removeFromCart(item.id)}
-                        className="p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {cart.length > 0 && (
-          <div className="p-6 bg-white border-t border-pink-100 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-            <div className="flex justify-between items-center mb-6">
-              <span className="text-gray-500 font-bold">Tổng thanh toán:</span>
-              <span className="text-3xl font-black text-pink-500">{formatPrice(totalPrice)}</span>
-            </div>
-            <button 
-              onClick={() => {
-                showToast("Chuyển đến trang thanh toán... 🚀");
-                setIsCartOpen(false);
-              }}
-              className="w-full bg-pink-500 hover:bg-pink-600 text-white py-4.5 rounded-2xl font-black text-lg shadow-lg shadow-pink-500/30 flex items-center justify-center gap-2 transition-all hover:-translate-y-1 active:translate-y-0"
-            >
-              Thanh Toán Ngay <ChevronRight size={22} />
-            </button>
-          </div>
-        )}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff0f5">
+  <meta name="description" content="3CE FOODS – Ăn vặt không no, không lo bị péoooo. Mì trộn, mì cay, cơm ngon, đồ ăn vặt và trà mát lạnh.">
+  <title>3CE FOODS | Ăn vặt không no - Không lo bị péoooo</title>
+  <style>
+    :root{--pink:#f6b8cf;--pink-dark:#d85f91;--pink-light:#fff0f5;--green:#cfe8cf;--green-dark:#4f8562;--cream:#fffaf6;--ink:#382d32;--muted:#80737a;--line:#f0dfe6;--white:#fff;--shadow:0 12px 32px rgba(160,87,117,.10);--radius:22px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:100px}body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.6}button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.container{width:min(1180px,92%);margin:auto}
+    .announcement{background:var(--green);color:#315c42;text-align:center;padding:8px 12px;font-size:.88rem;font-weight:700}
+    header{position:sticky;top:0;z-index:50;background:rgba(255,250,246,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:76px}.brand{display:flex;align-items:center;gap:10px;font-weight:950;font-size:1.55rem;letter-spacing:-1px;color:var(--pink-dark);white-space:nowrap}.brand-mark{display:grid;place-items:center;width:45px;height:45px;border-radius:16px;background:var(--pink);color:#fff;font-size:1.1rem;box-shadow:0 6px 15px #f6b8cf77}.nav-links{display:flex;align-items:center;gap:23px;font-size:.93rem;font-weight:700}.nav-links a:hover{color:var(--pink-dark)}.nav-actions{display:flex;gap:10px;align-items:center}.icon-btn,.menu-toggle{border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px 13px;color:var(--ink);font-weight:800}.cart-count{display:inline-grid;place-items:center;background:var(--pink-dark);color:white;border-radius:50%;min-width:22px;height:22px;font-size:.75rem;margin-left:5px}.menu-toggle{display:none}
+    .hero{padding:46px 0 34px}.hero-card{position:relative;overflow:hidden;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:20px;padding:clamp(28px,5vw,64px);border-radius:32px;background:linear-gradient(125deg,#ffe3ed 0%,#fff0f5 48%,#e7f4e4 100%);box-shadow:var(--shadow);min-height:370px}.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#ffffffb8;border:1px solid #fff;border-radius:99px;padding:7px 13px;font-size:.8rem;font-weight:850;color:var(--green-dark);letter-spacing:.04em;text-transform:uppercase}.hero h1{font-size:clamp(2.5rem,5vw,4.7rem);line-height:1.03;letter-spacing:-.055em;margin:18px 0 15px;max-width:650px}.hero h1 span{color:var(--pink-dark)}.hero p{color:#6c5d65;max-width:520px;margin:0 0 25px;font-size:1.05rem}.hero-buttons{display:flex;gap:12px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:13px 19px;font-weight:850;transition:.2s}.btn:hover{transform:translateY(-2px)}.btn-primary{background:var(--pink-dark);color:white;box-shadow:0 8px 18px #d85f9133}.btn-secondary{background:#fff;color:var(--green-dark);border:1px solid #d6e8d4}.hero-art{display:grid;place-items:center;min-height:250px;position:relative}.food-orbit{width:min(330px,80vw);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 25%,#fff 0 7%,#ffd5e4 8% 46%,#f5a8c5 47% 62%,#fceaf1 63%);box-shadow:inset 0 0 0 12px #ffffff75,0 22px 40px #d85f9128;transform:rotate(-8deg)}.food-orbit span{font-size:clamp(6rem,13vw,9rem);filter:drop-shadow(0 14px 10px #9d597533);transform:rotate(8deg)}.floating-tag{position:absolute;background:#fff;padding:10px 14px;border-radius:15px;font-size:.85rem;font-weight:850;box-shadow:var(--shadow)}.tag-one{top:15%;right:0;transform:rotate(5deg)}.tag-two{bottom:10%;left:0;transform:rotate(-6deg)}
+    .perks{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:25px 0 12px}.perk{display:flex;gap:13px;align-items:center;padding:17px 18px;background:white;border:1px solid var(--line);border-radius:18px}.perk-icon{width:44px;height:44px;display:grid;place-items:center;background:var(--pink-light);border-radius:14px;font-size:1.35rem;flex-shrink:0}.perk strong{display:block;font-size:.95rem}.perk small{color:var(--muted)}
+    section{padding:45px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:22px}.section-head h2{font-size:clamp(1.8rem,3vw,2.5rem);letter-spacing:-.04em;margin:0}.section-head p{color:var(--muted);margin:5px 0 0}.search-row{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 20px}.search-box{flex:1;min-width:220px;position:relative}.search-box input{width:100%;border:1px solid var(--line);background:#fff;border-radius:15px;padding:13px 15px 13px 44px;outline:none}.search-box input:focus,.form-field:focus{border-color:var(--pink-dark);box-shadow:0 0 0 3px #f6b8cf55}.search-symbol{position:absolute;left:15px;top:10px;font-size:1.15rem}.sort-select{border:1px solid var(--line);background:#fff;border-radius:15px;padding:12px 14px;color:var(--ink)}
+    .category-tabs{display:flex;gap:9px;overflow-x:auto;padding:2px 0 12px;margin-bottom:16px}.category-tab{border:1px solid var(--line);background:#fff;color:#6d5c65;padding:10px 16px;border-radius:999px;font-weight:800;white-space:nowrap}.category-tab.active,.category-tab:hover{background:var(--pink-dark);color:white;border-color:var(--pink-dark)}.menu-layout{display:grid;grid-template-columns:1fr;gap:20px}.product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.product-card{display:flex;flex-direction:column;min-width:0;background:#fff;border:1px solid var(--line);border-radius:21px;overflow:hidden;box-shadow:0 5px 18px #60304708;transition:.22s}.product-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}.product-image{height:160px;display:grid;place-items:center;font-size:4.3rem;background:linear-gradient(135deg,#fff0f5,#eaf5e8);position:relative}.product-image::after{content:"";position:absolute;width:110px;height:110px;border:1px dashed #e7a4bd;border-radius:50%;opacity:.7}.product-image .food-emoji{z-index:1;filter:drop-shadow(0 8px 5px #75504a22)}.product-label{position:absolute;top:12px;left:12px;z-index:2;font-size:.7rem;background:#fff;border-radius:99px;padding:5px 9px;font-weight:850;color:var(--green-dark)}.product-info{padding:16px;display:flex;flex-direction:column;flex:1}.product-info h3{font-size:1.03rem;line-height:1.35;margin:0 0 8px}.product-info p{font-size:.86rem;color:var(--muted);margin:0 0 15px;flex:1}.product-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto}.price{font-size:1.05rem;color:var(--pink-dark);font-weight:950}.unit{font-size:.78rem;color:var(--muted);font-weight:500}.add-btn{border:0;border-radius:12px;background:var(--green);color:#315c42;font-weight:900;width:39px;height:39px;font-size:1.35rem}.add-btn:hover{background:var(--green-dark);color:#fff}.empty-state{padding:50px 20px;text-align:center;background:#fff;border:1px dashed var(--line);border-radius:20px;color:var(--muted);grid-column:1/-1}
+    .promo{background:#f0f7ec;border-radius:28px;padding:30px;display:flex;justify-content:space-between;align-items:center;gap:20px}.promo h2{margin:0 0 6px;font-size:1.8rem}.promo p{margin:0;color:#657668}.promo .promo-emoji{font-size:3.5rem}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}.about-card{padding:30px;border-radius:24px;background:#fff;border:1px solid var(--line)}.about-card h3{margin:0 0 10px;font-size:1.4rem}.about-card p{color:var(--muted)}.values{display:grid;gap:13px;margin-top:18px}.value{display:flex;gap:12px}.value b{display:block}.value small{color:var(--muted)}.quote-card{background:linear-gradient(135deg,#ffe5ef,#f0f7ec);border-radius:24px;padding:32px;display:flex;flex-direction:column;justify-content:center}.quote-card blockquote{font-size:1.5rem;font-weight:850;line-height:1.35;margin:12px 0}.quote-card p{color:#75636c}
+    .contact-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:20px}.contact-card,.form-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:26px}.contact-item{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #f6e9ee}.contact-item:last-child{border-bottom:0}.contact-item .emoji{font-size:1.35rem}.contact-item small{display:block;color:var(--muted)}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.form-group{display:flex;flex-direction:column;gap:6px}.form-group.full{grid-column:1/-1}.form-group label{font-size:.85rem;font-weight:800}.form-field{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;outline:none;background:#fff}.form-group textarea{resize:vertical;min-height:105px}.form-note{font-size:.8rem;color:var(--muted);margin:12px 0 0}
+    .faq-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}.faq-item{background:white;border:1px solid var(--line);border-radius:16px;padding:16px 18px}.faq-item summary{font-weight:850;cursor:pointer}.faq-item p{color:var(--muted);font-size:.92rem;margin-bottom:0}
+    footer{margin-top:45px;background:#342a30;color:#fff0f5;padding:45px 0 20px}.footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:28px}.footer-brand{font-size:1.5rem;font-weight:950;color:#ffc4d9}.footer-col h4{margin:0 0 13px;color:#fff;font-size:.95rem}.footer-col p,.footer-col a{color:#d8c8d0;font-size:.88rem}.footer-col a{display:block;margin:8px 0}.footer-col a:hover{color:#ffc4d9}.footer-bottom{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;border-top:1px solid #ffffff20;margin-top:28px;padding-top:18px;color:#cbbac3;font-size:.82rem}
+    .floating-chat{position:fixed;right:22px;bottom:22px;z-index:60;width:58px;height:58px;border:0;border-radius:20px;background:var(--green-dark);color:#fff;font-size:1.55rem;box-shadow:0 12px 28px #315c4244}.chat-panel{position:fixed;right:22px;bottom:92px;z-index:60;width:min(340px,calc(100vw - 34px));background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 18px 50px #3d22301f;overflow:hidden;display:none}.chat-panel.open{display:block}.chat-head{padding:16px;background:var(--green);font-weight:900;display:flex;justify-content:space-between;align-items:center}.chat-body{padding:17px}.chat-body p{font-size:.9rem;color:var(--muted)}.chat-actions{display:grid;gap:8px}.chat-actions a,.chat-actions button{display:block;text-align:center;border:1px solid var(--line);background:#fff;padding:10px;border-radius:12px;font-weight:800;color:var(--ink)}.chat-actions a:hover,.chat-actions button:hover{background:var(--pink-light)}
+    .overlay{position:fixed;inset:0;background:#20151d66;z-index:100;display:none;justify-content:flex-end}.overlay.open{display:flex}.cart-drawer{background:#fffafc;width:min(440px,100%);height:100%;display:flex;flex-direction:column;box-shadow:-15px 0 40px #0001}.drawer-head{display:flex;justify-content:space-between;align-items:center;padding:22px;border-bottom:1px solid var(--line)}.drawer-head h2{margin:0}.close-btn{border:0;background:#f9e7ee;border-radius:12px;width:38px;height:38px;font-size:1.2rem}.cart-items{padding:18px 22px;overflow:auto;flex:1}.cart-empty{text-align:center;padding:50px 10px;color:var(--muted)}.cart-line{display:grid;grid-template-columns:1fr auto;gap:10px;padding:15px 0;border-bottom:1px solid var(--line)}.cart-line h4{margin:0 0 4px;font-size:.95rem}.cart-line small{color:var(--muted)}.quantity{display:flex;align-items:center;gap:9px;margin-top:8px}.quantity button{border:1px solid var(--line);background:#fff;border-radius:8px;width:27px;height:27px;font-weight:900}.cart-summary{padding:20px 22px;border-top:1px solid var(--line);background:#fff}.summary-row{display:flex;justify-content:space-between;margin:7px 0;color:var(--muted)}.summary-row.total{font-size:1.2rem;color:var(--ink);font-weight:950}.checkout-form{display:grid;gap:9px;margin-top:15px}.checkout-form input,.checkout-form textarea,.checkout-form select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:11px;outline:none}.checkout-form textarea{min-height:65px;resize:vertical}.checkout-note{font-size:.76rem;color:var(--muted);margin:8px 0 0}.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#342a30;color:white;padding:12px 18px;border-radius:13px;z-index:150;transition:.25s;box-shadow:var(--shadow);max-width:90vw;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:900px){.nav-links{gap:12px}.nav-links a{font-size:.85rem}.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.footer-grid{grid-template-columns:repeat(2,1fr)}.hero-card{grid-template-columns:1fr .8fr}.hero-art{min-height:220px}.contact-grid{grid-template-columns:1fr}.about-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:680px){.nav{min-height:66px}.menu-toggle{display:inline-block}.nav-links{display:none;position:absolute;top:66px;left:0;right:0;padding:15px 4% 20px;background:var(--cream);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch}.nav-links.open{display:flex}.nav-links a{padding:8px}.brand{font-size:1.3rem}.brand-mark{width:39px;height:39px}.hero{padding-top:22px}.hero-card{grid-template-columns:1fr;padding:28px 23px}.hero h1{font-size:2.8rem}.hero-art{min-height:220px}.food-orbit{width:215px}.food-orbit span{font-size:6rem}.tag-one{right:6%}.tag-two{left:6%}.perks{grid-template-columns:1fr;gap:10px}.perk{padding:13px 15px}.section-head{align-items:start;flex-direction:column}.product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.product-image{height:125px;font-size:3.4rem}.product-info{padding:12px}.product-info h3{font-size:.92rem}.product-info p{font-size:.8rem}.product-bottom{align-items:flex-end}.price{font-size:.95rem}.add-btn{width:35px;height:35px;flex-shrink:0}.promo{padding:23px;align-items:flex-start}.promo .promo-emoji{font-size:2.5rem}.about-grid{grid-template-columns:1fr}.faq-list{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}.contact-card,.form-card{padding:21px}.footer-grid{grid-template-columns:1fr 1fr;gap:20px}.footer-grid>div:first-child{grid-column:1/-1}}
+    @media(max-width:390px){.product-grid{grid-template-columns:1fr}.product-image{height:145px}.nav-actions{gap:5px}.icon-btn,.menu-toggle{padding:9px}.footer-grid{grid-template-columns:1fr}.footer-grid>div:first-child{grid-column:auto}}
+  </style>
+</head>
+<body>
+  <div class="announcement">🌷 Chào mừng đến với 3CE FOODS — ngon xinh, vui bụng, vui mood!</div>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#trang-chu" aria-label="3CE FOODS trang chủ"><span class="brand-mark">3CE</span><span>FOODS<span style="color:var(--green-dark)">.</span></span></a>
+      <nav class="nav-links" id="navLinks" aria-label="Điều hướng chính">
+        <a href="#trang-chu">Trang chủ</a><a href="#thuc-don">Thực đơn</a><a href="#ve-chung-toi">Về 3CE</a><a href="#lien-he">Liên hệ</a><a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="openCart" aria-label="Mở giỏ hàng">🛍️ <span class="cart-count" id="cartCount">0</span></button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Mở menu">☰</button>
       </div>
-
-      {/* --- FLOATING CHAT WIDGET --- */}
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
-        {/* Chat Window */}
-        <div 
-          className={`mb-4 w-80 bg-white rounded-3xl shadow-2xl border border-pink-100 overflow-hidden transition-all duration-300 transform origin-bottom-right ${
-            isChatOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
-          }`}
-        >
-          <div className="bg-pink-500 p-4 flex justify-between items-center text-white">
-            <div className="flex items-center gap-2 font-bold">
-              <MessageCircle size={18} /> 3CE FOODS Hỗ trợ
-            </div>
-            <button onClick={() => setIsChatOpen(false)} className="hover:bg-pink-600 p-1 rounded-full transition-colors">
-              <X size={18} />
-            </button>
-          </div>
-          <div className="h-64 bg-pink-50/30 p-4 overflow-y-auto flex flex-col gap-3">
-            {chatMessages.map((msg, idx) => (
-              <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] p-3 rounded-2xl text-sm font-medium ${
-                  msg.sender === 'user' 
-                    ? 'bg-emerald-400 text-white rounded-br-sm' 
-                    : 'bg-white border border-pink-100 text-gray-700 rounded-bl-sm shadow-sm'
-                }`}>
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-          </div>
-          <form onSubmit={handleSendChat} className="p-3 bg-white border-t border-pink-100 flex gap-2">
-            <input 
-              type="text" 
-              value={currentMessage}
-              onChange={(e) => setCurrentMessage(e.target.value)}
-              placeholder="Nhập tin nhắn..."
-              className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-pink-300"
-            />
-            <button type="submit" className="bg-pink-500 text-white p-2 rounded-full hover:bg-pink-600 transition-colors flex-shrink-0">
-              <Send size={16} />
-            </button>
-          </form>
-        </div>
-
-        {/* Floating Button */}
-        <button 
-          onClick={() => setIsChatOpen(!isChatOpen)}
-          className="bg-emerald-400 hover:bg-emerald-500 text-white p-4 rounded-full shadow-xl shadow-emerald-400/40 transition-all hover:scale-110 active:scale-95 flex items-center justify-center"
-        >
-          {isChatOpen ? <X size={28} /> : <MessageCircle size={28} />}
-        </button>
-      </div>
-
-      {/* --- TOAST NOTIFICATION --- */}
-      <div 
-        className={`fixed bottom-10 left-1/2 transform -translate-x-1/2 z-50 flex items-center gap-3 bg-gray-900/90 backdrop-blur-md text-white px-6 py-4 rounded-full shadow-2xl transition-all duration-500 ease-out pointer-events-none ${
-          toast.show ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
-        }`}
-      >
-        <CheckCircle2 className="text-emerald-400" size={24} />
-        <span className="font-bold text-sm">{toast.message}</span>
-      </div>
-
     </div>
-  );
-}
+  </header>
+
+  <main>
+    <section class="hero" id="trang-chu">
+      <div class="container">
+        <div class="hero-card">
+          <div>
+            <span class="eyebrow">♡ Little bites, big happiness</span>
+            <h1>Ngon hết nấc,<br><span>vui hết cỡ!</span></h1>
+            <p>3CE FOODS mang đến thế giới mì trộn đậm vị, món ăn vặt mê ly và những ly trà mát lạnh. Chọn món yêu thích, để tụi mình chuẩn bị một bữa ngon thật vui nhé!</p>
+            <div class="hero-buttons"><a href="#thuc-don" class="btn btn-primary">Khám phá thực đơn <span>→</span></a><button class="btn btn-secondary" id="heroCart">🛒 Đặt món ngay</button></div>
+          </div>
+          <div class="hero-art" aria-label="Minh họa món ăn ngon"><div class="food-orbit"><span>🍜</span></div><div class="floating-tag tag-one">💗 Mê từ miếng đầu</div><div class="floating-tag tag-two">🌿 Ngon lành mỗi ngày</div></div>
+        </div>
+        <div class="perks">
+          <div class="perk"><div class="perk-icon">🍜</div><div><strong>Menu đa dạng</strong><small>Mì ngon, cơm nóng, ăn vặt đủ vị</small></div></div>
+          <div class="perk"><div class="perk-icon">💗</div><div><strong>Chọn món cực dễ</strong><small>Thêm món vào giỏ chỉ với một chạm</small></div></div>
+          <div class="perk"><div class="perk-icon">🛵</div><div><strong>Đặt món tiện lợi</strong><small>Gửi đơn nhanh qua kênh liên hệ của quán</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="thuc-don">
+      <div class="container">
+        <div class="section-head"><div><span class="eyebrow">Made with love ♡</span><h2>Thực đơn nhà 3CE</h2><p>Chọn món hợp gu, thêm vào giỏ và thưởng thức thôi!</p></div></div>
+        <div class="search-row"><div class="search-box"><span class="search-symbol">⌕</span><input type="search" id="searchInput" placeholder="Tìm món ăn bạn đang thèm..." aria-label="Tìm món ăn"></div><select id="sortSelect" class="sort-select" aria-label="Sắp xếp thực đơn"><option value="default">Sắp xếp: Mặc định</option><option value="price-asc">Giá: thấp đến cao</option><option value="price-desc">Giá: cao đến thấp</option><option value="name">Tên món: A–Z</option></select></div>
+        <div class="category-tabs" id="categoryTabs" role="tablist" aria-label="Danh mục món ăn"></div>
+        <div class="menu-layout"><div class="product-grid" id="productGrid" aria-live="polite"></div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container"><div class="promo"><div><span class="eyebrow">A little treat for you</span><h2>Đói bụng thì ghé 3CE 💗</h2><p>Chọn món ngon, gửi lời nhắn — phần còn lại hãy để 3CE cùng bạn sắp xếp.</p><a class="btn btn-primary" href="#thuc-don" style="margin-top:17px">Chọn món yêu thích →</a></div><div class="promo-emoji">🍟🧋</div></div></div>
+    </section>
+
+    <section id="ve-chung-toi">
+      <div class="container">
+        <div class="section-head"><div><span class="eyebrow">Our little story</span><h2>Một chút về 3CE FOODS</h2><p>Đồ ăn ngon làm ngày thường trở nên đáng yêu hơn.</p></div></div>
+        <div class="about-grid">
+          <div class="about-card"><h3>Ăn ngon theo cách của bạn 🌷</h3><p>3CE FOODS là góc nhỏ dành cho những chiếc bụng mê mì trộn, mì cay, cơm ngon, đồ ăn vặt và trà mát lạnh. Chúng mình muốn việc chọn món trở nên đơn giản, dễ thương và đầy cảm hứng.</p><div class="values"><div class="value"><span>🍓</span><div><b>Đa dạng lựa chọn</b><small>Nhiều hương vị cho nhiều chiếc mood.</small></div></div><div class="value"><span>💌</span><div><b>Luôn lắng nghe</b><small>Góp ý của bạn giúp 3CE hoàn thiện hơn.</small></div></div><div class="value"><span>🌱</span><div><b>Phục vụ tận tâm</b><small>Ưu tiên trải nghiệm đặt món rõ ràng, tiện lợi.</small></div></div></div></div>
+          <div class="quote-card"><span class="eyebrow">Our slogan</span><blockquote>“Ăn vặt không no - Không lo bị péoooo”</blockquote><p>Một chút ngon lành, một chút ngọt ngào, thêm thật nhiều niềm vui. Cảm ơn bạn đã ghé góc nhỏ của chúng mình!</p><div style="font-size:2rem">🍜 🍟 🧋</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="lien-he">
+      <div class="container">
+        <div class="section-head"><div><span class="eyebrow">Say hello 💌</span><h2>Góc nhỏ tâm tình</h2><p>Có lời nhắn, góp ý hay câu hỏi? 3CE rất muốn lắng nghe bạn.</p></div></div>
+        <div class="contact-grid">
+          <div class="contact-card">
+            <h3 style="margin-top:0">Kết nối với 3CE</h3>
+            <div class="contact-item"><span class="emoji">📞</span><div><b>Hotline quán</b><small id="hotlineText">Cập nhật số điện thoại của quán tại đây</small></div></div>
+            <div class="contact-item"><span class="emoji">📧</span><div><b>Email</b><small id="emailText">Cập nhật email của quán tại đây</small></div></div>
+            <div class="contact-item"><span class="emoji">📍</span><div><b>Địa chỉ quán</b><small id="addressText">Cập nhật địa chỉ quán tại đây</small></div></div>
+            <div class="contact-item"><span class="emoji">📱</span><div><b>Facebook</b><small><a id="facebookLink" href="#lien-he">Thêm đường liên kết Facebook chính thức</a></small></div></div>
+            <p class="form-note">* Hãy thay thông tin mẫu bằng thông tin thật trước khi đưa website vào sử dụng.</p>
+          </div>
+          <div class="form-card">
+            <h3 style="margin-top:0">Gửi lời nhắn cho chúng mình 💗</h3>
+            <form id="messageForm" class="form-grid">
+              <div class="form-group"><label for="senderName">Tên của bạn *</label><input class="form-field" id="senderName" name="name" required placeholder="Bạn tên là gì?"></div>
+              <div class="form-group"><label for="senderPhone">Số điện thoại</label><input class="form-field" id="senderPhone" name="phone" type="tel" placeholder="Để 3CE tiện phản hồi"></div>
+              <div class="form-group full"><label for="senderEmail">Email của bạn</label><input class="form-field" id="senderEmail" name="email" type="email" placeholder="you@example.com"></div>
+              <div class="form-group full"><label for="senderMessage">Bạn muốn nhắn gửi điều gì? *</label><textarea class="form-field" id="senderMessage" name="message" required placeholder="Lời nhắn dễ thương của bạn..."></textarea></div>
+              <div class="form-group full"><button class="btn btn-primary" type="submit">Gửi lời nhắn ♡</button><p class="form-note">Form mẫu phía trước chưa có máy chủ nhận dữ liệu. Khi gửi, website sẽ mở ứng dụng email nếu bạn đã cấu hình địa chỉ nhận.</p></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="section-head"><div><span class="eyebrow">Need a little help?</span><h2>Câu hỏi thường gặp</h2><p>Một vài thông tin hữu ích trước khi bạn đặt món.</p></div></div>
+        <div class="faq-list">
+          <details class="faq-item"><summary>Làm thế nào để đặt món?</summary><p>Chọn món trong thực đơn, nhấn dấu cộng để thêm vào giỏ, điền thông tin nhận hàng rồi nhấn gửi đơn. Website mẫu sẽ tạo nội dung đơn để bạn gửi qua email; cần tích hợp thêm dịch vụ để nhận đơn tự động.</p></details>
+          <details class="faq-item"><summary>Giá trên website đã bao gồm phí giao hàng chưa?</summary><p>Giá hiển thị là giá món ăn. Phí giao hàng, phụ thu (nếu có) cần được quán xác nhận trước khi chốt đơn.</p></details>
+          <details class="faq-item"><summary>Tôi có thể yêu cầu ghi chú món ăn không?</summary><p>Có. Bạn có thể ghi yêu cầu trong phần ghi chú khi đặt hàng, chẳng hạn mức cay hoặc lưu ý nguyên liệu. Quán sẽ xác nhận khả năng đáp ứng.</p></details>
+          <details class="faq-item"><summary>Thông tin cá nhân của tôi được sử dụng thế nào?</summary><p>Chỉ cung cấp thông tin cần thiết để liên hệ và xử lý đơn. Bản website tĩnh này không lưu dữ liệu lên máy chủ; khi tích hợp dịch vụ đặt hàng, hãy bổ sung chính sách bảo mật phù hợp.</p></details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div><div class="footer-brand">3CE FOODS ♡</div><p>Ăn vặt không no - Không lo bị péoooo</p><p>Một góc nhỏ xinh cho những chiếc bụng mê đồ ngon.</p></div>
+        <div class="footer-col"><h4>Khám phá</h4><a href="#trang-chu">Trang chủ</a><a href="#thuc-don">Thực đơn</a><a href="#ve-chung-toi">Về chúng tôi</a><a href="#lien-he">Liên hệ</a></div>
+        <div class="footer-col"><h4>Hỗ trợ khách hàng</h4><a href="#faq">Câu hỏi thường gặp</a><a href="#cham-soc">Chính sách chăm sóc khách hàng</a><a href="#hoat-dong">Chính sách hoạt động</a><a href="#quy-dinh">Chính sách và quy định</a><a href="#bao-mat">Chính sách bảo mật thông tin</a></div>
+        <div class="footer-col"><h4>Kết nối</h4><a id="footerFacebook" href="#lien-he">Facebook 3CE FOODS</a><a href="#lien-he">Góc nhỏ tâm tình</a><a href="#lien-he">Hotline & địa chỉ</a><a href="#thuc-don">Đặt món ngay ♡</a></div>
+      </div>
+      <div class="footer-bottom"><span>© <span id="year"></span> 3CE FOODS. All rights reserved.</span><span>Made with ♡ and a little sprinkle of happiness.</span></div>
+    </div>
+  </footer>
+
+  <button class="floating-chat" id="chatToggle" aria-label="Mở khung chat">💬</button>
+  <div class="chat-panel" id="chatPanel" role="dialog" aria-label="Khung hỗ trợ 3CE">
+    <div class="chat-head"><span>3CE xin chào! 💗</span><button id="chatClose" class="close-btn" aria-label="Đóng khung chat">×</button></div>
+    <div class="chat-body"><b>Hôm nay bạn muốn ăn gì nè?</b><p>Chọn một mục bên dưới để bắt đầu. Hãy thêm liên kết thật của quán để khách liên hệ trực tiếp nhé.</p><div class="chat-actions"><a id="chatFacebook" href="#lien-he">Nhắn tin qua Facebook ↗</a><button id="chatMenu">Xem thực đơn 🍜</button><button id="chatOrder">Mở giỏ hàng 🛍️</button></div></div>
+  </div>
+
+  <div class="overlay" id="cartOverlay" aria-hidden="true">
+    <aside class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+      <div class="drawer-head"><h2 id="cartTitle">Giỏ hàng của bạn 🛍️</h2><button class="close-btn" id="closeCart" aria-label="Đóng giỏ hàng">×</button></div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-summary">
+        <div class="summary-row"><span>Tạm tính</span><strong id="subtotal">0đ</strong></div>
+        <div class="summary-row"><span>Phí giao hàng</span><span>Quán xác nhận</span></div>
+        <div class="summary-row total"><span>Tổng tiền món</span><strong id="total">0đ</strong></div>
+        <form id="checkoutForm" class="checkout-form">
+          <input id="customerName" required placeholder="Tên người nhận *" aria-label="Tên người nhận">
+          <input id="customerPhone" required type="tel" placeholder="Số điện thoại *" aria-label="Số điện thoại">
+          <input id="customerAddress" required placeholder="Địa chỉ nhận hàng *" aria-label="Địa chỉ nhận hàng">
+          <select id="paymentMethod" aria-label="Phương thức thanh toán"><option value="Tiền mặt khi nhận hàng">Tiền mặt khi nhận hàng</option><option value="Chuyển khoản (xác nhận với quán)">Chuyển khoản (xác nhận với quán)</option></select>
+          <textarea id="orderNote" placeholder="Ghi chú cho quán (ít cay, không hành...)" aria-label="Ghi chú đơn hàng"></textarea>
+          <button class="btn btn-primary" type="submit">Gửi đơn đặt món ♡</button>
+        </form>
+        <p class="checkout-note">Đây là website tĩnh trên GitHub Pages. Nút gửi sẽ mở email với nội dung đơn hàng; đơn chưa được gửi tự động đến quán nếu chưa cấu hình email/backend.</p>
+      </div>
+    </aside>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // THÔNG TIN QUÁN: thay các giá trị mẫu bên dưới trước khi xuất bản.
+    const SHOP = {
+      phone: "", // Ví dụ: "0901234567"
+      email: "", // Email nhận đơn hàng, ví dụ: "3cefoods@example.com"
+      address: "", // Địa chỉ đầy đủ của quán
+      facebook: "" // Link Facebook/Messenger chính thức
+    };
+
+    const products = [
+      {id:"indomie-long-mon",name:"Mì trộn Indomie Long Môn Ngự Yến",category:"Mì trộn Indomie",price:40000,unit:"phần",emoji:"🍜",label:"Best seller",desc:"Sợi mì Indomie dai mềm thấm đẫm sốt trộn độc quyền, rau củ tươi giòn, xúc xích thơm béo, cá viên dai ngon, tôm surimi đậm vị, viên mực xoắn sần sật và hải sản phô mai béo ngậy — đại tiệc hương vị bùng nổ."},
+      {id:"indomie-tu-hai",name:"Mì trộn Indomie Tứ Hải Hội Tụ",category:"Mì trộn Indomie",price:35000,unit:"phần",emoji:"🍜",label:"Đầy topping",desc:"Mì Indomie dai ngon quyện sốt đậm đà, rau củ tươi xanh, xúc xích thơm lừng, cá viên dai giòn và tôm surimi hấp dẫn — đầy đặn, cuốn vị khó quên."},
+      {id:"indomie-thanh-van",name:"Mì trộn Indomie Thanh Vân Ngọc Thực",category:"Mì trộn Indomie",price:20000,unit:"phần",emoji:"🥬",label:"Nhẹ nhàng",desc:"Mì Indomie dai mềm óng ánh sốt đậm vị, kết hợp rau củ tươi xanh thanh mát — đơn giản mà cuốn hút."},
+      {id:"mi-cay-wagyu",name:"Mì cay Đế Vương Bò Wagyu",category:"Mì cay",price:65000,unit:"tô",emoji:"🍲",label:"Đậm vị",desc:"Mì, bắp cải, ngô non, xúc xích béo ngậy và thịt bò thơm mềm."},
+      {id:"mi-thap-cam",name:"Mì thập cẩm Hải Sơn Thiên Địa",category:"Mì cay",price:80000,unit:"tô",emoji:"🍲",label:"Nhiều topping",desc:"Mì, nước súp đỏ sóng sánh, tôm tươi, mực giòn, bò ba chỉ béo mềm và xúc xích đậm vị."},
+      {id:"mi-busan",name:"Mì cay Busan Xúc Xích",category:"Mì cay",price:45000,unit:"tô",emoji:"🌶️",label:"Dễ mê",desc:"Mì dai ngon, xúc xích thơm lừng và rau củ tươi xanh."},
+      {id:"mi-bo-tu-xuyen",name:"Mì cay Bò Vương Giả Tứ Xuyên",category:"Mì cay",price:60000,unit:"tô",emoji:"🥩",label:"Món nổi bật",desc:"Mì dai ngon chuẩn vị, thịt bò mềm tan, nước lèo hầm đậm đà 8 tiếng."},
+      {id:"mi-tuong-den",name:"Mì Hắc Long Bá Vương",category:"Mì tương đen",price:null,unit:"phần",emoji:"🍝",label:"Sắp cập nhật giá",desc:"Mì dai ngon, sốt tương đen đậm đà, rau củ tươi giòn, hòa quyện vị mặn ngọt đặc trưng."},
+      {id:"mi-y",name:"Mì Ý Bò Bằm Hoàng Kim",category:"Mì Ý",price:null,unit:"phần",emoji:"🍝",label:"Sắp cập nhật giá",desc:"Mì Ý dai mềm, sốt cà chua bò bằm đậm đà, thịt bò thơm ngon và hương vị béo ngậy hấp dẫn."},
+      {id:"com-rang",name:"Cơm Rang Kim Ngưu Khai Vị",category:"Cơm",price:null,unit:"phần",emoji:"🍚",label:"Cơm ngon",desc:"Cơm rang tơi giòn, dưa cải chua thanh, thịt bò mềm thơm, hòa quyện cùng gia vị đậm đà."},
+      {id:"com-ga",name:"Cơm Gà Kim Kê Ngự Yến",category:"Cơm",price:null,unit:"phần",emoji:"🍗",label:"Cơm ngon",desc:"Cơm nóng dẻo thơm, thịt gà chiên vàng giòn, nước mắm đậm đà, thấm vị hấp dẫn."},
+      {id:"bibimbap",name:"Bibimbap Kim Ngọc Hoàng Triều",category:"Cơm",price:null,unit:"tô",emoji:"🍳",label:"Phong vị Hàn",desc:"Cơm trắng dẻo thơm, bò xào, trứng ốp la, cà rốt, dưa leo, rau cải, nấm, kim chi và sốt Bibimbap đặc trưng Hàn Quốc."},
+      {id:"tra-dao",name:"Hồng Nhan Tuyết Lệ – Trà đào",category:"Đồ uống",price:null,unit:"ly",emoji:"🍑",label:"Mát lạnh",desc:"Trà thơm dịu nhẹ, đào ngâm ngọt thanh và đá mát lạnh."},
+      {id:"tra-chanh",name:"Thanh Long Xuất Hải – Trà chanh",category:"Đồ uống",price:null,unit:"ly",emoji:"🍋",label:"Thanh mát",desc:"Trà thanh mát, nước cốt chanh tươi, vị chua ngọt hài hòa."},
+      {id:"tra-tac",name:"Bích Ngọc Tiên Trà – Trà tắc",category:"Đồ uống",price:null,unit:"ly",emoji:"🍊",label:"Dễ uống",desc:"Trà thơm dịu, tắc tươi chua nhẹ, vị ngọt thanh dễ uống."},
+      {id:"tra-dau",name:"Hỏa Diệm Sơn – Trà dâu",category:"Đồ uống",price:null,unit:"ly",emoji:"🍓",label:"Ngọt dịu",desc:"Trà thơm mát, dâu tây ngọt dịu, vị chua ngọt hài hòa."},
+      {id:"tra-sua",name:"Tuyết Sơn Ngọc Ẩn – Trà sữa",category:"Đồ uống",price:null,unit:"ly",emoji:"🧋",label:"Béo thơm",desc:"Trà thơm đậm vị, sữa béo ngậy, vị ngọt dịu cùng đá mát lạnh."},
+      {id:"khoai-tay",name:"Khoai tây chiên Kim Giáp Hoàng Kim",category:"Đồ ăn vặt",price:25000,unit:"đĩa",emoji:"🍟",label:"Giòn rụm",desc:"Khoai tây vàng giòn, ngoài giòn trong mềm, thơm bùi hấp dẫn."},
+      {id:"khoai-lac",name:"Khoai lắc phô mai Kim Ngọc Mãn Đường",category:"Đồ ăn vặt",price:30000,unit:"đĩa",emoji:"🍟",label:"Phô mai",desc:"Khoai tây chiên giòn lắc phô mai béo ngậy, đậm vị."},
+      {id:"nem-chua",name:"Nem chua Trần Công Châu Hồng Môn",category:"Đồ ăn vặt",price:6000,unit:"cái",emoji:"🍢",label:"Giá xinh",desc:"Nem chua dai giòn, chua nhẹ, đậm vị truyền thống."},
+      {id:"pho-mai-que",name:"Phô mai que Bạch Ngọc Kim Tâm",category:"Đồ ăn vặt",price:8000,unit:"cái",emoji:"🧀",label:"Kéo sợi",desc:"Phô mai kéo sợi béo ngậy, bọc vỏ vàng giòn."},
+      {id:"khoai-mon",name:"Khoai môn Lệ Phố Tử Ngọc",category:"Đồ ăn vặt",price:30000,unit:"đĩa",emoji:"🍠",label:"Bùi thơm",desc:"Khoai môn bùi thơm, vỏ giòn, nhân mềm ngọt."},
+      {id:"ngo-chien",name:"Ngô chiên Kim Châu Ngự Tiệc",category:"Đồ ăn vặt",price:30000,unit:"đĩa",emoji:"🌽",label:"Thơm ngọt",desc:"Ngô vàng giòn, thơm ngọt, đậm đà gia vị."},
+      {id:"cut-lon",name:"Cút lộn xào me Hỏa Long Châu",category:"Đồ ăn vặt",price:50000,unit:"đĩa",emoji:"🥚",label:"Chua ngọt",desc:"Trứng cút lộn béo bùi, sốt me chua ngọt, rau răm và lạc rang."},
+      {id:"banh-trang",name:"Bánh tráng nướng Hỏa Phụng Hoàng Cung",category:"Đồ ăn vặt",price:25000,unit:"cái",emoji:"🥙",label:"Nóng giòn",desc:"Bánh tráng giòn, trứng, xúc xích và topping thơm ngon."},
+      {id:"vien-chien",name:"Viên chiên Ngự Lâm Thập Bát Vị",category:"Đồ ăn vặt",price:10000,unit:"xiên",emoji:"🍡",label:"Ăn vui miệng",desc:"Các loại viên chiên nóng giòn, dai ngon, ăn kèm sốt chấm đậm vị."}
+    ];
+
+    const categories = ["Tất cả món","Mì trộn Indomie","Mì cay","Mì tương đen","Mì Ý","Cơm","Đồ uống","Đồ ăn vặt"];
+    let activeCategory = "Tất cả món";
+    let cart = {};
+    const $ = id => document.getElementById(id);
+    const money = n => n == null ? "Liên hệ" : n.toLocaleString("vi-VN") + "đ";
+    const escapeHTML = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    function showToast(message){const toast=$("toast");toast.textContent=message;toast.classList.add("show");clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>toast.classList.remove("show"),2600)}
+    function renderCategories(){
+      $("categoryTabs").innerHTML = categories.map(c=>`<button class="category-tab ${activeCategory===c?"active":""}" role="tab" aria-selected="${activeCategory===c}" data-category="${escapeHTML(c)}">${c}</button>`).join("");
+      $("categoryTabs").querySelectorAll("button").forEach(btn=>btn.addEventListener("click",()=>{activeCategory=btn.dataset.category;renderCategories();renderProducts()}));
+    }
+    function renderProducts(){
+      const q=$("searchInput").value.trim().toLocaleLowerCase("vi");
+      let list=products.filter(p=>(activeCategory==="Tất cả món"||p.category===activeCategory)&&(`${p.name} ${p.category} ${p.desc}`).toLocaleLowerCase("vi").includes(q));
+      const sort=$("sortSelect").value;
+      if(sort==="price-asc")list.sort((a,b)=>(a.price??Infinity)-(b.price??Infinity));
+      if(sort==="price-desc")list.sort((a,b)=>(b.price??-Infinity)-(a.price??-Infinity));
+      if(sort==="name")list.sort((a,b)=>a.name.localeCompare(b.name,"vi"));
+      $("productGrid").innerHTML=list.length?list.map(p=>`<article class="product-card"><div class="product-image"><span class="product-label">${escapeHTML(p.label)}</span><span class="food-emoji" aria-hidden="true">${p.emoji}</span></div><div class="product-info"><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.desc)}</p><div class="product-bottom"><div class="price">${money(p.price)}<span class="unit"> / ${escapeHTML(p.unit)}</span></div><button class="add-btn" data-add="${p.id}" aria-label="Thêm ${escapeHTML(p.name)} vào giỏ" title="Thêm vào giỏ" ${p.price==null?'disabled style="opacity:.45;cursor:not-allowed"':""}>+</button></div></div></article>`).join(""):`<div class="empty-state"><div style="font-size:2rem">🔎</div><b>Chưa tìm thấy món phù hợp</b><p>Thử từ khóa khác hoặc chọn danh mục khác nhé.</p></div>`;
+      $("productGrid").querySelectorAll("[data-add]").forEach(btn=>btn.addEventListener("click",()=>addToCart(btn.dataset.add)));
+    }
+    function addToCart(id){const p=products.find(x=>x.id===id);if(!p||p.price==null){showToast("Món này đang chờ quán cập nhật giá nha!");return}cart[id]=(cart[id]||0)+1;renderCart();showToast("Đã thêm món vào giỏ 💗")}
+    function changeQty(id,delta){cart[id]=(cart[id]||0)+delta;if(cart[id]<=0)delete cart[id];renderCart()}
+    function renderCart(){
+      const entries=Object.entries(cart).filter(([id,qty])=>qty>0);
+      const count=entries.reduce((s,[,q])=>s+q,0),subtotal=entries.reduce((s,[id,q])=>s+products.find(p=>p.id===id).price*q,0);
+      $("cartCount").textContent=count;$("subtotal").textContent=money(subtotal);$("total").textContent=money(subtotal);
+      $("cartItems").innerHTML=entries.length?entries.map(([id,qty])=>{const p=products.find(x=>x.id===id);return `<div class="cart-line"><div><h4>${escapeHTML(p.name)}</h4><small>${money(p.price)} / ${escapeHTML(p.unit)}</small><div class="quantity"><button data-qty="${id}" data-delta="-1" aria-label="Giảm số lượng">−</button><span>${qty}</span><button data-qty="${id}" data-delta="1" aria-label="Tăng số lượng">+</button></div></div><b>${money(p.price*qty)}</b></div>`}).join(""):`<div class="cart-empty"><div style="font-size:3rem">🛍️</div><h3>Giỏ hàng còn trống</h3><p>Chọn vài món ngon để lấp đầy chiếc giỏ xinh nhé!</p><button class="btn btn-secondary" id="browseMenu">Khám phá thực đơn</button></div>`;
+      const browse=$("browseMenu");if(browse)browse.addEventListener("click",()=>{closeCart();$("thuc-don").scrollIntoView({behavior:"smooth"})});
+      $("cartItems").querySelectorAll("[data-qty]").forEach(b=>b.addEventListener("click",()=>changeQty(b.dataset.qty,Number(b.dataset.delta))));
+    }
+    function openCart(){$("cartOverlay").classList.add("open");$("cartOverlay").setAttribute("aria-hidden","false");document.body.style.overflow="hidden"}
+    function closeCart(){$("cartOverlay").classList.remove("open");$("cartOverlay").setAttribute("aria-hidden","true");document.body.style.overflow=""}
+    function mailto(to,subject,body){return `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`}
+    function updateShopInfo(){
+      $("hotlineText").textContent=SHOP.phone||"Chưa cập nhật — vui lòng bổ sung số hotline";
+      $("emailText").textContent=SHOP.email||"Chưa cập nhật — vui lòng bổ sung email";
+      $("addressText").textContent=SHOP.address||"Chưa cập nhật — vui lòng bổ sung địa chỉ";
+      for(const id of ["facebookLink","footerFacebook","chatFacebook"]){const el=$(id);if(SHOP.facebook){el.href=SHOP.facebook;el.target="_blank";el.rel="noopener noreferrer"}else{el.href="#lien-he";el.addEventListener("click",e=>{e.preventDefault();showToast("Quán chưa cập nhật đường link Facebook.")})}}
+    }
+    $("openCart").addEventListener("click",openCart);$("heroCart").addEventListener("click",openCart);$("closeCart").addEventListener("click",closeCart);
+    $("cartOverlay").addEventListener("click",e=>{if(e.target===$("cartOverlay"))closeCart()});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeCart();$("chatPanel").classList.remove("open")}});
+    $("searchInput").addEventListener("input",renderProducts);$("sortSelect").addEventListener("change",renderProducts);
+    $("menuToggle").addEventListener("click",()=>$("navLinks").classList.toggle("open"));
+    $("navLinks").querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>$("navLinks").classList.remove("open")));
+    $("chatToggle").addEventListener("click",()=>$("chatPanel").classList.toggle("open"));$("chatClose").addEventListener("click",()=>$("chatPanel").classList.remove("open"));
+    $("chatMenu").addEventListener("click",()=>{$("chatPanel").classList.remove("open");$("thuc-don").scrollIntoView({behavior:"smooth"})});
+    $("chatOrder").addEventListener("click",()=>{$("chatPanel").classList.remove("open");openCart()});
+    $("checkoutForm").addEventListener("submit",e=>{
+      e.preventDefault();const entries=Object.entries(cart).filter(([,q])=>q>0);if(!entries.length){showToast("Bạn hãy chọn ít nhất một món trước nhé!");return}
+      if(!SHOP.email){showToast("Quán chưa cài email nhận đơn. Hãy cập nhật SHOP.email trong mã nguồn.");return}
+      const lines=entries.map(([id,q])=>{const p=products.find(x=>x.id===id);return `- ${p.name} x ${q}: ${money(p.price*q)}`});
+      const total=entries.reduce((s,[id,q])=>s+products.find(p=>p.id===id).price*q,0);
+      const body=`ĐƠN ĐẶT MÓN — 3CE FOODS\n\nKhách hàng: ${$("customerName").value}\nSố điện thoại: ${$("customerPhone").value}\nĐịa chỉ nhận hàng: ${$("customerAddress").value}\nThanh toán: ${$("paymentMethod").value}\n\nMÓN ĐÃ CHỌN:\n${lines.join("\n")}\n\nTổng tiền món: ${money(total)}\nPhí giao hàng: Quán xác nhận\nGhi chú: ${$("orderNote").value||"Không có"}\n\nVui lòng xác nhận đơn hàng giúp mình.`;
+      window.location.href=mailto(SHOP.email,"Đơn đặt món mới — 3CE FOODS",body);
+      showToast("Đã chuẩn bị nội dung đơn trong ứng dụng email của bạn."); 
+    });
+    $("messageForm").addEventListener("submit",e=>{
+      e.preventDefault();if(!SHOP.email){showToast("Quán chưa cài email nhận lời nhắn. Hãy cập nhật SHOP.email.");return}
+      const body=`Tên: ${$("senderName").value}\nSố điện thoại: ${$("senderPhone").value||"Không cung cấp"}\nEmail khách: ${$("senderEmail").value||"Không cung cấp"}\n\nLời nhắn:\n${$("senderMessage").value}`;
+      window.location.href=mailto(SHOP.email,"Lời nhắn gửi 3CE FOODS",body);
+    });
+    $("year").textContent=new Date().getFullYear();
+    renderCategories();renderProducts();renderCart();updateShopInfo();
+  </script>
+</body>
+</html>
