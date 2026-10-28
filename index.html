@@ -17,16 +17,16 @@
             theme: {
                 extend: {
                     colors: {
-                        bgMain: '#FAF8F5',        /* Màu be nhạt toàn trang */
-                        brandPink: '#DE5C8E',     /* Hồng chủ đạo */
-                        brandDark: '#35292D',     /* Đen xám cho tiêu đề */
-                        brandGray: '#706669',     /* Xám cho văn bản phụ */
-                        cardTop: '#F4F9F6',       /* Nền xanh nhạt nửa trên thẻ món */
-                        heroBg: '#F0F7F4',        /* Nền khối Hero */
-                        greenText: '#4C8F66',     /* Chữ xanh lá */
-                        greenBtn: '#E4F1E8',      /* Nút cộng xanh lá */
-                        footerBg: '#3B3134',      /* Nền Footer đen nhạt */
-                        borderLight: '#E8E2DF'    /* Viền xám nhạt */
+                        bgMain: '#FAF8F5',        
+                        brandPink: '#DE5C8E',     
+                        brandDark: '#35292D',     
+                        brandGray: '#706669',     
+                        cardTop: '#F4F9F6',       
+                        heroBg: '#F0F7F4',        
+                        greenText: '#4C8F66',     
+                        greenBtn: '#E4F1E8',      
+                        footerBg: '#3B3134',      
+                        borderLight: '#E8E2DF'    
                     },
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
@@ -113,12 +113,9 @@
 
             <!-- Right Graphic -->
             <div class="relative w-full max-w-sm flex items-center justify-center min-h-[300px]">
-                <!-- Background Blob -->
                 <div class="absolute w-[320px] h-[320px] bg-gradient-to-tr from-[#FCDCE6] to-white/70 rounded-full blur-sm"></div>
-                <!-- 3D Noodle Image (Sử dụng link ảnh 3D trong suốt) -->
                 <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Steaming%20Bowl.png" alt="Mì Trộn" class="relative z-10 w-56 transform hover:scale-105 transition-transform duration-500 drop-shadow-xl" />
                 
-                <!-- Floating Tags -->
                 <div class="absolute top-4 right-0 bg-white px-4 py-2.5 rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] text-xs font-bold text-brandDark flex items-center gap-1.5 z-20">
                     💖 Mê từ miếng đầu
                 </div>
@@ -156,14 +153,12 @@
 
     <!-- MENU SECTION -->
     <section id="thuc-don" class="max-w-6xl mx-auto px-6 py-12">
-        <!-- Header -->
         <div class="mb-8">
             <div class="inline-block bg-white text-greenText font-bold text-[10px] px-3.5 py-1.5 rounded-full mb-4 tracking-widest border border-[#E4F1E8]">MADE WITH LOVE ♡</div>
             <h2 class="text-3xl md:text-[2.5rem] font-black text-brandDark tracking-tight mb-2">Thực đơn nhà 3CE</h2>
             <p class="text-brandGray text-[15px] font-medium">Chọn món hợp gu, thêm vào giỏ và thưởng thức thôi!</p>
         </div>
 
-        <!-- Search & Sort -->
         <div class="flex flex-col md:flex-row gap-4 mb-8">
             <div class="relative w-full md:flex-1">
                 <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
@@ -172,158 +167,3 @@
             <select id="sort-select" onchange="handleSort()" class="w-full md:w-auto px-5 py-3.5 bg-white border border-borderLight rounded-2xl text-[15px] font-bold text-brandDark focus:outline-none focus:border-brandPink shadow-sm cursor-pointer outline-none">
                 <option value="default">Sắp xếp: Mặc định</option>
                 <option value="price-low">Giá: Thấp đến Cao</option>
-                <option value="price-high">Giá: Cao đến Thấp</option>
-            </select>
-        </div>
-
-        <!-- Tabs -->
-        <div id="category-tabs" class="flex overflow-x-auto gap-3 pb-2 mb-8 hide-scrollbar">
-            <!-- JS render tabs -->
-        </div>
-
-        <!-- Food Grid -->
-        <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- JS render thực đơn -->
-        </div>
-    </section>
-
-    <!-- FAQ SECTION -->
-    <section id="faq" class="max-w-6xl mx-auto px-6 py-12">
-        <div class="mb-8">
-            <div class="inline-block bg-white text-greenText font-bold text-[10px] px-3.5 py-1.5 rounded-full mb-4 tracking-widest border border-[#E4F1E8]">NEED A LITTLE HELP?</div>
-            <h2 class="text-3xl md:text-[2.5rem] font-black text-brandDark tracking-tight mb-2">Câu hỏi thường gặp</h2>
-            <p class="text-brandGray text-[15px] font-medium">Một vài thông tin hữu ích trước khi bạn đặt món.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Câu hỏi 1 -->
-            <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
-                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
-                    <div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Làm thế nào để đặt món?</div>
-                </div>
-                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
-                    Bạn chỉ cần thêm món vào giỏ, bấm "Tiến hành đặt món" và nhập thông tin hoặc nhắn trực tiếp qua nút Chat màu xanh bên góc phải màn hình nhé!
-                </div>
-            </div>
-            <!-- Câu hỏi 2 -->
-            <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
-                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
-                    <div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Giá trên website đã bao gồm phí giao hàng chưa?</div>
-                </div>
-                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
-                    Mức giá chưa bao gồm phí ship. Phí ship sẽ được quán báo cụ thể dựa trên khoảng cách từ quán tới chỗ bạn.
-                </div>
-            </div>
-            <!-- Câu hỏi 3 -->
-            <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
-                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
-                    <div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Tôi có thể yêu cầu ghi chú món ăn không?</div>
-                </div>
-                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
-                    Dạ hoàn toàn được ạ! Khách iu có thể báo "ít cay, không hành, nhiều sốt..." lúc gửi đơn đặt món.
-                </div>
-            </div>
-            <!-- Câu hỏi 4 -->
-            <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
-                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
-                    <div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Thông tin cá nhân của tôi được sử dụng thế nào?</div>
-                </div>
-                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
-                    Thông tin của bạn (số điện thoại, địa chỉ) chỉ dùng duy nhất cho việc giao đồ ăn, đảm bảo bảo mật tuyệt đối 100%.
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer id="footer" class="bg-footerBg text-white pt-16 pb-8 mt-10">
-        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
-            <!-- Cột 1 -->
-            <div class="pr-4">
-                <h3 class="font-black text-[22px] mb-3 flex items-center gap-1.5"><span class="text-brandPink">3CE</span> FOODS <span class="text-brandPink font-normal">♡</span></h3>
-                <p class="font-bold text-[15px] mb-2 leading-snug">Ăn vặt không no - Không lo bị péoooo</p>
-                <p class="text-[#A29A9C] text-sm leading-relaxed font-medium mt-4">Một góc nhỏ xinh cho những chiếc bụng mê đồ ngon.</p>
-            </div>
-            <!-- Cột 2 -->
-            <div>
-                <h4 class="font-bold text-[16px] mb-5">Khám phá</h4>
-                <ul class="space-y-3 text-[14px] text-[#A29A9C] font-medium">
-                    <li><a href="#" class="hover:text-white transition-colors">Trang chủ</a></li>
-                    <li><a href="#thuc-don" class="hover:text-white transition-colors">Thực đơn</a></li>
-                    <li><a href="#footer" class="hover:text-white transition-colors">Về chúng tôi</a></li>
-                    <li><a href="#footer" class="hover:text-white transition-colors">Liên hệ</a></li>
-                </ul>
-            </div>
-            <!-- Cột 3 -->
-            <div>
-                <h4 class="font-bold text-[16px] mb-5">Hỗ trợ khách hàng</h4>
-                <ul class="space-y-3 text-[14px] text-[#A29A9C] font-medium">
-                    <li><a href="#faq" class="hover:text-white transition-colors">Câu hỏi thường gặp</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Chính sách chăm sóc khách hàng</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Chính sách hoạt động</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Chính sách và quy định</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Chính sách bảo mật thông tin</a></li>
-                </ul>
-            </div>
-            <!-- Cột 4 -->
-            <div>
-                <h4 class="font-bold text-[16px] mb-5">Kết nối</h4>
-                <ul class="space-y-3 text-[14px] text-[#A29A9C] font-medium">
-                    <li><a href="#" class="hover:text-white transition-colors">Facebook 3CE FOODS</a></li>
-                    <li><button onclick="openContactModal()" class="hover:text-white transition-colors text-left">Góc nhỏ tâm tình</button></li>
-                    <li><p>Hotline & địa chỉ</p></li>
-                    <li><a href="#thuc-don" class="text-white hover:text-brandPink transition-colors">Đặt món ngay ♡</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="max-w-6xl mx-auto px-6 mt-14 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between text-[13px] text-[#A29A9C] font-medium gap-4">
-            <p>© 2026 3CE FOODS. All rights reserved.</p>
-            <p>Made with ♡ and a little sprinkle of happiness.</p>
-        </div>
-    </footer>
-
-    <!-- FLOATING CHAT BUTTON -->
-    <button onclick="openContactModal()" class="fixed bottom-6 right-6 w-14 h-14 bg-[#4C8F66] text-white rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 hover:bg-[#3D7552] flex items-center justify-center text-2xl z-30 transition-all">
-        💬
-    </button>
-
-    <!-- SIDEBAR GIỎ HÀNG -->
-    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-brandDark/40 backdrop-blur-sm z-50 hidden transition-opacity"></div>
-    <div id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-md bg-white h-full shadow-2xl z-50 transition-all duration-300 hidden-cart flex flex-col">
-        <div class="p-6 border-b border-borderLight flex justify-between items-center bg-[#FDF5F8]">
-            <h2 class="text-[20px] font-black text-brandDark flex items-center gap-2">
-                🛍️ Giỏ hàng
-            </h2>
-            <button onclick="toggleCart()" class="text-gray-400 hover:text-brandDark text-xl font-bold">✕</button>
-        </div>
-        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
-            <!-- Render by JS -->
-        </div>
-        <div class="p-6 border-t border-borderLight bg-white shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.03)]">
-            <div class="flex justify-between items-center mb-5">
-                <span class="font-bold text-brandGray text-[15px]">Tổng cộng:</span>
-                <span id="cart-total" class="font-black text-2xl text-brandPink">0đ</span>
-            </div>
-            <button onclick="openCheckoutModal()" class="w-full bg-brandPink hover:bg-[#c94b7a] text-white font-bold text-[16px] py-4 rounded-2xl transition-all shadow-md">
-                Tiến hành đặt món
-            </button>
-        </div>
-    </div>
-
-    <!-- MODAL ĐẶT HÀNG / LIÊN HỆ -->
-    <div id="checkout-modal" class="fixed inset-0 bg-brandDark/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-[2rem] w-full max-w-md p-8 shadow-2xl relative">
-            <button onclick="closeModal('checkout-modal')" class="absolute top-6 right-6 text-gray-400 hover:text-brandDark font-bold">✕</button>
-            <h3 class="text-2xl font-black text-brandDark mb-2">Thông tin đặt món 🛵</h3>
-            <p class="text-[13px] text-brandGray mb-6 font-medium">Nhập thông tin giao hàng để quán ship cho bạn nha!</p>
-            <form onsubmit="event.preventDefault(); alert('🎉 Đặt hàng thành công! Quán sẽ gọi cho bạn ngay!'); cart=[]; updateCartUI(); closeModal('checkout-modal');" class="space-y-4">
-                <input required placeholder="Tên của bạn..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium focus:outline-none focus:border-brandPink" />
-                <input required placeholder="Số điện thoại..." type="tel" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium focus:outline-none focus:border-brandPink" />
-                <input required placeholder="Địa chỉ giao hàng..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium focus:outline-none focus:border-brandPink" />
-                <textarea placeholder="Ghi chú (không bắt buộc)..." rows="2" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium focus:outline-none focus:border-brandPink resize-none"></textarea>
-                <button type="submit" class="w-full bg-brandPink text-white font-bold py-3.5 rounded-xl shadow-md">Gửi đơn ngay</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="
