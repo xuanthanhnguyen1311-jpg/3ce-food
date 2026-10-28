@@ -20,50 +20,38 @@ import {
 // --- MENU DATA ---
 const MENU_DATA = [
   {
-    id: 'mi-tron',
-    name: 'Mì Trộn',
+    id: 'mi',
+    name: 'Mì',
     items: [
-      { id: 'mt1', name: 'Mì trộn Indomie Long Môn Ngự Yến', desc: 'Bao gồm sợi mì Indomie dai mềm thấm đẫm sốt trộn độc quyền, rau củ tươi giòn, xúc xích thơm béo, cá viên dai ngon, tôm surimi đậm vị, viên mực xoắn sần sật và hải sản phô mai béo ngậy, hòa quyện tạo nên đại tiệc hương vị bùng nổ trong từng đĩa mì.', price: 40000, img: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&q=80&w=600' },
-      { id: 'mt2', name: 'Mì trộn Indomie Tứ Hải Hội Tụ', desc: 'Bao gồm sợi mì Indomie dai ngon quyện cùng sốt trộn đậm đà, rau củ tươi xanh, xúc xích thơm lừng, cá viên dai giòn và tôm surimi hấp dẫn, hội tụ tinh hoa topping trong một phần mì trộn đầy đặn, cuốn vị khó quên.', price: 35000, img: 'https://images.unsplash.com/photo-1600335895229-6e75511892c8?auto=format&fit=crop&q=80&w=600' },
-      { id: 'mt3', name: 'Mì trộn Indomie Thanh Vân Ngọc Thực', desc: 'Bao gồm sợi mì Indomie dai mềm óng ánh sốt trộn đậm vị, kết hợp cùng rau củ tươi xanh thanh mát, tạo nên tuyệt phẩm đơn giản mà cuốn hút, nhẹ nhàng nhưng vẫn đậm đà khó cưỡng.', price: 20000, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&q=80&w=600' },
-    ]
-  },
-  {
-    id: 'mi-cay',
-    name: 'Mì Cay',
-    items: [
-      { id: 'mc1', name: 'Mì cay Đế vương bò Wagyu', desc: 'Bao gồm mì, bắp cải, ngô non, xúc xích béo ngậy, thịt bò thơm mềm.', price: 65000, img: 'https://images.unsplash.com/photo-1598514982205-f36b96d1e8d4?auto=format&fit=crop&q=80&w=600' },
-      { id: 'mc2', name: 'Mì thập cẩm Hải Sơn Thiên Địa', desc: 'Bao gồm mì, nước súp đỏ sóng sánh, tôm tươi, mực giòn, bò ba chỉ béo mềm, xúc xích đậm vị.', price: 80000, img: 'https://images.unsplash.com/photo-1626804475297-41609ea004eb?auto=format&fit=crop&q=80&w=600' },
-      { id: 'mc3', name: 'Mì cay Busan Xúc Xích', desc: 'Bao gồm mì dai ngon, xúc xích thơm lừng, rau củ tươi xanh.', price: 45000, img: 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&q=80&w=600' },
-      { id: 'mc4', name: 'Mì cay bò Vương Giả Tứ Xuyên', desc: 'Bao gồm mì dai ngon chuẩn vị, thịt bò mềm tan, nước lèo hầm đậm đà 8 tiếng.', price: 60000, img: 'https://images.unsplash.com/photo-1598515061611-37d45e7f1604?auto=format&fit=crop&q=80&w=600' },
-    ]
-  },
-  {
-    id: 'mi-y-tuong-den',
-    name: 'Mì Ý & Tương Đen',
-    items: [
-      { id: 'my1', name: 'Mì Hắc Long Bá Vương', desc: 'Bao gồm mì dai ngon, sốt tương đen đậm đà, rau củ tươi giòn, hòa quyện cùng hương vị mặn ngọt đặc trưng.', price: 45000, img: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&q=80&w=600' },
-      { id: 'my2', name: 'Mì Ý Bò Bằm Hoàng Kim', desc: 'Bao gồm mì Ý dai mềm, sốt cà chua bò bằm đậm đà, thịt bò thơm ngon, hòa quyện cùng hương vị béo ngậy hấp dẫn.', price: 50000, img: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&q=80&w=600' },
+      { id: 'm1', name: 'Mì trộn Indomie Long Môn Ngự Yến', desc: 'Bao gồm sợi mì Indomie dai mềm thấm đẫm sốt trộn độc quyền, rau củ tươi giòn, xúc xích thơm béo, cá viên dai ngon, tôm surimi đậm vị, viên mực xoắn sần sật và hải sản phô mai béo ngậy, hòa quyện tạo nên đại tiệc hương vị bùng nổ trong từng đĩa mì.', price: 40000, img: 'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&q=80&w=600' },
+      { id: 'm2', name: 'Mì trộn Indomie Tứ Hải Hội Tụ', desc: 'Bao gồm sợi mì Indomie dai ngon quyện cùng sốt trộn đậm đà, rau củ tươi xanh, xúc xích thơm lừng, cá viên dai giòn và tôm surimi hấp dẫn, hội tụ tinh hoa topping trong một phần mì trộn đầy đặn, cuốn vị khó quên.', price: 35000, img: 'https://images.unsplash.com/photo-1600335895229-6e75511892c8?auto=format&fit=crop&q=80&w=600' },
+      { id: 'm3', name: 'Mì trộn Indomie Thanh Vân Ngọc Thực', desc: 'Bao gồm sợi mì Indomie dai mềm óng ánh sốt trộn đậm vị, kết hợp cùng rau củ tươi xanh thanh mát, tạo nên tuyệt phẩm đơn giản mà cuốn hút, nhẹ nhàng nhưng vẫn đậm đà khó cưỡng.', price: 20000, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&q=80&w=600' },
+      { id: 'm4', name: 'Mì cay Đế vương bò Wagyu', desc: 'Bao gồm mì, bắp cải, ngô non, xúc xích béo ngậy, thịt bò thơm mềm.', price: 65000, img: 'https://images.unsplash.com/photo-1598514982205-f36b96d1e8d4?auto=format&fit=crop&q=80&w=600' },
+      { id: 'm5', name: 'Mì thập cẩm Hải Sơn Thiên Địa', desc: 'Bao gồm mì, nước súp đỏ sóng sánh, tôm tươi, mực giòn, bò ba chỉ béo mềm, xúc xích đậm vị.', price: 80000, img: 'https://images.unsplash.com/photo-1626804475297-41609ea004eb?auto=format&fit=crop&q=80&w=600' },
+      { id: 'm6', name: 'Mì cay Busan Xúc Xích', desc: 'Bao gồm mì dai ngon, xúc xích thơm lừng, rau củ tươi xanh.', price: 45000, img: 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&q=80&w=600' },
+      { id: 'm7', name: 'Mì cay bò Vương Giả Tứ Xuyên', desc: 'Bao gồm mì dai ngon chuẩn vị, thịt bò mềm tan, nước lèo hầm đậm đà 8 tiếng.', price: 60000, img: 'https://images.unsplash.com/photo-1598515061611-37d45e7f1604?auto=format&fit=crop&q=80&w=600' },
+      { id: 'm8', name: 'Mì Hắc Long Bá Vương', desc: 'Bao gồm mì dai ngon, sốt tương đen đậm đà, rau củ tươi giòn, hòa quyện cùng hương vị mặn ngọt đặc trưng.', price: 50000, img: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&q=80&w=600' },
+      { id: 'm9', name: 'Mì Ý Bò Bằm Hoàng Kim', desc: 'Bao gồm mì Ý dai mềm, sốt cà chua bò bằm đậm đà, thịt bò thơm ngon, hòa quyện cùng hương vị béo ngậy hấp dẫn.', price: 55000, img: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&q=80&w=600' },
     ]
   },
   {
     id: 'com',
     name: 'Cơm',
     items: [
-      { id: 'c1', name: 'Cơm Rang Kim Ngưu Khai Vị', desc: 'Bao gồm cơm rang tơi giòn, dưa cải chua thanh, thịt bò mềm thơm, hòa quyện cùng gia vị đậm đà.', price: 40000, img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80&w=600' },
-      { id: 'c2', name: 'Cơm Gà Kim Kê Ngự Yến', desc: 'Bao gồm cơm nóng dẻo thơm, thịt gà chiên vàng giòn, nước mắm đậm đà, thấm vị hấp dẫn.', price: 45000, img: 'https://images.unsplash.com/photo-1600688640154-150689b9ccbb?auto=format&fit=crop&q=80&w=600' },
-      { id: 'c3', name: 'Bibimbap Kim Ngọc Hoàng Triều', desc: 'Bao gồm cơm trắng dẻo thơm, thịt bò xào đậm vị, trứng ốp la béo ngậy, cà rốt, dưa leo, rau cải tươi xanh, nấm thơm ngon, kim chi chua cay và sốt Bibimbap đặc trưng Hàn Quốc, hòa quyện tạo nên hương vị hấp dẫn khó cưỡng.', price: 55000, img: 'https://images.unsplash.com/photo-1553163147-622ab57be1c7?auto=format&fit=crop&q=80&w=600' },
+      { id: 'c1', name: 'Cơm Rang Kim Ngưu Khai Vị', desc: 'Bao gồm cơm rang tơi giòn, dưa cải chua thanh, thịt bò mềm thơm, hòa quyện cùng gia vị đậm đà.', price: 45000, img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80&w=600' },
+      { id: 'c2', name: 'Cơm Gà Kim Kê Ngự Yến', desc: 'Bao gồm cơm nóng dẻo thơm, thịt gà chiên vàng giòn, nước mắm đậm đà, thấm vị hấp dẫn.', price: 55000, img: 'https://images.unsplash.com/photo-1600688640154-150689b9ccbb?auto=format&fit=crop&q=80&w=600' },
+      { id: 'c3', name: 'Bibimbap Kim Ngọc Hoàng Triều', desc: 'Bao gồm cơm trắng dẻo thơm, thịt bò xào đậm vị, trứng ốp la béo ngậy, cà rốt, dưa leo, rau cải tươi xanh, nấm thơm ngon, kim chi chua cay và sốt Bibimbap đặc trưng Hàn Quốc, hòa quyện tạo nên hương vị hấp dẫn khó cưỡng.', price: 60000, img: 'https://images.unsplash.com/photo-1553163147-622ab57be1c7?auto=format&fit=crop&q=80&w=600' },
     ]
   },
   {
     id: 'do-uong',
     name: 'Đồ Uống',
     items: [
-      { id: 'du1', name: 'Hồng Nhan Tuyết Lệ (Trà đào)', desc: 'Bao gồm trà thơm dịu nhẹ, đào ngâm ngọt thanh, kết hợp cùng đá mát lạnh, mang đến hương vị tươi mát.', price: 20000, img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=600' },
-      { id: 'du2', name: 'Thanh Long Xuất Hải (Trà chanh)', desc: 'Bao gồm trà thanh mát, nước cốt chanh tươi, vị chua ngọt hài hòa, giải khát sảng khoái.', price: 15000, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=600' },
-      { id: 'du3', name: 'Bích Ngọc Tiên Trà (Trà tắc)', desc: 'Bao gồm trà thơm dịu, tắc tươi chua nhẹ, vị ngọt thanh dễ uống.', price: 15000, img: 'https://images.unsplash.com/photo-1509315703195-529879416a70?auto=format&fit=crop&q=80&w=600' },
-      { id: 'du4', name: 'Hỏa Diệm Sơn (Trà dâu)', desc: 'Bao gồm trà thơm mát, dâu tây ngọt dịu, vị chua ngọt hài hòa, màu sắc hấp dẫn.', price: 20000, img: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&q=80&w=600' },
-      { id: 'du5', name: 'Tuyết Sơn Ngọc Ẩn (Trà sữa)', desc: 'Bao gồm trà thơm đậm vị, sữa béo ngậy, vị ngọt dịu, kết hợp cùng đá mát lạnh.', price: 25000, img: 'https://images.unsplash.com/photo-1588697669352-d04b39b039cb?auto=format&fit=crop&q=80&w=600' },
+      { id: 'du1', name: 'Hồng Nhan Tuyết Lệ (Trà đào)', desc: 'Bao gồm trà thơm dịu nhẹ, đào ngâm ngọt thanh, kết hợp cùng đá mát lạnh, mang đến hương vị tươi mát.', price: 25000, img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=600' },
+      { id: 'du2', name: 'Thanh Long Xuất Hải (Trà chanh)', desc: 'Bao gồm trà thanh mát, nước cốt chanh tươi, vị chua ngọt hài hòa, giải khát sảng khoái.', price: 20000, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=600' },
+      { id: 'du3', name: 'Bích Ngọc Tiên Trà (Trà tắc)', desc: 'Bao gồm trà thơm dịu, tắc tươi chua nhẹ, vị ngọt thanh dễ uống.', price: 20000, img: 'https://images.unsplash.com/photo-1509315703195-529879416a70?auto=format&fit=crop&q=80&w=600' },
+      { id: 'du4', name: 'Hỏa Diệm Sơn (Trà dâu)', desc: 'Bao gồm trà thơm mát, dâu tây ngọt dịu, vị chua ngọt hài hòa, màu sắc hấp dẫn.', price: 25000, img: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&q=80&w=600' },
+      { id: 'du5', name: 'Tuyết Sơn Ngọc Ẩn (Trà sữa)', desc: 'Bao gồm trà thơm đậm vị, sữa béo ngậy, vị ngọt dịu, kết hợp cùng đá mát lạnh.', price: 30000, img: 'https://images.unsplash.com/photo-1588697669352-d04b39b039cb?auto=format&fit=crop&q=80&w=600' },
     ]
   },
   {
@@ -72,7 +60,7 @@ const MENU_DATA = [
     items: [
       { id: 'av1', name: 'Khoai tây chiên Kim Giáp Hoàng Kim', desc: 'Bao gồm khoai tây vàng giòn, ngoài giòn trong mềm, thơm bùi hấp dẫn.', price: 25000, img: 'https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&fit=crop&q=80&w=600' },
       { id: 'av2', name: 'Khoai lắc phô mai Kim Ngọc Mãn Đường', desc: 'Bao gồm khoai tây chiên giòn lắc phô mai béo ngậy, đậm vị.', price: 30000, img: 'https://images.unsplash.com/photo-1630431341973-02e1b662ce3b?auto=format&fit=crop&q=80&w=600' },
-      { id: 'av3', name: 'Nem chua Trần Công Châu Hồng Môn', desc: 'Bao gồm nem chua dai giòn, chua nhẹ, đậm vị truyền thống.', price: 6000, img: 'https://images.unsplash.com/photo-1627042633145-b780684d09f6?auto=format&fit=crop&q=80&w=600' }, // using placeholder food
+      { id: 'av3', name: 'Nem chua Trần Công Châu Hồng Môn', desc: 'Bao gồm nem chua dai giòn, chua nhẹ, đậm vị truyền thống.', price: 6000, img: 'https://images.unsplash.com/photo-1627042633145-b780684d09f6?auto=format&fit=crop&q=80&w=600' },
       { id: 'av4', name: 'Phô mai que Bạch Ngọc Kim Tâm', desc: 'Bao gồm phô mai kéo sợi béo ngậy, bọc vỏ vàng giòn.', price: 8000, img: 'https://images.unsplash.com/photo-1536585149363-2287f3b5ebcd?auto=format&fit=crop&q=80&w=600' },
       { id: 'av5', name: 'Khoai môn Lệ Phố Tử Ngọc', desc: 'Bao gồm khoai môn bùi thơm, vỏ giòn, nhân mềm ngọt.', price: 30000, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=600' },
       { id: 'av6', name: 'Ngô chiên Kim Châu Ngự Tiệc', desc: 'Bao gồm ngô vàng giòn, thơm ngọt, đậm đà gia vị.', price: 30000, img: 'https://images.unsplash.com/photo-1508061461523-62580dfbf3d2?auto=format&fit=crop&q=80&w=600' },
@@ -90,7 +78,7 @@ const formatPrice = (price) => {
 export default function App() {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('mi-tron');
+  const [activeTab, setActiveTab] = useState('tat-ca');
   
   // Chat state
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -145,7 +133,9 @@ export default function App() {
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   
-  const activeCategoryData = MENU_DATA.find(cat => cat.id === activeTab);
+  const allItems = MENU_DATA.flatMap(cat => cat.items);
+  const activeItems = activeTab === 'tat-ca' ? allItems : MENU_DATA.find(cat => cat.id === activeTab)?.items || [];
+  const tabsList = [{ id: 'tat-ca', name: 'Tất cả món' }, ...MENU_DATA.map(cat => ({ id: cat.id, name: cat.name }))];
 
   return (
     <div className="min-h-screen bg-pink-50 text-gray-800 font-sans selection:bg-emerald-200 selection:text-emerald-900">
@@ -216,24 +206,24 @@ export default function App() {
         
         {/* Tabs */}
         <div className="flex items-center overflow-x-auto gap-3 pb-4 mb-10 scrollbar-hide">
-          {MENU_DATA.map((cat) => (
+          {tabsList.map((tab) => (
             <button
-              key={cat.id}
-              onClick={() => setActiveTab(cat.id)}
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
               className={`px-6 py-3.5 rounded-2xl font-bold text-sm whitespace-nowrap transition-all shadow-sm ${
-                activeTab === cat.id 
+                activeTab === tab.id 
                   ? 'bg-pink-500 text-white shadow-pink-500/40 shadow-lg scale-105 border-transparent' 
                   : 'bg-white text-gray-600 hover:bg-pink-50 border border-pink-100 hover:border-pink-200'
               }`}
             >
-              {cat.name}
+              {tab.name}
             </button>
           ))}
         </div>
 
         {/* Menu Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-          {activeCategoryData?.items.map((item) => (
+          {activeItems.map((item) => (
             <div 
               key={item.id} 
               className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-pink-100/50 transition-all duration-300 group flex flex-col border border-pink-50"
