@@ -5,145 +5,239 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3CE FOODS | Ăn vặt không no - Không lo bị péoooo</title>
     
-    <!-- Tailwind CSS (Giao diện) -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        pastelPink: '#fbcfe8',
-                        pastelPinkDark: '#f472b6',
-                        pastelGreen: '#bbf7d0',
-                        pastelGreenDark: '#4ade80'
+                        /* Bảng màu Pastel ngọt ngào mới */
+                        brandPink: '#FFE5EC',       /* Nền hồng rất nhẹ */
+                        brandPinkMid: '#FFB7B2',    /* Hồng đào */
+                        brandPinkDark: '#FF8FA3',   /* Hồng đậm làm điểm nhấn */
+                        brandGreen: '#E2F0CB',      /* Xanh lá rất nhẹ */
+                        brandGreenMid: '#B5EAD7',   /* Xanh mint pastel */
+                        brandGreenDark: '#4FA38E',  /* Xanh rêu nhẹ để đọc chữ */
+                        bgMain: '#FFF9FA'
+                    },
+                    fontFamily: {
+                        sans: ['"Baloo 2"', 'sans-serif'],
+                        slogan: ['"Dancing Script"', 'cursive']
+                    },
+                    boxShadow: {
+                        'cute': '0 10px 25px -5px rgba(255, 143, 163, 0.2), 0 8px 10px -6px rgba(255, 143, 163, 0.1)'
                     }
                 }
             }
         }
     </script>
 
-    <!-- Font Awesome (Icon) -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fdf2f8; }
-        /* Tùy chỉnh thanh cuộn */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #fdf2f8; }
-        ::-webkit-scrollbar-thumb { background: #f472b6; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #db2777; }
+        body { background-color: theme('colors.bgMain'); }
         
-        /* Hiệu ứng mượt mà */
-        .transition-all { transition: all 0.3s ease-in-out; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #FFF9FA; }
+        ::-webkit-scrollbar-thumb { background: #FFB7B2; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FF8FA3; }
+
+        /* Slogan Text Effect */
+        .slogan-effect {
+            background: linear-gradient(45deg, #FF8FA3, #4FA38E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(255, 183, 178, 0.3);
+            filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.05));
+        }
+
+        /* 3CE Logo Effect */
+        .logo-effect {
+            color: #FF8FA3;
+            text-shadow: 3px 3px 0px #FFE5EC, -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
+        }
+
+        .transition-all { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .hidden-cart { transform: translateX(100%); }
         .show-cart { transform: translateX(0); }
         .toast-enter { transform: translateY(0); opacity: 1; }
         .toast-exit { transform: translateY(-100%); opacity: 0; }
+        
+        /* Hiệu ứng nổi bọt khi hover thẻ món ăn */
+        .food-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(255, 143, 163, 0.25);
+            border-color: #FFB7B2;
+        }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="text-gray-700 antialiased">
 
     <!-- HEADER -->
-    <header class="bg-white shadow-md sticky top-0 z-40">
-        <div class="max-w-6xl mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <div>
-                    <h1 class="text-3xl font-bold text-pastelPinkDark tracking-wider">3CE FOODS</h1>
-                    <p class="text-pastelGreenDark text-sm font-medium italic">Ăn vặt không no - Không lo bị péoooo</p>
+    <header class="bg-white shadow-sm border-b-2 border-brandPink sticky top-0 z-40 backdrop-blur-md bg-white/90">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
+                <div class="flex-1">
+                    <h1 class="text-5xl font-extrabold logo-effect tracking-wide mb-1">3CE FOODS</h1>
+                    <p class="font-slogan text-3xl md:text-4xl slogan-effect mt-2 transform hover:scale-105 transition-all inline-block">
+                        Ăn vặt không no - Không lo bị péoooo 
+                        <i class="fas fa-heart text-brandPinkDark text-xl ml-1 animate-pulse"></i>
+                    </p>
                 </div>
                 
                 <!-- Nút Giỏ hàng -->
-                <button onclick="toggleCart()" class="relative p-3 bg-pastelPink rounded-full hover:bg-pastelPinkDark hover:text-white transition-all text-pastelPinkDark">
-                    <i class="fas fa-shopping-cart text-xl"></i>
-                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-pastelGreenDark text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center hidden">0</span>
+                <button onclick="toggleCart()" class="relative p-4 bg-brandPink text-brandPinkDark rounded-full hover:bg-brandPinkDark hover:text-white transition-all shadow-sm hover:shadow-cute group">
+                    <i class="fas fa-shopping-cart text-2xl group-hover:scale-110 transition-transform"></i>
+                    <span id="cart-badge" class="absolute -top-2 -right-2 bg-brandGreenDark text-white text-sm font-bold w-7 h-7 rounded-full flex items-center justify-center border-2 border-white hidden shadow-md">0</span>
                 </button>
             </div>
             
             <!-- Bộ lọc danh mục -->
-            <div id="category-tabs" class="flex overflow-x-auto mt-4 gap-2 pb-2 hide-scrollbar">
+            <div id="category-tabs" class="flex overflow-x-auto mt-6 gap-3 pb-2 hide-scrollbar justify-start md:justify-center">
                 <!-- Chèn bằng JS -->
             </div>
         </div>
     </header>
 
     <!-- THỰC ĐƠN (MAIN) -->
-    <main class="max-w-6xl mx-auto px-4 py-8 min-h-screen">
-        <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <main class="max-w-6xl mx-auto px-4 py-10 min-h-screen">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-brandPinkDark mb-2"><i class="fas fa-utensils mr-2"></i>Thực Đơn Hôm Nay</h2>
+            <div class="h-1 w-24 bg-brandGreenMid mx-auto rounded-full"></div>
+        </div>
+        <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <!-- Sản phẩm chèn bằng JS -->
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-white border-t-4 border-pastelPink pt-12 pb-6">
-        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Chính sách -->
-            <div>
-                <h3 class="font-bold text-xl text-pastelPinkDark mb-4"><i class="fas fa-shield-alt mr-2"></i>Chính Sách</h3>
-                <ul class="space-y-2 text-gray-600 text-sm">
-                    <li><a href="#" class="hover:text-pastelPinkDark transition-all">Chính sách chăm sóc khách hàng</a></li>
-                    <li><a href="#" class="hover:text-pastelPinkDark transition-all">Chính sách hoạt động</a></li>
-                    <li><a href="#" class="hover:text-pastelPinkDark transition-all">Chính sách và quy định</a></li>
-                    <li><a href="#" class="hover:text-pastelPinkDark transition-all">Chính sách bảo mật thông tin</a></li>
-                </ul>
+    <!-- FOOTER (BAO GỒM LIÊN HỆ) -->
+    <footer id="lien-he" class="bg-white border-t-4 border-brandPinkDark pt-16 pb-8 relative overflow-hidden">
+        <!-- Decorate circles -->
+        <div class="absolute top-0 left-0 w-32 h-32 bg-brandPink rounded-full -translate-x-1/2 -translate-y-1/2 opacity-50"></div>
+        <div class="absolute bottom-0 right-0 w-48 h-48 bg-brandGreen rounded-full translate-x-1/3 translate-y-1/3 opacity-50"></div>
+
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-12 gap-10 relative z-10">
+            
+            <!-- Cột 1: Thông tin & Chính sách (Chiếm 4 cột) -->
+            <div class="md:col-span-4 space-y-8">
+                <div>
+                    <h1 class="text-4xl font-extrabold logo-effect tracking-wide mb-4">3CE FOODS</h1>
+                    <p class="text-gray-500 mb-4 font-medium leading-relaxed">Luôn mang đến những món ăn vặt ngon nhất, sạch nhất với giá học sinh - sinh viên. Cảm ơn bạn đã lựa chọn 3CE FOODS!</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-xl hover:bg-pink-600 hover:text-white transition-all shadow-sm"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xl hover:bg-red-600 hover:text-white transition-all shadow-sm"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-xl text-gray-800 mb-4 border-l-4 border-brandGreenDark pl-3">Chính Sách</h3>
+                    <ul class="space-y-2 text-gray-600 font-medium">
+                        <li><a href="#" class="hover:text-brandPinkDark transition-all flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-brandPinkMid"></i> Chăm sóc khách hàng</a></li>
+                        <li><a href="#" class="hover:text-brandPinkDark transition-all flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-brandPinkMid"></i> Quy định hoạt động</a></li>
+                        <li><a href="#" class="hover:text-brandPinkDark transition-all flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-brandPinkMid"></i> Bảo mật thông tin</a></li>
+                    </ul>
+                </div>
             </div>
             
-            <!-- Liên hệ -->
-            <div>
-                <h3 class="font-bold text-xl text-pastelGreenDark mb-4"><i class="fas fa-map-marked-alt mr-2"></i>Liên Hệ</h3>
-                <div class="space-y-3 text-gray-600 text-sm">
-                    <p><i class="fas fa-phone-alt text-pastelPinkDark w-5"></i> Hotline: <strong>0123.456.789</strong></p>
-                    <p><i class="fas fa-map-marker-alt text-pastelPinkDark w-5"></i> Địa chỉ: 123 Đường Ẩm Thực, Quận Ngon, Hà Nội</p>
-                    <a href="#" class="block hover:text-blue-600 transition-all">
-                        <i class="fab fa-facebook text-blue-600 text-lg w-5"></i> Facebook: 3CE FOODS Fanpage
-                    </a>
+            <!-- Cột 2: Liên hệ nhanh (Chiếm 4 cột) -->
+            <div class="md:col-span-4">
+                <h3 class="font-bold text-xl text-gray-800 mb-6 border-l-4 border-brandGreenDark pl-3">Liên Hệ Trực Tiếp</h3>
+                <div class="space-y-5 text-gray-600 font-medium">
+                    <div class="flex items-start gap-4 p-4 rounded-2xl bg-brandPink/30 hover:bg-brandPink/50 transition-all border border-brandPink">
+                        <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-brandPinkDark text-xl shrink-0 shadow-sm"><i class="fas fa-phone-alt"></i></div>
+                        <div>
+                            <p class="text-sm text-gray-500">Hotline đặt món</p>
+                            <p class="text-lg font-bold text-brandPinkDark">0123.456.789</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 p-4 rounded-2xl bg-brandGreen/30 hover:bg-brandGreen/50 transition-all border border-brandGreen">
+                        <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-brandGreenDark text-xl shrink-0 shadow-sm"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <p class="text-sm text-gray-500">Địa chỉ quán</p>
+                            <p class="font-bold text-gray-800">123 Đường Ẩm Thực, Quận Ngon, Hà Nội</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Góc nhỏ tâm tình -->
-            <div>
-                <h3 class="font-bold text-xl text-pastelPinkDark mb-4"><i class="fas fa-envelope-open-text mr-2"></i>Góc nhỏ tâm tình</h3>
-                <form onsubmit="submitContact(event)" class="space-y-3">
-                    <input type="text" required placeholder="Số điện thoại của bạn" class="w-full px-3 py-2 rounded-lg border border-pastelPink focus:outline-none focus:ring-2 focus:ring-pastelPink" />
-                    <input type="email" placeholder="Email của bạn" class="w-full px-3 py-2 rounded-lg border border-pastelPink focus:outline-none focus:ring-2 focus:ring-pastelPink" />
-                    <textarea required placeholder="Bạn muốn nhắn gửi điều gì?" rows="3" class="w-full px-3 py-2 rounded-lg border border-pastelPink focus:outline-none focus:ring-2 focus:ring-pastelPink"></textarea>
-                    <button type="submit" class="w-full bg-pastelPinkDark text-white font-bold py-2 rounded-lg hover:bg-pink-600 transition-all">Gửi tâm tình</button>
-                </form>
+            <!-- Cột 3: Form Tâm tình (Chiếm 4 cột) -->
+            <div class="md:col-span-4">
+                <div class="bg-white p-6 rounded-3xl shadow-cute border-2 border-brandPink/50 relative">
+                    <div class="absolute -top-5 -right-5 w-14 h-14 bg-brandGreenMid rounded-full flex items-center justify-center text-white text-2xl shadow-md rotate-12">
+                        <i class="fas fa-envelope-heart"></i>
+                    </div>
+                    <h3 class="font-bold text-2xl text-brandPinkDark mb-2">Góc Nhỏ Tâm Tình</h3>
+                    <p class="text-sm text-gray-500 mb-5">Bạn có muốn nhắn nhủ điều gì với quán không?</p>
+                    
+                    <form onsubmit="submitContact(event)" class="space-y-4">
+                        <div>
+                            <input type="text" required placeholder="Số điện thoại của bạn" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-brandPinkDark focus:ring-2 focus:ring-brandPink transition-all font-medium" />
+                        </div>
+                        <div>
+                            <input type="email" placeholder="Email của bạn (không bắt buộc)" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-brandPinkDark focus:ring-2 focus:ring-brandPink transition-all font-medium" />
+                        </div>
+                        <div>
+                            <textarea required placeholder="Viết tâm tình của bạn vào đây nhé..." rows="3" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-brandPinkDark focus:ring-2 focus:ring-brandPink transition-all font-medium resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-brandPinkDark to-brandPinkMid text-white font-bold py-3.5 rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition-all flex justify-center items-center gap-2">
+                            <i class="fas fa-paper-plane"></i> Gửi Ngay Cho Quán
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-        <div class="text-center text-gray-400 text-sm mt-8 border-t border-gray-100 pt-4">
-            © 2026 3CE FOODS. Đã đăng ký bản quyền.
+        
+        <div class="text-center text-gray-400 font-medium text-sm mt-12 border-t border-gray-200 pt-6">
+            © 2026 3CE FOODS. Đã đăng ký bản quyền. Design with <i class="fas fa-heart text-brandPinkDark"></i>
         </div>
     </footer>
 
     <!-- KHUNG CHAT (NÚT NỔI) -->
-    <a href="#" class="fixed bottom-6 right-6 w-14 h-14 bg-pastelPinkDark text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-all z-30">
+    <a href="#" class="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-tr from-brandGreenDark to-brandGreenMid text-white rounded-full shadow-cute flex items-center justify-center hover:scale-110 transition-all z-30 animate-bounce">
         <i class="fas fa-comment-dots text-2xl"></i>
     </a>
 
     <!-- SIDEBAR GIỎ HÀNG -->
-    <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-50 hidden transition-all"></div>
-    <div id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-md bg-white h-full shadow-2xl z-50 transition-all duration-300 hidden-cart flex flex-col">
-        <div class="p-4 border-b border-pastelPink flex justify-between items-center bg-pastelPink/20">
-            <h2 class="text-xl font-bold text-pastelPinkDark"><i class="fas fa-shopping-basket mr-2"></i>Giỏ hàng</h2>
-            <button onclick="toggleCart()" class="text-gray-500 hover:text-pastelPinkDark text-2xl">×</button>
+    <div id="cart-overlay" class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-50 hidden transition-all"></div>
+    <div id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-md bg-white h-full shadow-2xl z-50 transition-all duration-300 hidden-cart flex flex-col border-l border-brandPink">
+        <div class="p-5 border-b border-brandPink flex justify-between items-center bg-brandPink/10">
+            <h2 class="text-2xl font-bold text-brandPinkDark flex items-center gap-3">
+                <i class="fas fa-shopping-basket bg-white p-2 rounded-lg shadow-sm text-brandPinkMid"></i> Giỏ Hàng Của Bạn
+            </h2>
+            <button onclick="toggleCart()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-red-100 hover:text-red-500 transition-all">
+                <i class="fas fa-times text-lg"></i>
+            </button>
         </div>
-        <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-4">
+        <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4">
             <!-- Render giỏ hàng -->
         </div>
-        <div class="p-4 border-t border-pastelPink bg-gray-50">
-            <div class="flex justify-between items-center mb-4">
-                <span class="font-bold text-gray-600">Tổng cộng:</span>
-                <span id="cart-total" class="font-bold text-2xl text-pastelPinkDark">0đ</span>
+        <div class="p-6 border-t-2 border-brandPink bg-white shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)]">
+            <div class="flex justify-between items-center mb-5">
+                <span class="font-bold text-gray-500 text-lg">Tổng hóa đơn:</span>
+                <span id="cart-total" class="font-extrabold text-3xl text-brandPinkDark">0đ</span>
             </div>
-            <button onclick="openCheckout()" class="w-full bg-pastelGreen text-green-900 font-bold py-3 rounded-xl hover:bg-pastelGreenDark hover:text-white transition-all">
-                Tiến hành thanh toán
+            <button onclick="openCheckout()" class="w-full bg-brandGreenDark text-white font-bold text-lg py-4 rounded-2xl hover:bg-opacity-90 transition-all hover:shadow-lg transform hover:-translate-y-1">
+                Tiến Hành Đặt Món Ngay <i class="fas fa-arrow-right ml-2"></i>
             </button>
         </div>
     </div>
 
     <!-- THÔNG BÁO (TOAST) -->
-    <div id="toast" class="fixed top-20 right-4 bg-pastelGreenDark text-white px-6 py-3 rounded-lg shadow-lg font-bold flex items-center gap-2 z-50 transition-all duration-300 toast-exit">
-        <i class="fas fa-check-circle"></i> <span id="toast-msg">Đã thêm vào giỏ hàng!</span>
+    <div id="toast" class="fixed top-24 right-4 bg-white border-l-4 border-brandGreenDark px-6 py-4 rounded-xl shadow-cute font-bold flex items-center gap-3 z-50 transition-all duration-300 toast-exit">
+        <div class="w-8 h-8 rounded-full bg-brandGreen/50 flex items-center justify-center text-brandGreenDark">
+            <i class="fas fa-check"></i>
+        </div>
+        <span id="toast-msg" class="text-gray-700">Đã thêm vào giỏ hàng!</span>
     </div>
 
     <!-- JAVASCRIPT XỬ LÝ LOGIC -->
@@ -182,14 +276,13 @@
         const categories = ['Tất cả món', 'Mì', 'Cơm', 'Đồ uống', 'Đồ ăn vặt'];
         let activeCategory = 'Tất cả món';
 
-        // ĐỊNH DẠNG TIỀN TỆ
         const formatPrice = (price) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 
-        // HIỂN THỊ DANH MỤC (TABS)
+        // HIỂN THỊ TABS
         function renderTabs() {
             const tabsContainer = document.getElementById('category-tabs');
             tabsContainer.innerHTML = categories.map(cat => `
-                <button onclick="changeCategory('${cat}')" class="whitespace-nowrap px-5 py-2 rounded-full font-bold transition-all ${activeCategory === cat ? 'bg-pastelPinkDark text-white' : 'bg-white text-gray-600 hover:bg-pastelPink hover:text-pastelPinkDark border border-gray-200'}">
+                <button onclick="changeCategory('${cat}')" class="whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-sm transition-all ${activeCategory === cat ? 'bg-gradient-to-r from-brandPinkDark to-brandPinkMid text-white shadow-md transform scale-105' : 'bg-white text-gray-500 hover:bg-brandPink hover:text-brandPinkDark border border-gray-200'}">
                     ${cat}
                 </button>
             `).join('');
@@ -201,27 +294,32 @@
             renderMenu();
         }
 
-        // HIỂN THỊ THỰC ĐƠN
+        // HIỂN THỊ MENU
         function renderMenu() {
             const grid = document.getElementById('menu-grid');
             const filtered = activeCategory === 'Tất cả món' ? menuData : menuData.filter(i => i.category === activeCategory);
             
             grid.innerHTML = filtered.map(item => `
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all overflow-hidden border border-pastelPink">
-                    <img src="${item.image}" alt="${item.name}" class="w-full h-56 object-cover" loading="lazy" />
-                    <div class="p-5">
-                        <h3 class="font-bold text-lg text-gray-800 mb-2 h-14 line-clamp-2">${item.name}</h3>
-                        <p class="text-pastelPinkDark font-bold text-xl mb-3">${formatPrice(item.price)}</p>
-                        <p class="text-gray-500 text-sm mb-4 line-clamp-3 hover:line-clamp-none" title="${item.desc}">${item.desc}</p>
-                        <button onclick="addToCart('${item.id}')" class="w-full bg-pastelPink text-pastelPinkDark font-bold py-2.5 rounded-xl hover:bg-pastelPinkDark hover:text-white transition-all flex justify-center items-center gap-2">
-                            <i class="fas fa-plus"></i> Chọn Món
+                <div class="food-card bg-white rounded-3xl transition-all overflow-hidden border border-gray-100 flex flex-col h-full group cursor-pointer">
+                    <div class="relative overflow-hidden">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-52 object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+                        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-brandGreenDark shadow-sm">
+                            ${item.category}
+                        </div>
+                    </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h3 class="font-bold text-lg text-gray-800 mb-1 h-14 line-clamp-2 leading-tight">${item.name}</h3>
+                        <p class="text-brandPinkDark font-extrabold text-2xl mb-3">${formatPrice(item.price)}</p>
+                        <p class="text-gray-500 text-sm mb-5 line-clamp-3 hover:line-clamp-none flex-1" title="${item.desc}">${item.desc}</p>
+                        <button onclick="addToCart('${item.id}')" class="w-full bg-brandPink text-brandPinkDark font-bold py-3 rounded-2xl group-hover:bg-brandPinkDark group-hover:text-white transition-all flex justify-center items-center gap-2 mt-auto">
+                            <i class="fas fa-cart-plus"></i> Thêm Vào Giỏ
                         </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // CHỨC NĂNG GIỎ HÀNG
+        // GIỎ HÀNG LOGIC
         function addToCart(id) {
             const product = menuData.find(p => p.id === id);
             const existing = cart.find(i => i.id === id);
@@ -241,11 +339,9 @@
             const cartBadge = document.getElementById('cart-badge');
             const cartTotal = document.getElementById('cart-total');
             
-            // Tính toán tổng
             const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
             const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            // Cập nhật số lượng trên icon
             if (totalQuantity > 0) {
                 cartBadge.textContent = totalQuantity;
                 cartBadge.classList.remove('hidden');
@@ -253,31 +349,34 @@
                 cartBadge.classList.add('hidden');
             }
             
-            // Cập nhật tổng tiền
             cartTotal.textContent = formatPrice(totalPrice);
             
-            // Hiển thị sản phẩm trong sidebar
             if (cart.length === 0) {
                 cartItemsContainer.innerHTML = `
-                    <div class="text-center text-gray-400 mt-10">
-                        <i class="fas fa-box-open text-4xl mb-3 block"></i>
-                        Giỏ hàng trống trơn. Bạn chọn món đi nhé!
+                    <div class="flex flex-col items-center justify-center h-full text-gray-400 space-y-4">
+                        <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center">
+                            <i class="fas fa-shopping-bag text-5xl text-gray-200"></i>
+                        </div>
+                        <p class="font-medium">Giỏ hàng đang trống trơn nè!</p>
+                        <button onclick="toggleCart()" class="px-6 py-2 bg-brandPink text-brandPinkDark rounded-full font-bold hover:bg-brandPinkDark hover:text-white transition-all">Đi chọn món ngay</button>
                     </div>`;
             } else {
                 cartItemsContainer.innerHTML = cart.map(item => `
-                    <div class="flex gap-3 border-b border-gray-100 pb-3">
-                        <img src="${item.image}" class="w-20 h-20 object-cover rounded-lg" />
-                        <div class="flex-1">
-                            <h4 class="font-bold text-gray-800 text-sm">${item.name}</h4>
-                            <p class="text-pastelPinkDark font-bold text-sm mb-2">${formatPrice(item.price)}</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3 bg-gray-100 rounded-lg px-2 py-1">
-                                    <button onclick="changeQuantity('${item.id}', -1)" class="text-gray-500 hover:text-pastelPinkDark px-1">-</button>
-                                    <span class="font-bold text-sm">${item.quantity}</span>
-                                    <button onclick="changeQuantity('${item.id}', 1)" class="text-gray-500 hover:text-pastelGreenDark px-1">+</button>
+                    <div class="flex gap-4 p-4 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all">
+                        <img src="${item.image}" class="w-20 h-20 object-cover rounded-xl shadow-sm" />
+                        <div class="flex-1 flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-sm leading-tight mb-1">${item.name}</h4>
+                                <p class="text-brandPinkDark font-extrabold text-sm">${formatPrice(item.price)}</p>
+                            </div>
+                            <div class="flex items-center justify-between mt-2">
+                                <div class="flex items-center gap-1 bg-gray-50 rounded-lg p-1 border border-gray-200">
+                                    <button onclick="changeQuantity('${item.id}', -1)" class="w-7 h-7 flex items-center justify-center rounded bg-white text-gray-500 hover:text-brandPinkDark hover:bg-brandPink transition-all shadow-sm"><i class="fas fa-minus text-xs"></i></button>
+                                    <span class="font-bold text-sm w-8 text-center">${item.quantity}</span>
+                                    <button onclick="changeQuantity('${item.id}', 1)" class="w-7 h-7 flex items-center justify-center rounded bg-white text-gray-500 hover:text-brandGreenDark hover:bg-brandGreen transition-all shadow-sm"><i class="fas fa-plus text-xs"></i></button>
                                 </div>
-                                <button onclick="removeFromCart('${item.id}')" class="text-red-400 hover:text-red-600">
-                                    <i class="fas fa-trash"></i>
+                                <button onclick="removeFromCart('${item.id}')" class="w-8 h-8 flex items-center justify-center rounded-full text-red-300 hover:text-white hover:bg-red-500 transition-all bg-red-50">
+                                    <i class="fas fa-trash-alt text-xs"></i>
                                 </button>
                             </div>
                         </div>
@@ -300,7 +399,7 @@
             updateCartUI();
         }
 
-        // BẬT/TẮT SIDEBAR GIỎ HÀNG
+        // ĐÓNG MỞ GIỎ HÀNG
         function toggleCart() {
             const sidebar = document.getElementById('cart-sidebar');
             const overlay = document.getElementById('cart-overlay');
@@ -313,23 +412,21 @@
                 sidebar.classList.remove('show-cart');
                 sidebar.classList.add('hidden-cart');
                 overlay.classList.add('hidden');
-                setTimeout(() => sidebar.classList.add('hidden'), 300); // Đợi hiệu ứng xong
+                setTimeout(() => sidebar.classList.add('hidden'), 300);
             }
         }
 
-        // XỬ LÝ THANH TOÁN & FORM
         function openCheckout() {
-            if (cart.length === 0) return alert('Giỏ hàng trống! Hãy chọn món trước nhé.');
-            alert('Chuyển hướng đến trang thanh toán...');
+            if (cart.length === 0) return alert('Bạn chưa chọn món nào mà! Đi chọn món trước nhé.');
+            alert('Chuyển hướng đến trang thanh toán an toàn...');
         }
 
         function submitContact(e) {
             e.preventDefault();
-            alert('Cảm ơn bạn đã nhắn gửi! Chúng mình sẽ phản hồi sớm nhất.');
+            alert('Yee! 3CE FOODS đã nhận được lời nhắn của bạn. Tụi mình sẽ phản hồi sớm nhất nhé!');
             e.target.reset();
         }
 
-        // THÔNG BÁO GÓC MÀN HÌNH (TOAST)
         function showToast(msg) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-msg').textContent = msg;
@@ -339,13 +436,12 @@
             setTimeout(() => {
                 toast.classList.remove('toast-enter');
                 toast.classList.add('toast-exit');
-            }, 2000);
+            }, 2500);
         }
 
-        // Đóng giỏ hàng khi click ra ngoài
         document.getElementById('cart-overlay').addEventListener('click', toggleCart);
 
-        // KHỞI TẠO TRANG
+        // KHỞI CHẠY
         renderTabs();
         renderMenu();
         updateCartUI();
