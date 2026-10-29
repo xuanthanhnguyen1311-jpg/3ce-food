@@ -381,15 +381,15 @@
 
             grid.innerHTML = filtered.map(item => `
                 <div class="bg-white rounded-3xl overflow-hidden border border-borderLight shadow-sm flex flex-col group relative hover:shadow-md transition-shadow">
-                    <!-- Nửa trên màu xanh nhạt -->
-                    <div class="bg-cardTop h-[180px] relative flex items-center justify-center p-6">
-                        <span class="absolute top-4 left-4 bg-white text-greenText text-[11px] font-bold px-3 py-1.5 rounded-[6px] shadow-sm tracking-wide">
+                    <!-- Nửa trên chứa ảnh -->
+                    <div class="bg-cardTop h-[180px] relative flex items-center justify-center ${item.image.includes('longmonnguyen.png') ? '' : 'p-6'}">
+                        <span class="absolute top-4 left-4 ${item.image.includes('longmonnguyen.png') ? 'bg-white/90 backdrop-blur-sm' : 'bg-white'} text-greenText text-[11px] font-bold px-3 py-1.5 rounded-[6px] shadow-sm tracking-wide z-10">
                             ${item.badge}
                         </span>
-                        <img src="${item.image}" class="${item.image.includes('longmonnguyen.png') ? 'w-36 h-36 rounded-[1.5rem] shadow-md object-cover' : 'w-32 h-32 object-contain'} group-hover:scale-110 transition-transform duration-300 drop-shadow-md">
+                        <img src="${item.image}" class="${item.image.includes('longmonnguyen.png') ? 'w-full h-full object-cover' : 'w-32 h-32 object-contain drop-shadow-md'} group-hover:scale-110 transition-transform duration-300">
                     </div>
                     <!-- Nửa dưới màu trắng -->
-                    <div class="p-6 flex flex-col flex-1 bg-white">
+                    <div class="p-6 flex flex-col flex-1 bg-white relative z-20">
                         <h3 class="font-bold text-brandDark text-[18px] mb-2 leading-snug">${item.name}</h3>
                         <p class="text-brandGray text-[14px] leading-relaxed line-clamp-3 mb-6 font-medium">${item.desc}</p>
                         <div class="mt-auto flex justify-between items-center pt-2">
