@@ -188,7 +188,7 @@
                     <div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Giá trên website đã bao gồm phí giao hàng chưa?</div>
                 </div>
                 <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
-                    Mức giá chưa bao gồm phí ship. Phí ship sẽ được quán báo cụ thể dựa trên khoảng cách từ quán tới chỗ bạn.
+                    Mức giá chưa bao gồm phí ship. Phí giao hàng (ship) đồng giá là 15.000đ/đơn hàng áp dụng cho mọi địa chỉ.
                 </div>
             </div>
             <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
@@ -240,10 +240,11 @@
             <div>
                 <h4 class="font-bold text-[16px] mb-5">Kết nối</h4>
                 <ul class="space-y-3 text-[14px] text-[#A29A9C] font-medium">
-                    <li><a href="#" class="hover:text-white transition-colors">Facebook 3CE FOODS</a></li>
-                    <li><button onclick="openContactModal()" class="hover:text-white transition-colors text-left">Góc nhỏ tâm tình</button></li>
-                    <li><p>Hotline & địa chỉ</p></li>
-                    <li><a href="#thuc-don" class="text-white hover:text-brandPink transition-colors">Đặt món ngay ♡</a></li>
+                    <li><a href="https://facebook.com/3cefoods" target="_blank" class="hover:text-brandPink transition-colors">Facebook 3CE FOODS</a></li>
+                    <li><button onclick="openContactModal()" class="hover:text-brandPink transition-colors text-left">Góc nhỏ tâm tình</button></li>
+                    <li><p class="text-white font-medium">Hotline: 0912.666.666</p></li>
+                    <li><p class="text-white font-medium">Địa chỉ: 58 Lê Văn Hiến, Đông Ngạc, Hà Nội</p></li>
+                    <li><a href="#thuc-don" class="text-brandPink font-bold hover:text-white transition-colors mt-2 block">Đặt món ngay ♡</a></li>
                 </ul>
             </div>
         </div>
@@ -310,7 +311,7 @@
 
     <!-- JAVASCRIPT -->
     <script>
-        // Danh sách đầy đủ 26 món ăn theo đúng yêu cầu
+        // Danh sách đầy đủ 26 món ăn
         const menuData = [
             // MÌ TRỘN INDOMIE
             { id: 'm1', category: 'Mì trộn Indomie', badge: 'Ngự Yến', name: 'Mì trộn Indomie Long Môn Ngự Yến', price: 40000, desc: 'Bao gồm sợi mì Indomie dai mềm thấm đẫm sốt trộn độc quyền, rau củ tươi giòn, xúc xích thơm béo, cá viên dai ngon, tôm surimi đậm vị, viên mực xoắn sần sật và hải sản phô mai béo ngậy.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Steaming%20Bowl.png' },
@@ -340,15 +341,15 @@
             { id: 'u5', category: 'Đồ uống', badge: 'Trà Sữa', name: 'Tuyết Sơn Ngọc Ẩn – Trà sữa', price: 25000, desc: 'Bao gồm trà thơm đậm vị, sữa béo ngậy, vị ngọt dịu, kết hợp cùng đá mát lạnh.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Bubble%20Tea.png' },
             
             // ĐỒ ĂN VẶT
-            { id: 'v1', category: 'Đồ ăn vặt', badge: 'Hoàng Kim', name: 'Khoai tây chiên Kim Giáp Hoàng Kim', price: 25000, desc: 'Bao gồm khoai tây vàng giòn, ngoài giòn trong mềm, thơm bùi hấp dẫn (25.000đ/đĩa).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/French%20Fries.png' },
-            { id: 'v2', category: 'Đồ ăn vặt', badge: 'Mãn Đường', name: 'Khoai lắc phô mai Kim Ngọc Mãn Đường', price: 30000, desc: 'Bao gồm khoai tây chiên giòn lắc phô mai béo ngậy, đậm vị (30.000đ/đĩa).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Cheese%20Wedge.png' },
-            { id: 'v3', category: 'Đồ ăn vặt', badge: 'Hồng Môn', name: 'Nem chua Trần Công Châu Hồng Môn', price: 6000, desc: 'Bao gồm nem chua dai giòn, chua nhẹ, đậm vị truyền thống (6.000đ/cái).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Hot%20Dog.png' },
-            { id: 'v4', category: 'Đồ ăn vặt', badge: 'Kim Tâm', name: 'Phô mai que Bạch Ngọc Kim Tâm', price: 8000, desc: 'Bao gồm phô mai kéo sợi béo ngậy, bọc vỏ vàng giòn (8.000đ/cái).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Baguette%20Bread.png' },
-            { id: 'v5', category: 'Đồ ăn vặt', badge: 'Tử Ngọc', name: 'Khoai môn Lệ Phố Tử Ngọc', price: 30000, desc: 'Bao gồm khoai môn bùi thơm, vỏ giòn, nhân mềm ngọt (30.000đ/đĩa).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Roasted%20Sweet%20Potato.png' },
-            { id: 'v6', category: 'Đồ ăn vặt', badge: 'Ngự Tiệc', name: 'Ngô chiên Kim Châu Ngự Tiệc', price: 30000, desc: 'Bao gồm ngô vàng giòn, thơm ngọt, đậm đà gia vị (30.000đ/đĩa).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Ear%20of%20Corn.png' },
-            { id: 'v7', category: 'Đồ ăn vặt', badge: 'Hỏa Long', name: 'Cút lộn xào me Hỏa Long Châu', price: 50000, desc: 'Bao gồm trứng cút lộn béo bùi, sốt me chua ngọt, rau răm và lạc rang (50.000đ/đĩa).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Egg.png' },
-            { id: 'v8', category: 'Đồ ăn vặt', badge: 'Hoàng Cung', name: 'Bánh tráng nướng Hỏa Phụng Hoàng Cung', price: 25000, desc: 'Bao gồm bánh tráng giòn, trứng, xúc xích và topping thơm ngon (25.000đ/cái).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Pizza.png' },
-            { id: 'v9', category: 'Đồ ăn vặt', badge: 'Thập Bát Vị', name: 'Viên chiên Ngự Lâm Thập Bát Vị', price: 10000, desc: 'Bao gồm các loại viên chiên nóng giòn, dai ngon, ăn kèm sốt chấm đậm vị (10.000đ/xiên).', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Oden.png' }
+            { id: 'v1', category: 'Đồ ăn vặt', badge: 'Hoàng Kim', name: 'Khoai tây chiên Kim Giáp Hoàng Kim', price: 25000, desc: 'Bao gồm khoai tây vàng giòn, ngoài giòn trong mềm, thơm bùi hấp dẫn.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/French%20Fries.png' },
+            { id: 'v2', category: 'Đồ ăn vặt', badge: 'Mãn Đường', name: 'Khoai lắc phô mai Kim Ngọc Mãn Đường', price: 30000, desc: 'Bao gồm khoai tây chiên giòn lắc phô mai béo ngậy, đậm vị.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Cheese%20Wedge.png' },
+            { id: 'v3', category: 'Đồ ăn vặt', badge: 'Hồng Môn', name: 'Nem chua Trần Công Châu Hồng Môn', price: 6000, desc: 'Bao gồm nem chua dai giòn, chua nhẹ, đậm vị truyền thống.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Hot%20Dog.png' },
+            { id: 'v4', category: 'Đồ ăn vặt', badge: 'Kim Tâm', name: 'Phô mai que Bạch Ngọc Kim Tâm', price: 8000, desc: 'Bao gồm phô mai kéo sợi béo ngậy, bọc vỏ vàng giòn.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Baguette%20Bread.png' },
+            { id: 'v5', category: 'Đồ ăn vặt', badge: 'Tử Ngọc', name: 'Khoai môn Lệ Phố Tử Ngọc', price: 30000, desc: 'Bao gồm khoai môn bùi thơm, vỏ giòn, nhân mềm ngọt.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Roasted%20Sweet%20Potato.png' },
+            { id: 'v6', category: 'Đồ ăn vặt', badge: 'Ngự Tiệc', name: 'Ngô chiên Kim Châu Ngự Tiệc', price: 30000, desc: 'Bao gồm ngô vàng giòn, thơm ngọt, đậm đà gia vị.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Ear%20of%20Corn.png' },
+            { id: 'v7', category: 'Đồ ăn vặt', badge: 'Hỏa Long', name: 'Cút lộn xào me Hỏa Long Châu', price: 50000, desc: 'Bao gồm trứng cút lộn béo bùi, sốt me chua ngọt, rau răm và lạc rang.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Egg.png' },
+            { id: 'v8', category: 'Đồ ăn vặt', badge: 'Hoàng Cung', name: 'Bánh tráng nướng Hỏa Phụng Hoàng Cung', price: 25000, desc: 'Bao gồm bánh tráng giòn, trứng, xúc xích và topping thơm ngon.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Pizza.png' },
+            { id: 'v9', category: 'Đồ ăn vặt', badge: 'Thập Bát Vị', name: 'Viên chiên Ngự Lâm Thập Bát Vị', price: 10000, desc: 'Bao gồm các loại viên chiên nóng giòn, dai ngon, ăn kèm sốt chấm đậm vị.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Oden.png' }
         ];
 
         const categories = ['Tất cả món', 'Mì trộn Indomie', 'Mì cay', 'Mì tương đen', 'Mì Ý', 'Cơm', 'Đồ uống', 'Đồ ăn vặt'];
@@ -371,7 +372,7 @@
         function handleSearch() { searchQuery = document.getElementById('search-input').value.toLowerCase(); renderMenu(); }
         function handleSort() { sortOption = document.getElementById('sort-select').value; renderMenu(); }
 
-        // MENU RENDER
+        // MENU RENDER CHUẨN DESIGN
         function renderMenu() {
             const grid = document.getElementById('menu-grid');
             let filtered = menuData.filter(i => (activeCategory === 'Tất cả món' || i.category === activeCategory) && i.name.toLowerCase().includes(searchQuery));
@@ -380,12 +381,14 @@
 
             grid.innerHTML = filtered.map(item => `
                 <div class="bg-white rounded-3xl overflow-hidden border border-borderLight shadow-sm flex flex-col group relative hover:shadow-md transition-shadow">
+                    <!-- Nửa trên màu xanh nhạt -->
                     <div class="bg-cardTop h-[180px] relative flex items-center justify-center p-6">
                         <span class="absolute top-4 left-4 bg-white text-greenText text-[11px] font-bold px-3 py-1.5 rounded-[6px] shadow-sm tracking-wide">
                             ${item.badge}
                         </span>
                         <img src="${item.image}" class="w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-md">
                     </div>
+                    <!-- Nửa dưới màu trắng -->
                     <div class="p-6 flex flex-col flex-1 bg-white">
                         <h3 class="font-bold text-brandDark text-[18px] mb-2 leading-snug">${item.name}</h3>
                         <p class="text-brandGray text-[14px] leading-relaxed line-clamp-3 mb-6 font-medium">${item.desc}</p>
@@ -439,11 +442,15 @@
             else { sb.classList.remove('show-cart'); sb.classList.add('hidden-cart'); ov.classList.add('hidden'); setTimeout(() => sb.classList.add('hidden'), 300); }
         }
 
-        function toggleFaq(el) { el.querySelector('div:last-child').classList.toggle('hidden'); }
+        // MODALS & FAQ
+        function toggleFaq(el) {
+            el.querySelector('div:last-child').classList.toggle('hidden');
+        }
         function openCheckoutModal() { if(cart.length===0) return alert('Giỏ hàng trống bạn ơi!'); toggleCart(); document.getElementById('checkout-modal').classList.remove('hidden'); }
         function openContactModal() { document.getElementById('contact-modal').classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
+        // INIT
         renderTabs(); renderMenu(); updateCartUI();
     </script>
 </body>
