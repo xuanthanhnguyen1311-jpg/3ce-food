@@ -315,7 +315,7 @@
         const menuData = [
             // MÌ TRỘN INDOMIE
             { id: 'm1', category: 'Mì trộn Indomie', badge: 'Ngự Yến', name: 'Mì trộn Indomie Long Môn Ngự Yến', price: 40000, desc: 'Bao gồm sợi mì Indomie dai mềm thấm đẫm sốt trộn độc quyền, rau củ tươi giòn, xúc xích thơm béo, cá viên dai ngon, tôm surimi đậm vị, viên mực xoắn sần sật và hải sản phô mai béo ngậy.', image: './longmonnguyen.png' },
-            { id: 'm2', category: 'Mì trộn Indomie', badge: 'Tứ Hải', name: 'Mì trộn Indomie Tứ Hải Hội Tụ', price: 35000, desc: 'Bao gồm sợi mì Indomie dai ngon quyện cùng sốt trộn đậm đà, rau củ tươi xanh, xúc xích thơm lừng, cá viên dai giòn và tôm surimi hấp dẫn.', image: './tuhaihoitu.png' },
+            { id: 'm2', category: 'Mì trộn Indomie', badge: 'Tứ Hải', name: 'Mì trộn Indomie Tứ Hải Hội Tụ', price: 35000, desc: 'Bao gồm sợi mì Indomie dai ngon quyện cùng sốt trộn đậm đà, rau củ tươi xanh, xúc xích thơm lừng, cá viên dai giòn và tôm surimi hấp dẫn.', image: './tuhaihoitu.jpg' },
             { id: 'm3', category: 'Mì trộn Indomie', badge: 'Ngọc Thực', name: 'Mì trộn Indomie Thanh Vân Ngọc Thực', price: 20000, desc: 'Bao gồm sợi mì Indomie dai mềm óng ánh sốt trộn đậm vị, kết hợp cùng rau củ tươi xanh thanh mát.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Leafy%20Green.png' },
             
             // MÌ CAY
@@ -380,6 +380,7 @@
             if (sortOption === 'price-high') filtered.sort((a, b) => b.price - a.price);
 
             grid.innerHTML = filtered.map(item => {
+                // Đã bổ sung cả 'tuhaihoitu.jpg' vào điều kiện ảnh tràn viền
                 const isLocalImage = item.image.includes('longmonnguyen.png') || item.image.includes('tuhaihoitu.jpg');
                 return `
                 <div class="bg-white rounded-3xl overflow-hidden border border-borderLight shadow-sm flex flex-col group relative hover:shadow-md transition-shadow">
