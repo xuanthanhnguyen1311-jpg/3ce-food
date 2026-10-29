@@ -372,7 +372,7 @@
         function handleSearch() { searchQuery = document.getElementById('search-input').value.toLowerCase(); renderMenu(); }
         function handleSort() { sortOption = document.getElementById('sort-select').value; renderMenu(); }
 
-        // MENU RENDER CHUẨN DESIGN & TỐI ƯU TỐC ĐỘ TẢI ẢNH
+        // MENU RENDER (Đã sửa lỗi hiển thị ảnh, giữ lại lazy load tối ưu tốc độ)
         function renderMenu() {
             const grid = document.getElementById('menu-grid');
             let filtered = menuData.filter(i => (activeCategory === 'Tất cả món' || i.category === activeCategory) && i.name.toLowerCase().includes(searchQuery));
@@ -382,17 +382,13 @@
             grid.innerHTML = filtered.map(item => {
                 return `
                 <div class="bg-white rounded-3xl overflow-hidden border border-borderLight shadow-sm flex flex-col group relative hover:shadow-md transition-shadow">
-                    <!-- Nửa trên chứa ảnh (giảm chiều cao xuống h-[150px] để tải nhanh hơn) -->
+                    <!-- Nửa trên chứa ảnh -->
                     <div class="bg-cardTop h-[150px] relative flex items-center justify-center overflow-hidden">
                         <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-greenText text-[11px] font-bold px-3 py-1.5 rounded-[6px] shadow-sm tracking-wide z-10">
                             ${item.badge}
                         </span>
-                        <!-- Thêm loading="lazy" và hiệu ứng chuyển mờ khi tải xong -->
                         <img src="${item.image}" 
                              loading="lazy" 
-                             decoding="async"
-                             onload="this.style.opacity=1" 
-                             style="opacity:0; transition: opacity 0.3s ease-in-out;"
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                     </div>
                     <!-- Nửa dưới màu trắng -->
