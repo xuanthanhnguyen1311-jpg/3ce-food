@@ -380,16 +380,15 @@
             if (sortOption === 'price-high') filtered.sort((a, b) => b.price - a.price);
 
             grid.innerHTML = filtered.map(item => {
-                // Đã cập nhật cho ảnh tuhaihoitu.png
-                const isLocalImage = item.image.includes('longmonnguyen.png') || item.image.includes('tuhaihoitu.png');
+                // Đã loại bỏ điều kiện isLocalImage, áp dụng tràn viền cho toàn bộ
                 return `
                 <div class="bg-white rounded-3xl overflow-hidden border border-borderLight shadow-sm flex flex-col group relative hover:shadow-md transition-shadow">
                     <!-- Nửa trên chứa ảnh -->
-                    <div class="bg-cardTop h-[180px] relative flex items-center justify-center ${isLocalImage ? '' : 'p-6'}">
-                        <span class="absolute top-4 left-4 ${isLocalImage ? 'bg-white/90 backdrop-blur-sm' : 'bg-white'} text-greenText text-[11px] font-bold px-3 py-1.5 rounded-[6px] shadow-sm tracking-wide z-10">
+                    <div class="bg-cardTop h-[180px] relative flex items-center justify-center">
+                        <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-greenText text-[11px] font-bold px-3 py-1.5 rounded-[6px] shadow-sm tracking-wide z-10">
                             ${item.badge}
                         </span>
-                        <img src="${item.image}" class="${isLocalImage ? 'w-full h-full object-cover' : 'w-32 h-32 object-contain drop-shadow-md'} group-hover:scale-110 transition-transform duration-300">
+                        <img src="${item.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                     </div>
                     <!-- Nửa dưới màu trắng -->
                     <div class="p-6 flex flex-col flex-1 bg-white relative z-20">
@@ -426,7 +425,7 @@
             document.getElementById('cart-total').textContent = formatPrice(cart.reduce((sum, i) => sum + i.price * i.quantity, 0));
             document.getElementById('cart-items').innerHTML = cart.length === 0 ? `<div class="text-center text-gray-400 font-medium mt-10">Giỏ hàng trống!</div>` : cart.map(item => `
                 <div class="flex gap-4 border-b border-borderLight pb-4">
-                    <img src="${item.image}" class="${item.image.includes('longmonnguyen.png') || item.image.includes('tuhaihoitu.png') ? 'w-16 h-16 rounded-xl object-cover shadow-sm' : 'w-16 h-16 object-contain bg-cardTop rounded-xl p-2'}">
+                    <img src="${item.image}" class="w-16 h-16 rounded-xl object-cover shadow-sm">
                     <div class="flex-1 flex flex-col justify-between">
                         <h4 class="font-bold text-brandDark text-[14px] leading-tight">${item.name}</h4>
                         <div class="flex justify-between items-center mt-2">
