@@ -315,7 +315,7 @@
         const menuData = [
             // MÌ TRỘN INDOMIE
             { id: 'm1', category: 'Mì trộn Indomie', badge: 'Ngự Yến', name: 'Mì trộn Indomie Long Môn Ngự Yến', price: 40000, desc: 'Bao gồm sợi mì Indomie dai mềm thấm đẫm sốt trộn độc quyền, rau củ tươi giòn, xúc xích thơm béo, cá viên dai ngon, tôm surimi đậm vị, viên mực xoắn sần sật và hải sản phô mai béo ngậy.', image: './longmonnguyen.png' },
-            { id: 'm2', category: 'Mì trộn Indomie', badge: 'Tứ Hải', name: 'Mì trộn Indomie Tứ Hải Hội Tụ', price: 35000, desc: 'Bao gồm sợi mì Indomie dai ngon quyện cùng sốt trộn đậm đà, rau củ tươi xanh, xúc xích thơm lừng, cá viên dai giòn và tôm surimi hấp dẫn.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Steaming%20Bowl.png' },
+            { id: 'm2', category: 'Mì trộn Indomie', badge: 'Tứ Hải', name: 'Mì trộn Indomie Tứ Hải Hội Tụ', price: 35000, desc: 'Bao gồm sợi mì Indomie dai ngon quyện cùng sốt trộn đậm đà, rau củ tươi xanh, xúc xích thơm lừng, cá viên dai giòn và tôm surimi hấp dẫn.', image: './tuhaihoitu.jpg' },
             { id: 'm3', category: 'Mì trộn Indomie', badge: 'Ngọc Thực', name: 'Mì trộn Indomie Thanh Vân Ngọc Thực', price: 20000, desc: 'Bao gồm sợi mì Indomie dai mềm óng ánh sốt trộn đậm vị, kết hợp cùng rau củ tươi xanh thanh mát.', image: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Leafy%20Green.png' },
             
             // MÌ CAY
@@ -379,19 +379,22 @@
             if (sortOption === 'price-low') filtered.sort((a, b) => a.price - b.price);
             if (sortOption === 'price-high') filtered.sort((a, b) => b.price - a.price);
 
-            grid.innerHTML = filtered.map(item => `
+            grid.innerHTML = filtered.map(item => {
+                const isLocalImage = item.image.includes('longmonnguyen.png') || item.image.includes('tuhaihoitu.jpg');
+                return `
                 <div class="bg-white rounded-3xl overflow-hidden border border-borderLight shadow-sm flex flex-col group relative hover:shadow-md transition-shadow">
                     <!-- Nửa trên chứa ảnh -->
-                    <div class="bg-cardTop h-[180px] relative flex items-center justify-center ${item.image.includes('longmonnguyen.png') ? '' : 'p-6'}">
-                        <span class="absolute top-4 left-4 ${item.image.includes('longmonnguyen.png') ? 'bg-white/90 backdrop-blur-sm' : 'bg-white'} text-greenText text-[11px] font-bold px-3 py-1.5 rounded-[6px] shadow-sm tracking-wide z-10">
+                    <div class="bg-cardTop h-[180px] relative flex items-center justify-center ${isLocalImage ? '' : 'p-6'}">
+                        <span class="absolute top-4 left-4 ${isLocalImage ? 'bg-white/90 backdrop-blur-sm' : 'bg-white'} text-greenText text-[11px] font-bold px-3 py-1.5 rounded-[6px] shadow-sm tracking-wide z-10">
                             ${item.badge}
                         </span>
-                        <img src="${item.image}" class="${item.image.includes('longmonnguyen.png') ? 'w-full h-full object-cover' : 'w-32 h-32 object-contain drop-shadow-md'} group-hover:scale-110 transition-transform duration-300">
+                        <img src="${item.image}" class="${isLocalImage ? 'w-full h-full object-cover' : 'w-32 h-32 object-contain drop-shadow-md'} group-hover:scale-110 transition-transform duration-300">
                     </div>
                     <!-- Nửa dưới màu trắng -->
                     <div class="p-6 flex flex-col flex-1 bg-white relative z-20">
                         <h3 class="font-bold text-brandDark text-[18px] mb-2 leading-snug">${item.name}</h3>
-                        <p class="text-brandGray text-[14px] leading-relaxed line-clamp-3 mb-6 font-medium">${item.desc}</p>
+                        <p class="text-brandGray text-[14px] leading-relaxed line-clamp-3 mb-1 font-medium">${item.desc}</p>
+                        <p class="text-[12px] text-brandGray/60 italic mb-5">* Hình ảnh chỉ mang tính chất minh hoạ</p>
                         <div class="mt-auto flex justify-between items-center pt-2">
                             <div>
                                 <span class="font-black text-brandPink text-[20px] tracking-tight">${formatPrice(item.price)}</span>
@@ -403,7 +406,8 @@
                         </div>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // CART LOGIC
@@ -421,7 +425,7 @@
             document.getElementById('cart-total').textContent = formatPrice(cart.reduce((sum, i) => sum + i.price * i.quantity, 0));
             document.getElementById('cart-items').innerHTML = cart.length === 0 ? `<div class="text-center text-gray-400 font-medium mt-10">Giỏ hàng trống!</div>` : cart.map(item => `
                 <div class="flex gap-4 border-b border-borderLight pb-4">
-                    <img src="${item.image}" class="${item.image.includes('longmonnguyen.png') ? 'w-16 h-16 rounded-xl object-cover shadow-sm' : 'w-16 h-16 object-contain bg-cardTop rounded-xl p-2'}">
+                    <img src="${item.image}" class="${item.image.includes('longmonnguyen.png') || item.image.includes('tuhaihoitu.jpg') ? 'w-16 h-16 rounded-xl object-cover shadow-sm' : 'w-16 h-16 object-contain bg-cardTop rounded-xl p-2'}">
                     <div class="flex-1 flex flex-col justify-between">
                         <h4 class="font-bold text-brandDark text-[14px] leading-tight">${item.name}</h4>
                         <div class="flex justify-between items-center mt-2">
