@@ -372,7 +372,7 @@
         function handleSearch() { searchQuery = document.getElementById('search-input').value.toLowerCase(); renderMenu(); }
         function handleSort() { sortOption = document.getElementById('sort-select').value; renderMenu(); }
 
-        // MENU RENDER (Đã sửa lỗi hiển thị ảnh, giữ lại lazy load tối ưu tốc độ)
+        // MENU RENDER (Tối ưu tốc độ tải và chống lỗi hiển thị)
         function renderMenu() {
             const grid = document.getElementById('menu-grid');
             let filtered = menuData.filter(i => (activeCategory === 'Tất cả món' || i.category === activeCategory) && i.name.toLowerCase().includes(searchQuery));
@@ -388,8 +388,11 @@
                             ${item.badge}
                         </span>
                         <img src="${item.image}" 
+                             alt="${item.name}"
                              loading="lazy" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                             decoding="async"
+                             onerror="this.src='https://placehold.co/400x300/F4F9F6/DE5C8E?text=3CE+FOODS'"
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 text-transparent bg-[#F4F9F6]">
                     </div>
                     <!-- Nửa dưới màu trắng -->
                     <div class="p-6 flex flex-col flex-1 bg-white relative z-20">
@@ -411,7 +414,7 @@
             }).join('');
         }
 
-        // CART LOGIC
+        // CART LOGIC (Cũng cập nhật onerror cho giỏ hàng)
         function addToCart(id) {
             const item = cart.find(i => i.id === id);
             if (item) item.quantity++; else cart.push({ ...menuData.find(p => p.id === id), quantity: 1 });
@@ -426,7 +429,12 @@
             document.getElementById('cart-total').textContent = formatPrice(cart.reduce((sum, i) => sum + i.price * i.quantity, 0));
             document.getElementById('cart-items').innerHTML = cart.length === 0 ? `<div class="text-center text-gray-400 font-medium mt-10">Giỏ hàng trống!</div>` : cart.map(item => `
                 <div class="flex gap-4 border-b border-borderLight pb-4">
-                    <img src="${item.image}" loading="lazy" class="w-16 h-16 rounded-xl object-cover shadow-sm">
+                    <img src="${item.image}" 
+                         alt="${item.name}"
+                         loading="lazy" 
+                         decoding="async"
+                         onerror="this.src='https://placehold.co/100x100/F4F9F6/DE5C8E?text=3CE'"
+                         class="w-16 h-16 rounded-xl object-cover shadow-sm bg-[#F4F9F6]">
                     <div class="flex-1 flex flex-col justify-between">
                         <h4 class="font-bold text-brandDark text-[14px] leading-tight">${item.name}</h4>
                         <div class="flex justify-between items-center mt-2">
