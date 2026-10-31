@@ -40,6 +40,8 @@
         .transition-all { transition: all 0.3s ease; }
         .hidden-cart { transform: translateX(100%); }
         .show-cart { transform: translateX(0); }
+        .faq-icon { transition: transform 0.3s ease; display: inline-block; }
+        .faq-open .faq-icon { transform: rotate(90deg); }
     </style>
 </head>
 <body class="text-brandGray antialiased">
@@ -150,21 +152,44 @@
             <p class="text-brandGray text-[15px] font-medium">Một vài thông tin hữu ích trước khi bạn đặt món.</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Câu hỏi 1 -->
             <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
-                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]"><div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Làm thế nào để đặt món?</div></div>
-                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">Bạn chỉ cần thêm món vào giỏ, bấm "Tiến hành đặt món" và nhập thông tin hoặc nhắn trực tiếp qua nút Chat màu xanh bên góc phải màn hình nhé!</div>
+                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
+                    <div class="flex gap-2 items-center"><span class="faq-icon text-brandGray text-xs">►</span> Làm thế nào để đặt món tại 3CE FOODS?</div>
+                </div>
+                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
+                    Rất đơn giản bạn ơi! Bạn chỉ cần lướt menu, chọn món yêu thích rồi bấm nút "+" để thêm vào giỏ hàng. Sau đó, nhấn "Tiến hành đặt món" và điền thông tin nhận hàng. Hoặc nhanh hơn, bạn cứ bấm vào biểu tượng Chat màu xanh góc dưới màn hình để nhắn tin trực tiếp cho quán nhé!
+                </div>
             </div>
+            
+            <!-- Câu hỏi 2 -->
             <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
-                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]"><div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Giá trên website đã bao gồm phí giao hàng chưa?</div></div>
-                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">Mức giá chưa bao gồm phí ship. Phí giao hàng (ship) đồng giá là 15.000đ/đơn hàng áp dụng cho mọi địa chỉ.</div>
+                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
+                    <div class="flex gap-2 items-center"><span class="faq-icon text-brandGray text-xs">►</span> Phí giao hàng (Ship) được tính như thế nào?</div>
+                </div>
+                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
+                    3CE FOODS luôn muốn mang đến trải nghiệm trọn vẹn nhất! Với các đơn hàng trong bán kính <strong>dưới 1km</strong>, quán sẽ <strong>freeship (miễn phí giao hàng)</strong> tận nơi. Với các địa chỉ xa hơn (trên 1km), quán chỉ xin một chút phụ phí nhỏ xíu là <strong>10.000đ</strong> cho mỗi đơn để hỗ trợ xăng xe cho các bạn shipper thôi nha.
+                </div>
             </div>
+            
+            <!-- Câu hỏi 3 -->
             <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
-                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]"><div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Tôi có thể yêu cầu ghi chú món ăn không?</div></div>
-                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">Dạ hoàn toàn được ạ! Khách iu có thể báo "ít cay, không hành, nhiều sốt..." lúc gửi đơn đặt món.</div>
+                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
+                    <div class="flex gap-2 items-center"><span class="faq-icon text-brandGray text-xs">►</span> Tôi có thể yêu cầu làm món ăn theo khẩu vị riêng (Note) không?</div>
+                </div>
+                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
+                    Chắc chắn rồi ạ! Tụi mình hiểu mỗi người sẽ có một gu thưởng thức riêng. Nếu bạn muốn ăn ít cay, không hành, thêm sốt hay bất kỳ yêu cầu đặc biệt nào, cứ thoải mái ghi vào ô "Ghi chú" lúc đặt hàng hoặc dặn dò tụi mình qua tin nhắn nhé. Quán sẽ chuẩn bị đúng ý bạn nhất!
+                </div>
             </div>
+            
+            <!-- Câu hỏi 4 -->
             <div class="bg-white rounded-2xl p-5 border border-borderLight shadow-sm cursor-pointer hover:border-brandPink transition-colors" onclick="toggleFaq(this)">
-                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]"><div class="flex gap-2 items-center"><span class="text-brandGray text-xs">►</span> Thông tin cá nhân của tôi được sử dụng thế nào?</div></div>
-                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">Thông tin của bạn (số điện thoại, địa chỉ) chỉ dùng duy nhất cho việc giao đồ ăn, đảm bảo bảo mật tuyệt đối 100%.</div>
+                <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
+                    <div class="flex gap-2 items-center"><span class="faq-icon text-brandGray text-xs">►</span> Thông tin cá nhân của tôi có được bảo mật không?</div>
+                </div>
+                <div class="hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
+                    3CE FOODS cam kết bảo mật tuyệt đối 100% thông tin cá nhân của bạn! Số điện thoại và địa chỉ mà bạn cung cấp chỉ được sử dụng duy nhất cho mục đích liên hệ và giao đồ ăn đến tận tay bạn một cách nhanh chóng nhất. Tụi mình tuyệt đối không chia sẻ cho bất kỳ bên thứ ba nào.
+                </div>
             </div>
         </div>
     </section>
@@ -369,7 +394,10 @@
             else { sb.classList.remove('show-cart'); sb.classList.add('hidden-cart'); ov.classList.add('hidden'); setTimeout(() => sb.classList.add('hidden'), 300); }
         }
 
-        function toggleFaq(el) { el.querySelector('div:last-child').classList.toggle('hidden'); }
+        function toggleFaq(el) { 
+            el.classList.toggle('faq-open');
+            el.querySelector('div:last-child').classList.toggle('hidden'); 
+        }
         function openCheckoutModal() { if(cart.length===0) return alert('Giỏ hàng trống bạn ơi!'); toggleCart(); document.getElementById('checkout-modal').classList.remove('hidden'); }
         function openContactModal() { document.getElementById('contact-modal').classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
