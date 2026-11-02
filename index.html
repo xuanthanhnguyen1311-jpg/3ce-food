@@ -131,7 +131,7 @@
         <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </section>
 
-    <!-- FAQ SECTION (ĐÃ FIX LỖI CLICK VỚI THẺ DETAILS) -->
+    <!-- FAQ SECTION -->
     <section id="faq" class="max-w-6xl mx-auto px-6 py-12">
         <div class="mb-8">
             <div class="inline-block bg-white text-greenText font-bold text-[10px] px-3.5 py-1.5 rounded-full mb-4 tracking-widest border border-[#E4F1E8]">NEED A LITTLE HELP?</div>
@@ -281,7 +281,7 @@
                     <p class="text-[12px] text-brandGray mt-2">Nội dung CK: <b class="text-brandDark">SĐT của bạn</b></p>
                 </div>
 
-                <!-- Checkbox Đồng ý thu thập dữ liệu (Bắt buộc NĐ 13/2023) -->
+                <!-- Checkbox Đồng ý thu thập dữ liệu -->
                 <label class="flex items-start gap-2 cursor-pointer mt-4">
                     <input type="checkbox" required class="mt-1 accent-brandPink">
                     <span class="text-[12px] text-brandGray font-medium leading-tight">
@@ -289,11 +289,11 @@
                     </span>
                 </label>
 
-                <!-- Tùy chọn Xuất hóa đơn (TT 78 & IPSAS) -->
+                <!-- Tùy chọn Xuất hóa đơn -->
                 <label class="flex items-start gap-2 cursor-pointer mt-2">
                     <input type="checkbox" id="require-invoice" class="mt-1 accent-brandPink" onchange="toggleInvoice()">
                     <span class="text-[12px] text-brandGray font-medium leading-tight">
-                        Yêu cầu xuất hóa đơn điện tử (TT 78/2021). Doanh thu hạch toán theo <b>Chuẩn mực Kế toán Công Quốc tế (IPSAS)</b>.
+                        Yêu cầu xuất hóa đơn điện tử (TT 78/2021). Doanh thu hạch toán theo <b>Chuẩn mực Kế toán Việt Nam (VAS) và Thông tư 133/200</b>.
                     </span>
                 </label>
                 
@@ -322,7 +322,7 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT THU GỌN LẠI VÀ CHẮC CHẮN HOẠT ĐỘNG -->
+    <!-- JAVASCRIPT -->
     <script>
         const menuData = [
             { id: 'm1', category: 'Mì trộn Indomie', badge: 'Ngự Yến', name: 'Mì trộn Indomie Long Môn Ngự Yến', price: 40000, desc: 'Bao gồm sợi mì Indomie dai mềm thấm đẫm sốt trộn độc quyền, rau củ tươi giòn, xúc xích thơm béo, cá viên dai ngon, tôm surimi đậm vị, viên mực xoắn sần sật và hải sản phô mai béo ngậy.', image: './longmonnguyen.png' },
@@ -480,7 +480,7 @@
                 : '🎉 Đặt hàng thành công! Quán sẽ gọi xác nhận ngay.';
 
             if (requiresInvoice) {
-                message += '\n\n✅ Hóa đơn điện tử sẽ được gửi kèm và hạch toán tự động theo chuẩn mực IPSAS.';
+                message += '\n\n✅ Hóa đơn điện tử sẽ được gửi kèm và hạch toán tự động theo chuẩn mực VAS.';
             }
 
             alert(message);
