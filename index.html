@@ -175,11 +175,11 @@
                 <div class="flex items-center justify-between font-bold text-brandDark text-[15px]">
                     <div class="flex gap-2 items-center">
                         <span class="faq-icon inline-block text-brandGray text-[11px] transition-transform duration-300">▶</span> 
-                        Thông tin cá nhân của tôi được dùng thế nào?
+                        Chính sách xử lý dữ liệu và đổi trả thế nào?
                     </div>
                 </div>
                 <div class="faq-answer hidden text-[14px] text-brandGray mt-3 border-t border-gray-100 pt-3 font-medium leading-relaxed">
-                    Thông tin liên hệ (số điện thoại, địa chỉ) chỉ được sử dụng duy nhất cho việc giao đồ ăn đến tay bạn. Tụi mình cam kết bảo mật 100%, tuyệt đối không chia sẻ cho bên thứ ba.
+                    Thông tin cá nhân (SĐT, Địa chỉ) tuân thủ <strong>NĐ 13/2023/NĐ-CP</strong>, chỉ dùng để giao hàng và bảo mật 100%. Nếu đơn hàng lỗi, sai món hoặc hỏng do vận chuyển, quán áp dụng chính sách hoàn tiền hoặc giao đổi trả tận nơi miễn phí theo <strong>Luật Bảo vệ người tiêu dùng (2023)</strong>.
                 </div>
             </div>
         </div>
@@ -191,6 +191,12 @@
             <div class="pr-4">
                 <h3 class="font-black text-[22px] mb-3 flex items-center gap-1.5"><span class="text-brandPink">3CE</span> FOODS <span class="text-brandPink font-normal">♡</span></h3>
                 <p class="font-bold text-[15px] mb-2 leading-snug">Ăn vặt sương sương - Không vương bé mỡ</p>
+                <div class="mt-5">
+                    <!-- Logo thông báo BCT -->
+                    <a href="#" target="_blank">
+                        <img src="https://theme.hstatic.net/1000006063/1001192770/14/logo-bct.png?v=33" alt="Đã thông báo Bộ Công Thương" class="h-10 opacity-90 hover:opacity-100 transition-opacity">
+                    </a>
+                </div>
             </div>
             <div>
                 <h4 class="font-bold text-[16px] mb-5">Khám phá</h4>
@@ -203,6 +209,8 @@
                 <h4 class="font-bold text-[16px] mb-5">Hỗ trợ khách hàng</h4>
                 <ul class="space-y-3 text-[14px] text-[#A29A9C] font-medium">
                     <li><a href="#faq" class="hover:text-white transition-colors">Câu hỏi thường gặp</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Chính sách đổi trả & hoàn tiền</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Chính sách bảo mật (NĐ 13/2023)</a></li>
                 </ul>
             </div>
             <div>
@@ -236,7 +244,7 @@
         </div>
     </div>
 
-    <!-- MODAL ĐẶT HÀNG (QR CODE & TIỀN MẶT) -->
+    <!-- MODAL ĐẶT HÀNG -->
     <div id="checkout-modal" class="fixed inset-0 bg-brandDark/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-[2rem] w-full max-w-md p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto hide-scrollbar">
             <button onclick="closeModal('checkout-modal')" class="absolute top-6 right-6 text-gray-400 hover:text-brandDark font-bold">✕</button>
@@ -249,7 +257,7 @@
                 <input required placeholder="Địa chỉ giao hàng..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
                 <textarea placeholder="Ghi chú (nếu có)..." rows="2" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium resize-none"></textarea>
                 
-                <!-- Bổ sung Phần Chọn Phương Thức Thanh Toán -->
+                <!-- Chọn Phương Thức Thanh Toán -->
                 <div class="pt-2">
                     <p class="text-[13px] font-bold text-brandDark mb-2">Phương thức thanh toán:</p>
                     <div class="grid grid-cols-2 gap-3">
@@ -268,14 +276,37 @@
                     </div>
                 </div>
 
-                <!-- Hiển thị Mã QR (Mặc định ẩn) -->
+                <!-- Hiển thị Mã QR -->
                 <div id="qr-section" class="hidden p-4 border border-brandPink/30 bg-brandPink/5 rounded-xl text-center">
                     <p class="text-[13px] text-brandDark font-medium mb-2">Quét mã QR để thanh toán <br><span class="font-black text-brandPink text-lg" id="qr-amount">0đ</span></p>
                     <img src="https://api.vietqr.io/image/970436-0912666666-xOq5s2h.jpg?accountName=3CE%20FOODS" alt="QR Code" class="w-32 h-32 mx-auto rounded-lg shadow-sm border border-white">
                     <p class="text-[12px] text-brandGray mt-2">Nội dung CK: <b class="text-brandDark">SĐT của bạn</b></p>
                 </div>
 
-                <button type="submit" class="w-full bg-brandPink text-white font-bold py-3.5 rounded-xl shadow-md mt-2">Gửi đơn ngay</button>
+                <!-- Cập nhật: Checkbox Đồng ý thu thập dữ liệu (Bắt buộc NĐ 13/2023) -->
+                <label class="flex items-start gap-2 cursor-pointer mt-4">
+                    <input type="checkbox" required class="mt-1 accent-brandPink">
+                    <span class="text-[12px] text-brandGray font-medium leading-tight">
+                        Tôi đồng ý với <a href="#" class="text-brandPink hover:underline">Chính sách thu thập & xử lý dữ liệu cá nhân</a> (NĐ 13/2023/NĐ-CP).
+                    </span>
+                </label>
+
+                <!-- Cập nhật: Tùy chọn Xuất hóa đơn (TT 78 & IPSAS) -->
+                <label class="flex items-start gap-2 cursor-pointer mt-2">
+                    <input type="checkbox" id="require-invoice" class="mt-1 accent-brandPink" onchange="toggleInvoice()">
+                    <span class="text-[12px] text-brandGray font-medium leading-tight">
+                        Yêu cầu xuất hóa đơn điện tử (TT 78/2021). Doanh thu được tự động hạch toán theo <b>Chuẩn mực Kế toán Công Quốc tế (IPSAS)</b>.
+                    </span>
+                </label>
+                
+                <!-- Cập nhật: Form điền thông tin Hóa đơn -->
+                <div id="invoice-section" class="hidden space-y-3 mt-3 bg-[#F9F8F7] p-4 rounded-xl border border-borderLight">
+                    <input id="inv-taxcode" placeholder="Mã số thuế..." class="w-full px-4 py-2.5 bg-white border border-borderLight rounded-lg text-[13px] focus:border-brandPink outline-none" />
+                    <input id="inv-company" placeholder="Tên công ty / Đơn vị..." class="w-full px-4 py-2.5 bg-white border border-borderLight rounded-lg text-[13px] focus:border-brandPink outline-none" />
+                    <input id="inv-address" placeholder="Địa chỉ công ty..." class="w-full px-4 py-2.5 bg-white border border-borderLight rounded-lg text-[13px] focus:border-brandPink outline-none" />
+                </div>
+
+                <button type="submit" class="w-full bg-brandPink text-white font-bold py-3.5 rounded-xl shadow-md mt-4">Xác nhận đặt hàng</button>
             </form>
         </div>
     </div>
@@ -293,7 +324,7 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT (ĐÃ KHÔI PHỤC FULL 100% DATA CỦA BẠN VÀ SỬA LỖI ẢNH) -->
+    <!-- JAVASCRIPT -->
     <script>
         const menuData = [
             { id: 'm1', category: 'Mì trộn Indomie', badge: 'Ngự Yến', name: 'Mì trộn Indomie Long Môn Ngự Yến', price: 40000, desc: 'Bao gồm sợi mì Indomie dai mềm thấm đẫm sốt trộn độc quyền, rau củ tươi giòn, xúc xích thơm béo, cá viên dai ngon, tôm surimi đậm vị, viên mực xoắn sần sật và hải sản phô mai béo ngậy.', image: './longmonnguyen.png' },
@@ -345,7 +376,6 @@
             if (sortOption === 'price-low') filtered.sort((a, b) => a.price - b.price);
             if (sortOption === 'price-high') filtered.sort((a, b) => b.price - a.price);
 
-            // Đã fix lỗi loop ảnh bằng cách thêm "this.onerror=null;"
             grid.innerHTML = filtered.map(item => `
                 <div class="bg-white rounded-3xl overflow-hidden border border-borderLight shadow-sm flex flex-col group relative hover:shadow-md transition-shadow">
                     <div class="bg-cardTop h-[150px] relative flex items-center justify-center overflow-hidden">
@@ -421,10 +451,24 @@
             }
         }
 
+        // Cập nhật: Hàm hiển thị form nhập thông tin hóa đơn
+        function toggleInvoice() {
+            const invSection = document.getElementById('invoice-section');
+            const isChecked = document.getElementById('require-invoice').checked;
+            if (isChecked) {
+                invSection.classList.remove('hidden');
+                document.getElementById('inv-taxcode').required = true;
+                document.getElementById('inv-company').required = true;
+            } else {
+                invSection.classList.add('hidden');
+                document.getElementById('inv-taxcode').required = false;
+                document.getElementById('inv-company').required = false;
+            }
+        }
+
         function openCheckoutModal() { 
             if(cart.length === 0) return alert('Giỏ hàng trống bạn ơi!'); 
             
-            // Cập nhật số tiền vào mục QR Code
             const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
             document.getElementById('qr-amount').textContent = formatPrice(total);
             
@@ -439,11 +483,17 @@
             event.preventDefault(); 
             
             const method = document.querySelector('input[name="payment_method"]:checked').value;
-            if (method === 'qr') {
-                alert('🎉 Đặt hàng thành công! Hãy hoàn tất quét mã QR nếu bạn chưa chuyển khoản nhé. Quán sẽ liên hệ bạn ngay!');
-            } else {
-                alert('🎉 Đặt hàng thành công! Quán sẽ gọi xác nhận ngay.');
+            const requiresInvoice = document.getElementById('require-invoice').checked;
+            
+            let message = method === 'qr' 
+                ? '🎉 Đặt hàng thành công! Hãy hoàn tất quét mã QR nếu bạn chưa chuyển khoản nhé.' 
+                : '🎉 Đặt hàng thành công! Quán sẽ gọi xác nhận ngay.';
+
+            if (requiresInvoice) {
+                message += '\n\n✅ Hóa đơn điện tử sẽ được gửi kèm và hạch toán tự động theo chuẩn mực IPSAS.';
             }
+
+            alert(message);
 
             cart = []; 
             updateCartUI(); 
@@ -452,6 +502,7 @@
             event.target.reset();
             document.querySelector('input[value="cash"]').checked = true;
             toggleQR(false); 
+            toggleInvoice(); 
         }
 
         document.addEventListener('DOMContentLoaded', () => {
