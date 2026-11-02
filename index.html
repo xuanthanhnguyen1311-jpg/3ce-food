@@ -94,7 +94,6 @@
             </div>
             <div class="relative w-full max-w-sm flex items-center justify-center min-h-[300px]">
                 <div class="absolute w-[320px] h-[320px] bg-gradient-to-tr from-[#FCDCE6] to-white/70 rounded-full blur-sm"></div>
-                <!-- Preload LCP Image by using fetchpriority -->
                 <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Food/Steaming%20Bowl.png" fetchpriority="high" alt="Mì Trộn" class="relative z-10 w-56 transform hover:scale-105 transition-transform duration-500 drop-shadow-xl" />
                 <div class="absolute top-4 right-0 bg-white px-4 py-2.5 rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] text-xs font-bold text-brandDark flex items-center gap-1.5 z-20">
                     💖 Mê từ miếng đầu
@@ -262,18 +261,47 @@
         </div>
     </div>
 
-    <!-- MODALS -->
+    <!-- MODAL ĐẶT HÀNG (CÓ CHỌN PHƯƠNG THỨC THANH TOÁN) -->
     <div id="checkout-modal" class="fixed inset-0 bg-brandDark/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-[2rem] w-full max-w-md p-8 shadow-2xl relative">
+        <div class="bg-white rounded-[2rem] w-full max-w-md p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto hide-scrollbar">
             <button onclick="closeModal('checkout-modal')" class="absolute top-6 right-6 text-gray-400 hover:text-brandDark font-bold">✕</button>
             <h3 class="text-2xl font-black text-brandDark mb-2">Thông tin đặt món 🛵</h3>
             <p class="text-[13px] text-brandGray mb-6 font-medium">Nhập thông tin giao hàng để quán ship cho bạn nha!</p>
-            <form onsubmit="event.preventDefault(); alert('🎉 Đặt hàng thành công!'); cart=[]; updateCartUI(); closeModal('checkout-modal');" class="space-y-4">
+            
+            <form id="checkout-form" onsubmit="handleCheckout(event)" class="space-y-4">
                 <input required placeholder="Tên của bạn..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
                 <input required placeholder="Số điện thoại..." type="tel" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
                 <input required placeholder="Địa chỉ giao hàng..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
-                <textarea placeholder="Ghi chú..." rows="2" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium resize-none"></textarea>
-                <button type="submit" class="w-full bg-brandPink text-white font-bold py-3.5 rounded-xl shadow-md">Gửi đơn ngay</button>
+                <textarea placeholder="Ghi chú (nếu có)..." rows="2" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium resize-none"></textarea>
+                
+                <!-- Bổ sung Phần Chọn Phương Thức Thanh Toán -->
+                <div class="pt-2">
+                    <p class="text-[13px] font-bold text-brandDark mb-2">Phương thức thanh toán:</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="payment_method" value="cash" class="peer sr-only" checked onchange="toggleQR(false)">
+                            <div class="text-center px-4 py-3 rounded-xl border border-borderLight bg-[#F9F8F7] peer-checked:bg-brandPink/10 peer-checked:border-brandPink peer-checked:text-brandPink font-bold text-[13px] transition-all">
+                                💵 Tiền mặt
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="payment_method" value="qr" class="peer sr-only" onchange="toggleQR(true)">
+                            <div class="text-center px-4 py-3 rounded-xl border border-borderLight bg-[#F9F8F7] peer-checked:bg-brandPink/10 peer-checked:border-brandPink peer-checked:text-brandPink font-bold text-[13px] transition-all">
+                                📲 Mã QR
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Hiển thị Mã QR (Mặc định ẩn) -->
+                <div id="qr-section" class="hidden p-4 border border-brandPink/30 bg-brandPink/5 rounded-xl text-center">
+                    <p class="text-[13px] text-brandDark font-medium mb-2">Quét mã QR để thanh toán <br><span class="font-black text-brandPink text-lg" id="qr-amount">0đ</span></p>
+                    <!-- Link API tạo mã VietQR tự động, thay STK và Tên Ngân Hàng của quán sau -->
+                    <img src="https://api.vietqr.io/image/970436-0912666666-xOq5s2h.jpg?accountName=3CE%20FOODS" alt="QR Code" class="w-32 h-32 mx-auto rounded-lg shadow-sm border border-white">
+                    <p class="text-[12px] text-brandGray mt-2">Nội dung CK: <b class="text-brandDark">SĐT của bạn</b></p>
+                </div>
+
+                <button type="submit" class="w-full bg-brandPink text-white font-bold py-3.5 rounded-xl shadow-md mt-2">Gửi đơn ngay</button>
             </form>
         </div>
     </div>
@@ -359,69 +387,4 @@
                                 <span class="font-black text-brandPink text-[20px] tracking-tight">${formatPrice(item.price)}</span>
                                 <span class="text-brandGray/70 text-[13px] font-medium ml-0.5">/ phần</span>
                             </div>
-                            <button onclick="addToCart('${item.id}')" class="bg-greenBtn text-greenText w-[42px] h-[42px] rounded-2xl flex items-center justify-center text-xl font-bold hover:bg-brandPink hover:text-white transition-colors">+</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function addToCart(id) {
-            const item = cart.find(i => i.id === id);
-            if (item) item.quantity++; else cart.push({ ...menuData.find(p => p.id === id), quantity: 1 });
-            updateCartUI();
-        }
-        function changeQty(id, delta) {
-            const item = cart.find(i => i.id === id);
-            if (item) { item.quantity += delta; if (item.quantity <= 0) cart = cart.filter(i => i.id !== id); updateCartUI(); }
-        }
-        function updateCartUI() {
-            document.getElementById('cart-badge').textContent = cart.reduce((sum, i) => sum + i.quantity, 0);
-            document.getElementById('cart-total').textContent = formatPrice(cart.reduce((sum, i) => sum + i.price * i.quantity, 0));
-            document.getElementById('cart-items').innerHTML = cart.length === 0 ? `<div class="text-center text-gray-400 font-medium mt-10">Giỏ hàng trống!</div>` : cart.map(item => `
-                <div class="flex gap-4 border-b border-borderLight pb-4">
-                    <img src="${item.image}" alt="${item.name}" loading="lazy" decoding="async" onerror="this.src='https://placehold.co/100x100/F4F9F6/DE5C8E?text=3CE'" class="w-16 h-16 rounded-xl object-cover shadow-sm bg-[#F4F9F6]">
-                    <div class="flex-1 flex flex-col justify-between">
-                        <h4 class="font-bold text-brandDark text-[14px] leading-tight">${item.name}</h4>
-                        <div class="flex justify-between items-center mt-2">
-                            <p class="font-black text-brandPink text-[15px]">${formatPrice(item.price)}</p>
-                            <div class="flex gap-3 bg-[#F9F8F7] border border-borderLight px-2 py-1 rounded-lg items-center font-bold text-sm">
-                                <button onclick="changeQty('${item.id}', -1)" class="text-gray-400 hover:text-brandPink">-</button>
-                                <span>${item.quantity}</span>
-                                <button onclick="changeQty('${item.id}', 1)" class="text-gray-400 hover:text-greenText">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function toggleCart() {
-            const sb = document.getElementById('cart-sidebar'), ov = document.getElementById('cart-overlay');
-            if (sb.classList.contains('hidden-cart')) { sb.classList.remove('hidden-cart', 'hidden'); sb.classList.add('show-cart'); ov.classList.remove('hidden'); }
-            else { sb.classList.remove('show-cart'); sb.classList.add('hidden-cart'); ov.classList.add('hidden'); setTimeout(() => sb.classList.add('hidden'), 300); }
-        }
-
-        function toggleFaq(el) { 
-            const answer = el.querySelector('.faq-answer');
-            const icon = el.querySelector('.faq-icon');
-            
-            // Ẩn/Hiện nội dung câu trả lời
-            answer.classList.toggle('hidden');
-            // Xoay icon 90 độ xuống dưới
-            icon.classList.toggle('rotate-90');
-        }
-
-        function openCheckoutModal() { if(cart.length===0) return alert('Giỏ hàng trống bạn ơi!'); toggleCart(); document.getElementById('checkout-modal').classList.remove('hidden'); }
-        function openContactModal() { document.getElementById('contact-modal').classList.remove('hidden'); }
-        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
-        // Bọc trong DOMContentLoaded để đảm bảo HTML parse xong mới chạy Script (Tối ưu tốc độ load DOM)
-        document.addEventListener('DOMContentLoaded', () => {
-            renderTabs(); 
-            renderMenu(); 
-            updateCartUI();
-        });
-    </script>
-</body>
-</html>
+                            <button onclick
