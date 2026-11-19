@@ -42,129 +42,182 @@
 </head>
 <body class="text-brandGray antialiased min-h-screen flex flex-col">
 
-    <!-- TOP ADMIN BAR -->
-    <div class="bg-brandDark text-white text-center text-[12px] font-bold py-2 tracking-wider uppercase">
-        🔐 Hệ thống Quản trị Nội bộ — 3CE FOODS Admin Dashboard
-    </div>
-
-    <!-- HEADER -->
-    <header class="bg-white sticky top-0 z-30 border-b border-borderLight shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <div class="flex items-center gap-1.5">
-                    <span class="bg-brandPink text-white px-2.5 py-1 rounded-xl font-black text-xl tracking-wider">3CE</span>
-                    <span class="text-brandPink font-black text-2xl tracking-tight">ADMIN.</span>
-                </div>
-                <span class="hidden sm:inline-block bg-greenBtn text-greenText text-xs font-extrabold px-3 py-1 rounded-full">
-                    Quản lý Đơn hàng & Doanh thu
-                </span>
+    <!-- MÀN HÌNH ĐĂNG NHẬP BẢO MẬT -->
+    <div id="login-screen" class="fixed inset-0 bg-bgMain z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-md p-8 shadow-xl border border-borderLight text-center">
+            <div class="inline-flex items-center gap-1.5 mb-4">
+                <span class="bg-brandPink text-white px-3 py-1 rounded-xl font-black text-2xl tracking-wider">3CE</span>
+                <span class="text-brandPink font-black text-2xl tracking-tight">ADMIN.</span>
+            </div>
+            
+            <div class="w-14 h-14 bg-[#FDF5F8] text-brandPink rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">
+                <i class="fas fa-lock"></i>
             </div>
 
-            <div class="flex flex-wrap items-center gap-2.5">
-                <button onclick="renderDashboard()" class="px-4 py-2 bg-[#F0F7F4] hover:bg-greenBtn text-greenText font-bold text-xs rounded-xl transition-all flex items-center gap-1.5">
-                    <i class="fas fa-sync-alt"></i> Làm mới
+            <h2 class="text-2xl font-black text-brandDark mb-1">Xác thực Quản trị viên</h2>
+            <p class="text-xs text-brandGray font-medium mb-6">Vui lòng nhập mật khẩu nội bộ để truy cập hệ thống quản lý đơn hàng 3CE FOODS.</p>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4 text-left">
+                <div>
+                    <label class="block text-xs font-bold text-brandDark mb-1.5 ml-1">Mật khẩu truy cập</label>
+                    <div class="relative">
+                        <i class="fas fa-key absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input 
+                            type="password" 
+                            id="admin-password" 
+                            required 
+                            placeholder="•••••••••" 
+                            autocomplete="current-password"
+                            class="w-full pl-11 pr-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-sm font-bold text-brandDark tracking-widest focus:outline-none focus:border-brandPink focus:ring-1 focus:ring-brandPink transition-all"
+                        />
+                    </div>
+                    <p id="login-error" class="hidden text-xs font-bold text-red-500 mt-2 ml-1">
+                        <i class="fas fa-exclamation-circle mr-1"></i> Mật khẩu không chính xác! Vui lòng thử lại.
+                    </p>
+                </div>
+
+                <button type="submit" class="w-full bg-brandPink hover:bg-[#c94b7a] text-white font-bold py-3.5 rounded-xl text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-unlock-alt"></i> Mở khóa Kênh Quản Trị
                 </button>
-                <button onclick="handleReset()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-brandDark font-bold text-xs rounded-xl transition-all flex items-center gap-1.5">
-                    <i class="fas fa-undo"></i> Khôi phục mẫu
-                </button>
-                <a href="index.html" class="px-4 py-2 bg-brandPink hover:bg-[#c94b7a] text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center gap-1.5">
-                    <i class="fas fa-store"></i> Về Trang Bán Hàng
+            </form>
+
+            <div class="mt-6 pt-5 border-t border-borderLight/60">
+                <a href="index.html" class="text-xs font-bold text-brandGray hover:text-brandPink transition-colors">
+                    ← Quay lại Trang Bán Hàng
                 </a>
             </div>
         </div>
-    </header>
+    </div>
 
-    <!-- MAIN CONTENT -->
-    <main class="max-w-7xl mx-auto w-full px-6 py-8 space-y-6 flex-1">
-
-        <!-- 4 THẺ CHỈ SỐ KPI -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="bg-white p-6 rounded-3xl border border-borderLight shadow-sm flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-bold uppercase tracking-wider text-brandGray">Tổng đơn hàng</p>
-                    <p id="kpi-total" class="text-3xl font-black text-brandDark mt-1">0</p>
-                </div>
-                <div class="w-12 h-12 rounded-2xl bg-[#FDF5F8] text-brandPink flex items-center justify-center text-xl">
-                    <i class="fas fa-shopping-bag"></i>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-3xl border border-amber-200 shadow-sm flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-bold uppercase tracking-wider text-amber-600">Chờ xác nhận</p>
-                    <p id="kpi-pending" class="text-3xl font-black text-amber-500 mt-1">0</p>
-                </div>
-                <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl">
-                    <i class="fas fa-clock"></i>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-3xl border border-blue-200 shadow-sm flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-bold uppercase tracking-wider text-blue-600">Đang giao hàng</p>
-                    <p id="kpi-shipping" class="text-3xl font-black text-blue-600 mt-1">0</p>
-                </div>
-                <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
-                    <i class="fas fa-motorcycle"></i>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-3xl border border-green-200 shadow-sm flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-bold uppercase tracking-wider text-greenText">Doanh thu (tạm tính)</p>
-                    <p id="kpi-revenue" class="text-2xl font-black text-greenText mt-1">0đ</p>
-                </div>
-                <div class="w-12 h-12 rounded-2xl bg-greenBtn text-greenText flex items-center justify-center text-xl">
-                    <i class="fas fa-coins"></i>
-                </div>
-            </div>
+    <!-- TOÀN BỘ GIAO DIỆN QUẢN TRỊ (ẨN CHO ĐẾN KHI NHẬP ĐÚNG MẬT KHẨU) -->
+    <div id="admin-wrapper" class="hidden flex-1 flex flex-col">
+        <!-- TOP ADMIN BAR -->
+        <div class="bg-brandDark text-white text-center text-[12px] font-bold py-2 tracking-wider uppercase">
+            🔐 Hệ thống Quản trị Nội bộ — 3CE FOODS Admin Dashboard
         </div>
 
-        <!-- THANH TÌM KIẾM & LỌC TRẠNG THÁI -->
-        <div class="bg-white p-5 rounded-3xl border border-borderLight shadow-sm space-y-4">
-            <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
-                <!-- Tabs lọc -->
-                <div id="filter-tabs" class="flex flex-wrap gap-2">
-                    <button onclick="setFilter('Tất cả')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-brandPink text-white shadow-sm">Tất cả</button>
-                    <button onclick="setFilter('Chờ xác nhận')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Chờ xác nhận</button>
-                    <button onclick="setFilter('Đang chế biến')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Đang chế biến</button>
-                    <button onclick="setFilter('Đang giao')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Đang giao</button>
-                    <button onclick="setFilter('Hoàn thành')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Hoàn thành</button>
-                    <button onclick="setFilter('Đã hủy')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Đã hủy</button>
+        <!-- HEADER -->
+        <header class="bg-white sticky top-0 z-30 border-b border-borderLight shadow-sm">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-1.5">
+                        <span class="bg-brandPink text-white px-2.5 py-1 rounded-xl font-black text-xl tracking-wider">3CE</span>
+                        <span class="text-brandPink font-black text-2xl tracking-tight">ADMIN.</span>
+                    </div>
+                    <span class="hidden sm:inline-block bg-greenBtn text-greenText text-xs font-extrabold px-3 py-1 rounded-full">
+                        Quản lý Đơn hàng & Doanh thu
+                    </span>
                 </div>
 
-                <!-- Ô tìm kiếm -->
-                <div class="relative w-full md:w-72">
-                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                    <input type="text" id="admin-search" oninput="renderDashboard()" placeholder="Tìm mã đơn, tên hoặc SĐT..." class="w-full pl-10 pr-4 py-2.5 bg-bgMain border border-borderLight rounded-full text-xs font-semibold text-brandDark focus:outline-none focus:border-brandPink">
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <button onclick="renderDashboard()" class="px-4 py-2 bg-[#F0F7F4] hover:bg-greenBtn text-greenText font-bold text-xs rounded-xl transition-all flex items-center gap-1.5">
+                        <i class="fas fa-sync-alt"></i> Làm mới
+                    </button>
+                    <button onclick="handleReset()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-brandDark font-bold text-xs rounded-xl transition-all flex items-center gap-1.5">
+                        <i class="fas fa-undo"></i> Khôi phục mẫu
+                    </button>
+                    <button onclick="lockAdmin()" class="px-4 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold text-xs rounded-xl transition-all flex items-center gap-1.5">
+                        <i class="fas fa-lock"></i> Khóa
+                    </button>
+                    <a href="index.html" class="px-4 py-2 bg-brandPink hover:bg-[#c94b7a] text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center gap-1.5">
+                        <i class="fas fa-store"></i> Về Trang Bán Hàng
+                    </a>
                 </div>
             </div>
-        </div>
+        </header>
 
-        <!-- BẢNG QUẢN LÝ ĐƠN HÀNG -->
-        <div class="bg-white rounded-3xl border border-borderLight shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-[#FDF5F8] text-brandDark text-[11px] font-extrabold uppercase tracking-wider border-b border-borderLight">
-                            <th class="p-4">Mã đơn</th>
-                            <th class="p-4">Khách hàng & Địa chỉ</th>
-                            <th class="p-4">Chi tiết món đặt</th>
-                            <th class="p-4">Tổng tiền</th>
-                            <th class="p-4">Trạng thái</th>
-                            <th class="p-4 text-right">Thao tác xử lý</th>
-                        </tr>
-                    </thead>
-                    <tbody id="orders-tbody" class="divide-y divide-borderLight/60 text-sm">
-                        <!-- Dữ liệu đơn hàng đổ tại đây -->
-                    </tbody>
-                </table>
+        <!-- MAIN CONTENT -->
+        <main class="max-w-7xl mx-auto w-full px-6 py-8 space-y-6 flex-1">
+
+            <!-- 4 THẺ CHỈ SỐ KPI -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="bg-white p-6 rounded-3xl border border-borderLight shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-brandGray">Tổng đơn hàng</p>
+                        <p id="kpi-total" class="text-3xl font-black text-brandDark mt-1">0</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-[#FDF5F8] text-brandPink flex items-center justify-center text-xl">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-3xl border border-amber-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-amber-600">Chờ xác nhận</p>
+                        <p id="kpi-pending" class="text-3xl font-black text-amber-500 mt-1">0</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-3xl border border-blue-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-blue-600">Đang giao hàng</p>
+                        <p id="kpi-shipping" class="text-3xl font-black text-blue-600 mt-1">0</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                        <i class="fas fa-motorcycle"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-3xl border border-green-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-greenText">Doanh thu (tạm tính)</p>
+                        <p id="kpi-revenue" class="text-2xl font-black text-greenText mt-1">0đ</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-greenBtn text-greenText flex items-center justify-center text-xl">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                </div>
             </div>
-            <div id="empty-state" class="hidden p-12 text-center text-brandGray font-medium">
-                Không tìm thấy đơn hàng nào phù hợp!
+
+            <!-- THANH TÌM KIẾM & LỌC TRẠNG THÁI -->
+            <div class="bg-white p-5 rounded-3xl border border-borderLight shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
+                    <!-- Tabs lọc -->
+                    <div id="filter-tabs" class="flex flex-wrap gap-2">
+                        <button onclick="setFilter('Tất cả')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-brandPink text-white shadow-sm">Tất cả</button>
+                        <button onclick="setFilter('Chờ xác nhận')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Chờ xác nhận</button>
+                        <button onclick="setFilter('Đang chế biến')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Đang chế biến</button>
+                        <button onclick="setFilter('Đang giao')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Đang giao</button>
+                        <button onclick="setFilter('Hoàn thành')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Hoàn thành</button>
+                        <button onclick="setFilter('Đã hủy')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Đã hủy</button>
+                    </div>
+
+                    <!-- Ô tìm kiếm -->
+                    <div class="relative w-full md:w-72">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                        <input type="text" id="admin-search" oninput="renderDashboard()" placeholder="Tìm mã đơn, tên hoặc SĐT..." class="w-full pl-10 pr-4 py-2.5 bg-bgMain border border-borderLight rounded-full text-xs font-semibold text-brandDark focus:outline-none focus:border-brandPink">
+                    </div>
+                </div>
             </div>
-        </div>
-    </main>
+
+            <!-- BẢNG QUẢN LÝ ĐƠN HÀNG -->
+            <div class="bg-white rounded-3xl border border-borderLight shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-[#FDF5F8] text-brandDark text-[11px] font-extrabold uppercase tracking-wider border-b border-borderLight">
+                                <th class="p-4">Mã đơn</th>
+                                <th class="p-4">Khách hàng & Địa chỉ</th>
+                                <th class="p-4">Chi tiết món đặt</th>
+                                <th class="p-4">Tổng tiền</th>
+                                <th class="p-4">Trạng thái</th>
+                                <th class="p-4 text-right">Thao tác xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-tbody" class="divide-y divide-borderLight/60 text-sm">
+                            <!-- Dữ liệu đơn hàng đổ tại đây -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="empty-state" class="hidden p-12 text-center text-brandGray font-medium">
+                    Không tìm thấy đơn hàng nào phù hợp!
+                </div>
+            </div>
+        </main>
+    </div>
 
     <!-- MODAL IN PHIẾU ĐƠN / HÓA ĐƠN BẾP -->
     <div id="receipt-modal" class="fixed inset-0 bg-brandDark/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -195,6 +248,40 @@
     </div>
 
     <script>
+        // Mật khẩu truy cập trang quản trị
+        const ADMIN_PASSWORD = "123456789";
+        const AUTH_SESSION_KEY = "3ce_admin_authenticated";
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const inputPass = document.getElementById("admin-password").value;
+            const errorMsg = document.getElementById("login-error");
+
+            if (inputPass === ADMIN_PASSWORD) {
+                sessionStorage.setItem(AUTH_SESSION_KEY, "true");
+                errorMsg.classList.add("hidden");
+                unlockDashboard();
+            } else {
+                errorMsg.classList.remove("hidden");
+                document.getElementById("admin-password").value = "";
+                document.getElementById("admin-password").focus();
+            }
+        }
+
+        function unlockDashboard() {
+            document.getElementById("login-screen").classList.add("hidden");
+            document.getElementById("admin-wrapper").classList.remove("hidden");
+            renderDashboard();
+        }
+
+        function lockAdmin() {
+            sessionStorage.removeItem(AUTH_SESSION_KEY);
+            document.getElementById("admin-wrapper").classList.add("hidden");
+            document.getElementById("login-screen").classList.remove("hidden");
+            document.getElementById("admin-password").value = "";
+            document.getElementById("login-error").classList.add("hidden");
+        }
+
         // Dùng chung khóa localStorage với index.html
         const STORAGE_KEY = "3ce_foods_orders";
 
@@ -452,10 +539,18 @@
 
         // Lắng nghe thay đổi từ tab index.html theo thời gian thực
         window.addEventListener("storage", (e) => {
-            if (e.key === STORAGE_KEY) renderDashboard();
+            if (e.key === STORAGE_KEY && sessionStorage.getItem(AUTH_SESSION_KEY) === "true") {
+                renderDashboard();
+            }
         });
 
-        document.addEventListener("DOMContentLoaded", renderDashboard);
+        document.addEventListener("DOMContentLoaded", () => {
+            if (sessionStorage.getItem(AUTH_SESSION_KEY) === "true") {
+                unlockDashboard();
+            } else {
+                document.getElementById("admin-password").focus();
+            }
+        });
     </script>
 </body>
 </html>
