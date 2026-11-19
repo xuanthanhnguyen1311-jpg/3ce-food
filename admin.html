@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3CE FOODS Admin | Quản Trị Đơn Hàng</title>
+    <title>3CE FOODS Admin | Quản Trị Đơn Hàng & Tài Chính</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,7 +55,7 @@
             </div>
 
             <h2 class="text-2xl font-black text-brandDark mb-1">Xác thực Quản trị viên</h2>
-            <p class="text-xs text-brandGray font-medium mb-6">Vui lòng nhập mật khẩu nội bộ để truy cập hệ thống quản lý đơn hàng 3CE FOODS.</p>
+            <p class="text-xs text-brandGray font-medium mb-6">Vui lòng nhập mật khẩu nội bộ để truy cập hệ thống quản lý 3CE FOODS.</p>
 
             <form onsubmit="handleLogin(event)" class="space-y-4 text-left">
                 <div>
@@ -89,11 +89,11 @@
         </div>
     </div>
 
-    <!-- TOÀN BỘ GIAO DIỆN QUẢN TRỊ (ẨN CHO ĐẾN KHI NHẬP ĐÚNG MẬT KHẨU) -->
+    <!-- TOÀN BỘ GIAO DIỆN QUẢN TRỊ -->
     <div id="admin-wrapper" class="hidden flex-1 flex flex-col">
         <!-- TOP ADMIN BAR -->
         <div class="bg-brandDark text-white text-center text-[12px] font-bold py-2 tracking-wider uppercase">
-            🔐 Hệ thống Quản trị Nội bộ — 3CE FOODS Admin Dashboard
+            🔐 Hệ thống Quản trị Nội bộ & Tài chính — 3CE FOODS Admin Dashboard
         </div>
 
         <!-- HEADER -->
@@ -105,12 +105,12 @@
                         <span class="text-brandPink font-black text-2xl tracking-tight">ADMIN.</span>
                     </div>
                     <span class="hidden sm:inline-block bg-greenBtn text-greenText text-xs font-extrabold px-3 py-1 rounded-full">
-                        Quản lý Đơn hàng & Doanh thu
+                        ERP & Quản trị Tài chính
                     </span>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2.5">
-                    <button onclick="renderDashboard()" class="px-4 py-2 bg-[#F0F7F4] hover:bg-greenBtn text-greenText font-bold text-xs rounded-xl transition-all flex items-center gap-1.5">
+                    <button onclick="renderAll()" class="px-4 py-2 bg-[#F0F7F4] hover:bg-greenBtn text-greenText font-bold text-xs rounded-xl transition-all flex items-center gap-1.5">
                         <i class="fas fa-sync-alt"></i> Làm mới
                     </button>
                     <button onclick="handleReset()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-brandDark font-bold text-xs rounded-xl transition-all flex items-center gap-1.5">
@@ -124,12 +124,28 @@
                     </a>
                 </div>
             </div>
+
+            <!-- MENU CHUYỂN PHÂN HỆ QUẢN TRỊ -->
+            <div class="max-w-7xl mx-auto px-6 pb-3 flex overflow-x-auto gap-2">
+                <button onclick="switchSection('orders')" id="nav-orders" class="nav-tab px-4 py-2 rounded-xl text-xs font-extrabold bg-brandDark text-white transition-all flex items-center gap-2 whitespace-nowrap">
+                    <i class="fas fa-receipt"></i> 1. Quản lý Đơn hàng
+                </button>
+                <button onclick="switchSection('products')" id="nav-products" class="nav-tab px-4 py-2 rounded-xl text-xs font-extrabold bg-bgMain text-brandGray hover:bg-pink-50 transition-all flex items-center gap-2 whitespace-nowrap">
+                    <i class="fas fa-chart-pie"></i> 2. Doanh thu theo Sản phẩm
+                </button>
+                <button onclick="switchSection('finance')" id="nav-finance" class="nav-tab px-4 py-2 rounded-xl text-xs font-extrabold bg-bgMain text-brandGray hover:bg-pink-50 transition-all flex items-center gap-2 whitespace-nowrap">
+                    <i class="fas fa-chart-line"></i> 3. Doanh thu Tháng & Thuế TNDN
+                </button>
+                <button onclick="switchSection('inventory')" id="nav-inventory" class="nav-tab px-4 py-2 rounded-xl text-xs font-extrabold bg-bgMain text-brandGray hover:bg-pink-50 transition-all flex items-center gap-2 whitespace-nowrap">
+                    <i class="fas fa-boxes"></i> 4. Quản lý Tồn kho
+                </button>
+            </div>
         </header>
 
         <!-- MAIN CONTENT -->
         <main class="max-w-7xl mx-auto w-full px-6 py-8 space-y-6 flex-1">
 
-            <!-- 4 THẺ CHỈ SỐ KPI -->
+            <!-- 4 THẺ CHỈ SỐ KPI TỔNG QUAN -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 <div class="bg-white p-6 rounded-3xl border border-borderLight shadow-sm flex items-center justify-between">
                     <div>
@@ -151,71 +167,213 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-3xl border border-blue-200 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-wider text-blue-600">Đang giao hàng</p>
-                        <p id="kpi-shipping" class="text-3xl font-black text-blue-600 mt-1">0</p>
-                    </div>
-                    <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
-                        <i class="fas fa-motorcycle"></i>
-                    </div>
-                </div>
-
                 <div class="bg-white p-6 rounded-3xl border border-green-200 shadow-sm flex items-center justify-between">
                     <div>
-                        <p class="text-xs font-bold uppercase tracking-wider text-greenText">Doanh thu (tạm tính)</p>
+                        <p class="text-xs font-bold uppercase tracking-wider text-greenText">Doanh thu kỳ này</p>
                         <p id="kpi-revenue" class="text-2xl font-black text-greenText mt-1">0đ</p>
                     </div>
                     <div class="w-12 h-12 rounded-2xl bg-greenBtn text-greenText flex items-center justify-center text-xl">
                         <i class="fas fa-coins"></i>
                     </div>
                 </div>
-            </div>
 
-            <!-- THANH TÌM KIẾM & LỌC TRẠNG THÁI -->
-            <div class="bg-white p-5 rounded-3xl border border-borderLight shadow-sm space-y-4">
-                <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
-                    <!-- Tabs lọc -->
-                    <div id="filter-tabs" class="flex flex-wrap gap-2">
-                        <button onclick="setFilter('Tất cả')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-brandPink text-white shadow-sm">Tất cả</button>
-                        <button onclick="setFilter('Chờ xác nhận')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Chờ xác nhận</button>
-                        <button onclick="setFilter('Đang chế biến')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Đang chế biến</button>
-                        <button onclick="setFilter('Đang giao')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Đang giao</button>
-                        <button onclick="setFilter('Hoàn thành')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Hoàn thành</button>
-                        <button onclick="setFilter('Đã hủy')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Đã hủy</button>
+                <div class="bg-white p-6 rounded-3xl border border-purple-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-purple-700">Thuế TNDN dự kiến (20%)</p>
+                        <p id="kpi-tax" class="text-2xl font-black text-purple-600 mt-1">0đ</p>
                     </div>
-
-                    <!-- Ô tìm kiếm -->
-                    <div class="relative w-full md:w-72">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                        <input type="text" id="admin-search" oninput="renderDashboard()" placeholder="Tìm mã đơn, tên hoặc SĐT..." class="w-full pl-10 pr-4 py-2.5 bg-bgMain border border-borderLight rounded-full text-xs font-semibold text-brandDark focus:outline-none focus:border-brandPink">
+                    <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
+                        <i class="fas fa-file-invoice-dollar"></i>
                     </div>
                 </div>
             </div>
 
-            <!-- BẢNG QUẢN LÝ ĐƠN HÀNG -->
-            <div class="bg-white rounded-3xl border border-borderLight shadow-sm overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-[#FDF5F8] text-brandDark text-[11px] font-extrabold uppercase tracking-wider border-b border-borderLight">
-                                <th class="p-4">Mã đơn</th>
-                                <th class="p-4">Khách hàng & Địa chỉ</th>
-                                <th class="p-4">Chi tiết món đặt</th>
-                                <th class="p-4">Tổng tiền</th>
-                                <th class="p-4">Trạng thái</th>
-                                <th class="p-4 text-right">Thao tác xử lý</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orders-tbody" class="divide-y divide-borderLight/60 text-sm">
-                            <!-- Dữ liệu đơn hàng đổ tại đây -->
-                        </tbody>
-                    </table>
+            <!-- ===================================================================== -->
+            <!-- PHÂN HỆ 1: QUẢN LÝ ĐƠN HÀNG                                           -->
+            <!-- ===================================================================== -->
+            <section id="sec-orders" class="admin-section space-y-6">
+                <div class="bg-white p-5 rounded-3xl border border-borderLight shadow-sm space-y-4">
+                    <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
+                        <div id="filter-tabs" class="flex flex-wrap gap-2">
+                            <button onclick="setFilter('Tất cả')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-brandPink text-white shadow-sm">Tất cả</button>
+                            <button onclick="setFilter('Chờ xác nhận')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Chờ xác nhận</button>
+                            <button onclick="setFilter('Đang chế biến')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Đang chế biến</button>
+                            <button onclick="setFilter('Đang giao')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Đang giao</button>
+                            <button onclick="setFilter('Hoàn thành')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Hoàn thành</button>
+                            <button onclick="setFilter('Đã hủy')" class="filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50">Đã hủy</button>
+                        </div>
+
+                        <div class="relative w-full md:w-72">
+                            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <input type="text" id="admin-search" oninput="renderOrdersTable()" placeholder="Tìm mã đơn, tên hoặc SĐT..." class="w-full pl-10 pr-4 py-2.5 bg-bgMain border border-borderLight rounded-full text-xs font-semibold text-brandDark focus:outline-none focus:border-brandPink">
+                        </div>
+                    </div>
                 </div>
-                <div id="empty-state" class="hidden p-12 text-center text-brandGray font-medium">
-                    Không tìm thấy đơn hàng nào phù hợp!
+
+                <div class="bg-white rounded-3xl border border-borderLight shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-[#FDF5F8] text-brandDark text-[11px] font-extrabold uppercase tracking-wider border-b border-borderLight">
+                                    <th class="p-4">Mã đơn</th>
+                                    <th class="p-4">Khách hàng & Địa chỉ</th>
+                                    <th class="p-4">Chi tiết món đặt</th>
+                                    <th class="p-4">Tổng tiền</th>
+                                    <th class="p-4">Trạng thái</th>
+                                    <th class="p-4 text-right">Thao tác xử lý</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-tbody" class="divide-y divide-borderLight/60 text-sm"></tbody>
+                        </table>
+                    </div>
+                    <div id="empty-state" class="hidden p-12 text-center text-brandGray font-medium">
+                        Không tìm thấy đơn hàng nào phù hợp!
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- ===================================================================== -->
+            <!-- PHÂN HỆ 2: DOANH THU THEO SẢN PHẨM                                    -->
+            <!-- ===================================================================== -->
+            <section id="sec-products" class="admin-section hidden space-y-6">
+                <div class="bg-white p-6 rounded-3xl border border-borderLight shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+                        <div>
+                            <h3 class="text-lg font-black text-brandDark">Báo cáo Doanh thu & Lợi nhuận gộp theo Sản phẩm</h3>
+                            <p class="text-xs text-brandGray mt-0.5">Tự động tổng hợp từ các đơn hàng hợp lệ (không tính đơn đã hủy).</p>
+                        </div>
+                        <span class="bg-[#FDF5F8] text-brandPink text-xs font-extrabold px-3.5 py-1.5 rounded-full">
+                            Cập nhật thời gian thực
+                        </span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-[#F0F7F4] text-brandDark text-[11px] font-extrabold uppercase tracking-wider border-b border-borderLight">
+                                    <th class="p-4">Top</th>
+                                    <th class="p-4">Tên món ăn / Đồ uống</th>
+                                    <th class="p-4 text-center">Số lượng bán</th>
+                                    <th class="p-4 text-right">Đơn giá</th>
+                                    <th class="p-4 text-right">Doanh thu</th>
+                                    <th class="p-4 w-48">Tỷ trọng đóng góp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product-revenue-tbody" class="divide-y divide-borderLight/60 text-sm"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================================================================== -->
+            <!-- PHÂN HỆ 3: DOANH THU THEO THÁNG & THUẾ TNDN DỰ KIẾN                   -->
+            <!-- ===================================================================== -->
+            <section id="sec-finance" class="admin-section hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Biểu đồ cột Doanh thu theo tháng -->
+                    <div class="lg:col-span-7 bg-white p-6 rounded-3xl border border-borderLight shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h3 class="text-lg font-black text-brandDark">Biểu đồ Doanh thu theo Tháng (Năm 2026)</h3>
+                                    <p class="text-xs text-brandGray mt-0.5">Tháng 11/2026 tự động cộng dồn từ đơn hàng thực tế trên hệ thống.</p>
+                                </div>
+                                <span class="bg-greenBtn text-greenText text-[11px] font-extrabold px-3 py-1 rounded-full">Đơn vị: VNĐ</span>
+                            </div>
+
+                            <!-- Khu vực vẽ biểu đồ cột -->
+                            <div id="monthly-chart" class="h-64 flex items-end justify-between gap-3 pt-8 pb-2 px-2 border-b border-borderLight">
+                                <!-- Cột biểu đồ render bằng JS -->
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 flex justify-between items-center text-xs text-brandGray font-medium">
+                            <span>* Dữ liệu T6–T10/2026 trích xuất từ sổ cái kế toán.</span>
+                            <span class="font-bold text-brandDark" id="year-total-rev">Tổng lũy kế 6 tháng: 0đ</span>
+                        </div>
+                    </div>
+
+                    <!-- Bảng dự tính Thuế Thu Nhập Doanh Nghiệp (CIT 20%) -->
+                    <div class="lg:col-span-5 bg-white p-6 rounded-3xl border border-purple-200 shadow-sm space-y-5">
+                        <div>
+                            <span class="bg-purple-50 text-purple-700 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+                                Chuẩn mực VAS & Luật Thuế TNDN
+                            </span>
+                            <h3 class="text-lg font-black text-brandDark mt-2">Dự tính Thuế TNDN (Tháng 11/2026)</h3>
+                            <p class="text-xs text-brandGray">Tự động ước tính nghĩa vụ thuế dựa trên doanh thu thực tế và định mức chi phí.</p>
+                        </div>
+
+                        <!-- Bộ điều chỉnh tỷ lệ chi phí mô phỏng -->
+                        <div class="bg-bgMain p-3.5 rounded-2xl border border-borderLight space-y-2">
+                            <div class="flex justify-between text-xs font-bold text-brandDark">
+                                <span>Tỷ lệ Giá vốn + Chi phí vận hành:</span>
+                                <span id="cost-ratio-label" class="text-brandPink">65%</span>
+                            </div>
+                            <input type="range" id="cost-ratio-slider" min="40" max="85" value="65" oninput="renderFinanceSection()" class="w-full accent-brandPink cursor-pointer">
+                            <p class="text-[11px] text-brandGray">Kéo thanh trượt để mô phỏng kịch bản biến động giá nguyên liệu.</p>
+                        </div>
+
+                        <!-- Bảng P&L tóm tắt -->
+                        <div class="space-y-3 text-xs">
+                            <div class="flex justify-between py-2 border-b border-borderLight/60">
+                                <span class="font-semibold text-brandGray">1. Doanh thu thuần bán hàng (T11):</span>
+                                <span id="fin-rev" class="font-black text-brandDark">0đ</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-borderLight/60">
+                                <span class="font-semibold text-brandGray">2. Tổng chi phí được trừ ước tính:</span>
+                                <span id="fin-cost" class="font-bold text-red-500">- 0đ</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-borderLight/60 bg-[#FAF8F5] px-2 rounded-lg">
+                                <span class="font-extrabold text-brandDark">3. Lợi nhuận trước thuế (EBT):</span>
+                                <span id="fin-ebt" class="font-black text-brandDark">0đ</span>
+                            </div>
+                            <div class="flex justify-between py-2.5 px-3 rounded-xl bg-purple-50 text-purple-800">
+                                <span class="font-extrabold">4. Thuế TNDN dự kiến (Thuế suất 20%):</span>
+                                <span id="fin-tax" class="font-black text-sm">0đ</span>
+                            </div>
+                            <div class="flex justify-between py-2.5 px-3 rounded-xl bg-greenBtn text-greenText">
+                                <span class="font-extrabold">5. Lợi nhuận sau thuế (PAT):</span>
+                                <span id="fin-pat" class="font-black text-sm">0đ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================================================================== -->
+            <!-- PHÂN HỆ 4: QUẢN LÝ TỒN KHO (INVENTORY)                                -->
+            <!-- ===================================================================== -->
+            <section id="sec-inventory" class="admin-section hidden space-y-6">
+                <div class="bg-white p-6 rounded-3xl border border-borderLight shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+                        <div>
+                            <h3 class="text-lg font-black text-brandDark">Quản lý Tồn kho Nguyên vật liệu & Thành phẩm</h3>
+                            <p class="text-xs text-brandGray mt-0.5">Kiểm soát định mức nguyên liệu bếp và cảnh báo nhập hàng kịp thời.</p>
+                        </div>
+                        <div id="low-stock-alert" class="bg-red-50 text-red-600 text-xs font-extrabold px-4 py-2 rounded-full">
+                            ⚠️ Có 0 mặt hàng dưới định mức an toàn
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-[#FDF5F8] text-brandDark text-[11px] font-extrabold uppercase tracking-wider border-b border-borderLight">
+                                    <th class="p-4">Mã SKU</th>
+                                    <th class="p-4">Tên nguyên liệu / Hàng hóa</th>
+                                    <th class="p-4 text-center">Đơn vị</th>
+                                    <th class="p-4 text-center">Tồn kho hiện tại</th>
+                                    <th class="p-4 text-center">Định mức tối thiểu</th>
+                                    <th class="p-4">Trạng thái</th>
+                                    <th class="p-4 text-right">Điều chỉnh kho</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-tbody" class="divide-y divide-borderLight/60 text-sm"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -248,7 +406,9 @@
     </div>
 
     <script>
-        // Mật khẩu truy cập trang quản trị
+        // =========================================================================
+        // 1. XÁC THỰC MẬT KHẨU QUẢN TRỊ (123456789)
+        // =========================================================================
         const ADMIN_PASSWORD = "123456789";
         const AUTH_SESSION_KEY = "3ce_admin_authenticated";
 
@@ -271,7 +431,7 @@
         function unlockDashboard() {
             document.getElementById("login-screen").classList.add("hidden");
             document.getElementById("admin-wrapper").classList.remove("hidden");
-            renderDashboard();
+            renderAll();
         }
 
         function lockAdmin() {
@@ -282,10 +442,42 @@
             document.getElementById("login-error").classList.add("hidden");
         }
 
-        // Dùng chung khóa localStorage với index.html
+        // =========================================================================
+        // 2. DỮ LIỆU MẪU ĐƠN HÀNG, BẢNG GIÁ MÓN & TỒN KHO
+        // =========================================================================
         const STORAGE_KEY = "3ce_foods_orders";
+        const INVENTORY_KEY = "3ce_foods_inventory";
 
-        // Dữ liệu mẫu (Mock Data) chuẩn thực đơn 3CE FOODS
+        // Bảng giá chuẩn khớp 100% với thực đơn bên index.html để tính doanh thu theo món
+        const PRODUCT_PRICES = {
+            "Mì trộn Indomie Long Môn Ngự Yến": 40000,
+            "Mì trộn Indomie Tứ Hải Hội Tụ": 35000,
+            "Mì trộn Indomie Thanh Vân Ngọc Thực": 20000,
+            "Mì cay Đế vương bò Wagyu": 65000,
+            "Mì cay thập cẩm Hải Sơn Thiên Địa": 80000,
+            "Mì cay Busan Xúc Xích": 45000,
+            "Mì cay bò Vương Giả Tứ Xuyên": 60000,
+            "Mì Hắc Long Bá Vương": 45000,
+            "Mì Ý Bò Bằm Hoàng Kim": 50000,
+            "Cơm Rang Kim Ngưu Khai Vị": 45000,
+            "Cơm Gà Kim Kê Ngự Yến": 50000,
+            "Bibimbap Kim Ngọc Hoàng Triều": 55000,
+            "Hồng Nhan Tuyết Lệ – Trà đào": 20000,
+            "Thanh Long Xuất Hải – Trà chanh": 15000,
+            "Bích Ngọc Tiên Trà – Trà tắc": 15000,
+            "Hỏa Diệm Sơn – Trà dâu": 25000,
+            "Tuyết Sơn Ngọc Ẩn – Trà sữa": 25000,
+            "Khoai tây chiên Kim Giáp Hoàng Kim": 25000,
+            "Khoai lắc phô mai Kim Ngọc Mãn Đường": 30000,
+            "Nem chua Trần Công Châu Hồng Môn": 6000,
+            "Phô mai que Bạch Ngọc Kim Tân": 8000,
+            "Khoai môn Lệ Phố Tử Ngọc": 30000,
+            "Ngô chiên Kim Châu Ngự Tiệc": 30000,
+            "Cút lộn xào me Hỏa Long Châu": 50000,
+            "Bánh tráng nướng Hỏa Phụng Hoàng Cung": 25000,
+            "Viên chiên Ngự Lâm Thập Bát Vị": 10000
+        };
+
         const DEFAULT_ORDERS = [
             {
                 id: "3CE-108",
@@ -385,8 +577,45 @@
             }
         ];
 
-        let currentFilter = "Tất cả";
+        const DEFAULT_INVENTORY = [
+            { sku: "NVL-01", name: "Mì Indomie & Mì Koreno (Gói)", unit: "Gói", stock: 145, minStock: 50 },
+            { sku: "NVL-02", name: "Thịt bò Wagyu & Ba chỉ bò Mỹ", unit: "Kg", stock: 12, minStock: 10 },
+            { sku: "NVL-03", name: "Đào ngâm hộp lớn & Trà đen đặc biệt", unit: "Hộp", stock: 6, minStock: 10 },
+            { sku: "NVL-04", name: "Khoai tây cọng đông lạnh & Phô mai que", unit: "Túi", stock: 28, minStock: 15 },
+            { sku: "NVL-05", name: "Trứng cút lộn & Sốt me đặc chế", unit: "Phần", stock: 8, minStock: 12 },
+            { sku: "NVL-06", name: "Gà góc tư & Gạo thơm dẻo", unit: "Phần", stock: 42, minStock: 20 },
+            { sku: "BB-01", name: "Hộp giấy Kraft & Ly nhựa nắp cầu 500ml", unit: "Bộ", stock: 320, minStock: 100 }
+        ];
 
+        // Doanh thu lịch sử các tháng trước để hiển thị biểu đồ tăng trưởng (Đơn vị: VNĐ)
+        const HISTORICAL_MONTHLY_REVENUE = [
+            { month: "T6/2026", baseRev: 14500000 },
+            { month: "T7/2026", baseRev: 18200000 },
+            { month: "T8/2026", baseRev: 21500000 },
+            { month: "T9/2026", baseRev: 24800000 },
+            { month: "T10/2026", baseRev: 28900000 },
+            { month: "T11/2026", baseRev: 31200000 } // Sẽ cộng thêm doanh thu đơn hàng thực tế trên hệ thống
+        ];
+
+        let currentFilter = "Tất cả";
+        const formatMoney = (num) => new Intl.NumberFormat('vi-VN').format(Math.round(num)) + 'đ';
+
+        // =========================================================================
+        // 3. QUẢN LÝ CHUYỂN TAB PHÂN HỆ
+        // =========================================================================
+        function switchSection(sectionId) {
+            document.querySelectorAll(".admin-section").forEach(sec => sec.classList.add("hidden"));
+            document.getElementById("sec-" + sectionId).classList.remove("hidden");
+
+            document.querySelectorAll(".nav-tab").forEach(btn => {
+                btn.className = "nav-tab px-4 py-2 rounded-xl text-xs font-extrabold bg-bgMain text-brandGray hover:bg-pink-50 transition-all flex items-center gap-2 whitespace-nowrap";
+            });
+            document.getElementById("nav-" + sectionId).className = "nav-tab px-4 py-2 rounded-xl text-xs font-extrabold bg-brandDark text-white transition-all flex items-center gap-2 whitespace-nowrap";
+        }
+
+        // =========================================================================
+        // 4. ĐỌC & CẬP NHẬT DỮ LIỆU TỪ LOCALSTORAGE
+        // =========================================================================
         function getOrders() {
             const raw = localStorage.getItem(STORAGE_KEY);
             if (!raw) {
@@ -401,21 +630,47 @@
             }
         }
 
-        function updateOrderStatus(id, newStatus) {
-            const orders = getOrders().map(o => o.id === id ? { ...o, status: newStatus, isNew: false } : o);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
-            renderDashboard();
-        }
-
-        function handleReset() {
-            if (confirm("Bạn muốn khôi phục lại 8 đơn hàng mẫu ban đầu?")) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ORDERS));
-                renderDashboard();
+        function getInventory() {
+            const raw = localStorage.getItem(INVENTORY_KEY);
+            if (!raw) {
+                localStorage.setItem(INVENTORY_KEY, JSON.stringify(DEFAULT_INVENTORY));
+                return DEFAULT_INVENTORY;
+            }
+            try {
+                return JSON.parse(raw);
+            } catch (e) {
+                return DEFAULT_INVENTORY;
             }
         }
 
-        const formatMoney = (num) => new Intl.NumberFormat('vi-VN').format(num) + 'đ';
+        function updateOrderStatus(id, newStatus) {
+            const orders = getOrders().map(o => o.id === id ? { ...o, status: newStatus, isNew: false } : o);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+            renderAll();
+        }
 
+        function adjustStock(sku, delta) {
+            const inv = getInventory().map(item => {
+                if (item.sku === sku) {
+                    return { ...item, stock: Math.max(0, item.stock + delta) };
+                }
+                return item;
+            });
+            localStorage.setItem(INVENTORY_KEY, JSON.stringify(inv));
+            renderInventorySection();
+        }
+
+        function handleReset() {
+            if (confirm("Khôi phục lại toàn bộ dữ liệu mẫu (Đơn hàng & Tồn kho) ban đầu?")) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ORDERS));
+                localStorage.setItem(INVENTORY_KEY, JSON.stringify(DEFAULT_INVENTORY));
+                renderAll();
+            }
+        }
+
+        // =========================================================================
+        // 5. RENDER KPI & PHÂN HỆ 1: BẢNG ĐƠN HÀNG
+        // =========================================================================
         function getBadge(status) {
             const styles = {
                 "Chờ xác nhận": "bg-amber-100 text-amber-700",
@@ -427,16 +682,15 @@
             return `<span class="px-3 py-1 rounded-full text-[11px] font-extrabold ${styles[status] || 'bg-gray-100 text-gray-600'}">${status}</span>`;
         }
 
-        function renderDashboard() {
+        function renderOrdersTable() {
             const orders = getOrders();
             const keyword = document.getElementById("admin-search").value.toLowerCase().trim();
 
-            // Cập nhật KPI
+            // Cập nhật KPI trên cùng
             document.getElementById("kpi-total").textContent = orders.length;
             document.getElementById("kpi-pending").textContent = orders.filter(o => o.status === "Chờ xác nhận").length;
-            document.getElementById("kpi-shipping").textContent = orders.filter(o => o.status === "Đang giao").length;
-            const totalRev = orders.filter(o => o.status !== "Đã hủy").reduce((sum, o) => sum + Number(o.total || 0), 0);
-            document.getElementById("kpi-revenue").textContent = formatMoney(totalRev);
+            const liveOrderRev = orders.filter(o => o.status !== "Đã hủy").reduce((sum, o) => sum + Number(o.total || 0), 0);
+            document.getElementById("kpi-revenue").textContent = formatMoney(liveOrderRev);
 
             // Lọc & Tìm kiếm
             const filtered = orders.filter(o => {
@@ -501,15 +755,166 @@
         function setFilter(status) {
             currentFilter = status;
             document.querySelectorAll(".filter-btn").forEach(btn => {
-                if (btn.textContent.trim() === status) {
-                    btn.className = "filter-btn px-4 py-2 rounded-full text-xs font-bold bg-brandPink text-white shadow-sm";
-                } else {
-                    btn.className = "filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50";
-                }
+                btn.className = btn.textContent.trim() === status
+                    ? "filter-btn px-4 py-2 rounded-full text-xs font-bold bg-brandPink text-white shadow-sm"
+                    : "filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50";
             });
-            renderDashboard();
+            renderOrdersTable();
         }
 
+        // =========================================================================
+        // 6. RENDER PHÂN HỆ 2: DOANH THU THEO SẢN PHẨM
+        // =========================================================================
+        function renderProductRevenue() {
+            const validOrders = getOrders().filter(o => o.status !== "Đã hủy");
+            const stats = {};
+
+            validOrders.forEach(order => {
+                // Loại bỏ phần "(Ghi chú: ...)" trước khi tách các món
+                const cleanItemsStr = order.items.replace(/\(Ghi chú:.*?\)/g, "").trim();
+                const parts = cleanItemsStr.split(",").map(s => s.trim()).filter(Boolean);
+
+                parts.forEach(part => {
+                    const match = part.match(/^(\d+)x\s*(.+)$/i);
+                    if (match) {
+                        const qty = parseInt(match[1], 10);
+                        const name = match[2].trim();
+                        const unitPrice = PRODUCT_PRICES[name] || Math.round(order.total / qty);
+
+                        if (!stats[name]) {
+                            stats[name] = { name, qty: 0, unitPrice, revenue: 0 };
+                        }
+                        stats[name].qty += qty;
+                        stats[name].revenue += qty * unitPrice;
+                    }
+                });
+            });
+
+            const sortedProducts = Object.values(stats).sort((a, b) => b.revenue - a.revenue);
+            const totalProdRev = sortedProducts.reduce((sum, p) => sum + p.revenue, 0) || 1;
+
+            const tbody = document.getElementById("product-revenue-tbody");
+            tbody.innerHTML = sortedProducts.map((item, idx) => {
+                const percent = ((item.revenue / totalProdRev) * 100).toFixed(1);
+                return `
+                    <tr class="hover:bg-[#FAF8F5] transition-colors">
+                        <td class="p-4 font-black text-brandPink">#${idx + 1}</td>
+                        <td class="p-4 font-bold text-brandDark">${item.name}</td>
+                        <td class="p-4 text-center font-extrabold text-brandDark">${item.qty}</td>
+                        <td class="p-4 text-right text-xs font-semibold text-brandGray">${formatMoney(item.unitPrice)}</td>
+                        <td class="p-4 text-right font-black text-greenText">${formatMoney(item.revenue)}</td>
+                        <td class="p-4">
+                            <div class="flex items-center gap-2">
+                                <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-brandPink rounded-full" style="width: ${percent}%"></div>
+                                </div>
+                                <span class="text-xs font-bold text-brandDark w-10 text-right">${percent}%</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        // =========================================================================
+        // 7. RENDER PHÂN HỆ 3: DOANH THU THEO THÁNG & THUẾ TNDN DỰ KIẾN (20%)
+        // =========================================================================
+        function renderFinanceSection() {
+            const validOrders = getOrders().filter(o => o.status !== "Đã hủy");
+            const liveOrderRev = validOrders.reduce((sum, o) => sum + Number(o.total || 0), 0);
+
+            // Cộng doanh thu đơn hàng thực tế trên web vào tháng hiện tại (T11/2026)
+            const monthlyData = HISTORICAL_MONTHLY_REVENUE.map((m, idx) => {
+                const isCurrentMonth = idx === HISTORICAL_MONTHLY_REVENUE.length - 1;
+                return {
+                    month: m.month,
+                    revenue: isCurrentMonth ? m.baseRev + liveOrderRev : m.baseRev,
+                    isCurrent: isCurrentMonth
+                };
+            });
+
+            const maxRev = Math.max(...monthlyData.map(m => m.revenue));
+            const sixMonthSum = monthlyData.reduce((sum, m) => sum + m.revenue, 0);
+            document.getElementById("year-total-rev").textContent = `Tổng lũy kế 6 tháng: ${formatMoney(sixMonthSum)}`;
+
+            // Vẽ biểu đồ cột
+            const chartEl = document.getElementById("monthly-chart");
+            chartEl.innerHTML = monthlyData.map(m => {
+                const heightPct = Math.round((m.revenue / maxRev) * 100);
+                const shortMoney = (m.revenue / 1000000).toFixed(1) + "tr";
+                return `
+                    <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
+                        <span class="text-[11px] font-extrabold ${m.isCurrent ? 'text-brandPink' : 'text-brandDark'}">${shortMoney}</span>
+                        <div class="w-full max-w-[46px] rounded-t-xl transition-all duration-500 ${m.isCurrent ? 'bg-brandPink shadow-md' : 'bg-[#4C8F66]/80 group-hover:bg-[#4C8F66]'}" style="height: ${heightPct}%"></div>
+                        <span class="text-[11px] font-bold ${m.isCurrent ? 'text-brandPink' : 'text-brandGray'}">${m.month}</span>
+                    </div>
+                `;
+            }).join("");
+
+            // Tính toán Bảng P&L & Thuế TNDN dự kiến cho tháng hiện tại (T11/2026)
+            const currentMonthRev = monthlyData[monthlyData.length - 1].revenue;
+            const costRatio = Number(document.getElementById("cost-ratio-slider").value);
+            document.getElementById("cost-ratio-label").textContent = costRatio + "%";
+
+            const totalCost = Math.round(currentMonthRev * (costRatio / 100));
+            const ebt = Math.max(0, currentMonthRev - totalCost); // Lợi nhuận trước thuế
+            const corporateTax = Math.round(ebt * 0.20); // Thuế suất Thuế TNDN 20%
+            const pat = ebt - corporateTax; // Lợi nhuận sau thuế
+
+            document.getElementById("fin-rev").textContent = formatMoney(currentMonthRev);
+            document.getElementById("fin-cost").textContent = "- " + formatMoney(totalCost);
+            document.getElementById("fin-ebt").textContent = formatMoney(ebt);
+            document.getElementById("fin-tax").textContent = formatMoney(corporateTax);
+            document.getElementById("fin-pat").textContent = formatMoney(pat);
+
+            // Cập nhật thẻ KPI Thuế TNDN ở đầu trang
+            document.getElementById("kpi-tax").textContent = formatMoney(corporateTax);
+        }
+
+        // =========================================================================
+        // 8. RENDER PHÂN HỆ 4: QUẢN LÝ TỒN KHO
+        // =========================================================================
+        function renderInventorySection() {
+            const inventory = getInventory();
+            const lowStockCount = inventory.filter(i => i.stock <= i.minStock).length;
+
+            const alertBadge = document.getElementById("low-stock-alert");
+            if (lowStockCount > 0) {
+                alertBadge.className = "bg-red-50 text-red-600 text-xs font-extrabold px-4 py-2 rounded-full";
+                alertBadge.textContent = `⚠️ Có ${lowStockCount} mặt hàng dưới định mức an toàn`;
+            } else {
+                alertBadge.className = "bg-greenBtn text-greenText text-xs font-extrabold px-4 py-2 rounded-full";
+                alertBadge.textContent = `✅ Toàn bộ kho hàng đều đạt định mức an toàn`;
+            }
+
+            const tbody = document.getElementById("inventory-tbody");
+            tbody.innerHTML = inventory.map(item => {
+                const isLow = item.stock <= item.minStock;
+                return `
+                    <tr class="hover:bg-[#FAF8F5] transition-colors ${isLow ? 'bg-red-50/30' : ''}">
+                        <td class="p-4 font-extrabold text-brandGray text-xs">${item.sku}</td>
+                        <td class="p-4 font-bold text-brandDark">${item.name}</td>
+                        <td class="p-4 text-center text-xs font-semibold">${item.unit}</td>
+                        <td class="p-4 text-center font-black text-base ${isLow ? 'text-red-600' : 'text-brandDark'}">${item.stock}</td>
+                        <td class="p-4 text-center text-xs font-semibold text-brandGray">${item.minStock}</td>
+                        <td class="p-4">
+                            ${isLow 
+                                ? `<span class="px-3 py-1 rounded-full text-[11px] font-extrabold bg-red-100 text-red-600">Cần nhập gấp</span>` 
+                                : `<span class="px-3 py-1 rounded-full text-[11px] font-extrabold bg-greenBtn text-greenText">Đủ hàng</span>`
+                            }
+                        </td>
+                        <td class="p-4 text-right whitespace-nowrap space-x-1">
+                            <button onclick="adjustStock('${item.sku}', 10)" class="px-3 py-1.5 bg-[#4C8F66] hover:bg-[#3d7552] text-white text-xs font-bold rounded-xl">+10 Nhập</button>
+                            <button onclick="adjustStock('${item.sku}', -1)" class="px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-brandDark text-xs font-bold rounded-xl">-1 Xuất</button>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        // =========================================================================
+        // 9. IN PHIẾU & ĐỒNG BỘ TỔNG THỂ
+        // =========================================================================
         function openReceipt(id) {
             const order = getOrders().find(o => o.id === id);
             if (!order) return;
@@ -537,10 +942,16 @@
             document.getElementById("receipt-modal").classList.add("hidden");
         }
 
-        // Lắng nghe thay đổi từ tab index.html theo thời gian thực
+        function renderAll() {
+            renderOrdersTable();
+            renderProductRevenue();
+            renderFinanceSection();
+            renderInventorySection();
+        }
+
         window.addEventListener("storage", (e) => {
-            if (e.key === STORAGE_KEY && sessionStorage.getItem(AUTH_SESSION_KEY) === "true") {
-                renderDashboard();
+            if ((e.key === STORAGE_KEY || e.key === INVENTORY_KEY) && sessionStorage.getItem(AUTH_SESSION_KEY) === "true") {
+                renderAll();
             }
         });
 
