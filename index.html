@@ -201,6 +201,7 @@
                 <ul class="space-y-3 text-[14px] text-[#A29A9C] font-medium">
                     <li><a href="#" class="hover:text-white transition-colors">Trang chủ</a></li>
                     <li><a href="#thuc-don" class="hover:text-white transition-colors">Thực đơn</a></li>
+                    <li><a href="admin.html" target="_blank" class="text-[#74C69D] hover:underline font-semibold">🔐 Kênh Quản Trị (Admin)</a></li>
                 </ul>
             </div>
             <div>
@@ -250,10 +251,10 @@
             <p class="text-[13px] text-brandGray mb-6 font-medium">Nhập thông tin giao hàng để quán ship cho bạn nha!</p>
             
             <form id="checkout-form" onsubmit="handleCheckout(event)" class="space-y-4">
-                <input required placeholder="Tên của bạn..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
-                <input required placeholder="Số điện thoại..." type="tel" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
-                <input required placeholder="Địa chỉ giao hàng..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
-                <textarea placeholder="Ghi chú (nếu có)..." rows="2" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium resize-none"></textarea>
+                <input id="cust-name" required placeholder="Tên của bạn..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
+                <input id="cust-phone" required placeholder="Số điện thoại..." type="tel" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
+                <input id="cust-address" required placeholder="Địa chỉ giao hàng..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
+                <textarea id="cust-note" placeholder="Ghi chú (nếu có)..." rows="2" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium resize-none"></textarea>
                 
                 <!-- Chọn Phương Thức Thanh Toán -->
                 <div class="pt-2">
@@ -304,7 +305,7 @@
                     <input id="inv-address" placeholder="Địa chỉ công ty..." class="w-full px-4 py-2.5 bg-white border border-borderLight rounded-lg text-[13px] focus:border-brandPink outline-none" />
                 </div>
 
-                <button type="submit" class="w-full bg-brandPink text-white font-bold py-3.5 rounded-xl shadow-md mt-4">Xác nhận đặt hàng</button>
+                <button type="submit" class="w-full bg-brandPink text-white font-bold py-3.5 rounded-xl shadow-md mt-4 hover:bg-[#c94b7a] transition-colors">Xác nhận đặt hàng</button>
             </form>
         </div>
     </div>
@@ -322,7 +323,10 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT -->
+    <!-- NHÚNG KHO DỮ LIỆU MẪU & CẦU NỐI LOCALSTORAGE -->
+    <script src="mockData.js"></script>
+
+    <!-- JAVASCRIPT XỬ LÝ GIAO DIỆN & ĐẶT HÀNG -->
     <script>
         const menuData = [
             { id: 'm1', category: 'Mì trộn Indomie', badge: 'Ngự Yến', name: 'Mì trộn Indomie Long Môn Ngự Yến', price: 40000, desc: 'Bao gồm sợi mì Indomie dai mềm thấm đẫm sốt trộn độc quyền, rau củ tươi giòn, xúc xích thơm béo, cá viên dai ngon, tôm surimi đậm vị, viên mực xoắn sần sật và hải sản phô mai béo ngậy.', image: './longmonnguyen.png' },
@@ -472,12 +476,39 @@
         function handleCheckout(event) {
             event.preventDefault(); 
             
+            // 1. Lấy dữ liệu khách hàng từ form
+            const customerName = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            const note = document.getElementById('cust-note').value.trim();
+            
+            // 2. Tổng hợp danh sách món và tổng tiền từ giỏ hàng
+            const itemsList = cart.map(i => `${i.quantity}x ${i.name}`).join(', ');
+            const items = note ? `${itemsList} (Ghi chú: ${note})` : itemsList;
+            const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+            // 3. Xác định phương thức thanh toán
             const method = document.querySelector('input[name="payment_method"]:checked').value;
+            const paymentMethod = method === 'qr' ? 'VietQR' : 'COD';
             const requiresInvoice = document.getElementById('require-invoice').checked;
             
+            // 4. Lưu đơn hàng sang localStorage thông qua hàm addNewOrder trong mockData.js
+            let orderCodeText = '';
+            if (typeof addNewOrder === 'function') {
+                const savedOrder = addNewOrder({
+                    customerName,
+                    phone,
+                    address,
+                    items,
+                    total,
+                    paymentMethod
+                });
+                orderCodeText = ` (Mã đơn: ${savedOrder.id})`;
+            }
+            
             let message = method === 'qr' 
-                ? '🎉 Đặt hàng thành công! Hãy hoàn tất quét mã QR nếu bạn chưa chuyển khoản nhé.' 
-                : '🎉 Đặt hàng thành công! Quán sẽ gọi xác nhận ngay.';
+                ? `🎉 Đặt hàng thành công${orderCodeText}! Hãy hoàn tất quét mã QR nếu bạn chưa chuyển khoản nhé.` 
+                : `🎉 Đặt hàng thành công${orderCodeText}! Quán sẽ gọi xác nhận ngay.`;
 
             if (requiresInvoice) {
                 message += '\n\n✅ Hóa đơn điện tử sẽ được gửi kèm và hạch toán tự động theo chuẩn mực VAS.';
@@ -500,6 +531,6 @@
             renderMenu(); 
             updateCartUI();
         });
-   <script src="mockData.js"></script>
+    </script>
 </body>
 </html>
