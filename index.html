@@ -156,7 +156,7 @@
                     Phí giao hàng (Ship) được tính thế nào?
                 </summary>
                 <div class="px-5 pb-5 text-[14px] text-brandGray border-t border-gray-100 pt-3 font-medium leading-relaxed">
-                    Với khoảng cách <strong>dưới 1km</strong>, quán sẽ freeship hoàn toàn. Nếu địa chỉ xa hơn (trên 1km), phí giao hàng đồng giá chỉ <strong>10.000đ/đơn</strong> hỗ trợ xăng xe cho các bạn shipper ạ.
+                    <strong>Freeship cho đơn hàng dưới 1,5km</strong>, nếu <strong>hơn 1,5km thì phụ thu 10.000 đồng</strong> hỗ trợ xăng xe cho các bạn shipper ạ.
                 </div>
             </details>
             
@@ -236,7 +236,7 @@
         <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
         <div class="p-6 border-t border-borderLight bg-white shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.03)]">
             <div class="flex justify-between items-center mb-5">
-                <span class="font-bold text-brandGray text-[15px]">Tổng cộng:</span>
+                <span class="font-bold text-brandGray text-[15px]">Tạm tính:</span>
                 <span id="cart-total" class="font-black text-2xl text-brandPink">0đ</span>
             </div>
             <button onclick="openCheckoutModal()" class="w-full bg-brandPink hover:bg-[#c94b7a] text-white font-bold text-[16px] py-4 rounded-2xl transition-all shadow-md">Tiến hành đặt món</button>
@@ -254,10 +254,54 @@
                 <input id="cust-name" required placeholder="Tên của bạn..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
                 <input id="cust-phone" required placeholder="Số điện thoại..." type="tel" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
                 <input id="cust-address" required placeholder="Địa chỉ giao hàng..." class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium" />
+                
+                <!-- CHI PHÍ GIAO HÀNG & CHÚ THÍCH KHOẢNG CÁCH -->
+                <div class="bg-[#F0F7F4] border border-[#CDE5D7] rounded-2xl p-4 space-y-3">
+                    <div class="flex items-start gap-2">
+                        <span class="text-base leading-none mt-0.5">🛵</span>
+                        <div>
+                            <p class="text-[13px] font-extrabold text-brandDark">Chi phí giao hàng</p>
+                            <p class="text-[12px] text-[#20603D] font-semibold leading-snug mt-0.5">
+                                Freeship cho đơn hàng dưới 1,5km, nếu hơn 1,5 km thì phụ thu 10.000 đồng.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5 pt-1">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="shipping_distance" value="0" class="peer sr-only" checked onchange="updateCheckoutTotal()">
+                            <div class="text-center px-3 py-2.5 rounded-xl border border-borderLight bg-white peer-checked:bg-greenBtn peer-checked:border-greenText peer-checked:text-greenText font-bold text-[12px] transition-all">
+                                Dưới 1,5km<br><span class="font-black">Freeship (0đ)</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="shipping_distance" value="10000" class="peer sr-only" onchange="updateCheckoutTotal()">
+                            <div class="text-center px-3 py-2.5 rounded-xl border border-borderLight bg-white peer-checked:bg-brandPink/10 peer-checked:border-brandPink peer-checked:text-brandPink font-bold text-[12px] transition-all">
+                                Hơn 1,5km<br><span class="font-black">+10.000đ</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
                 <textarea id="cust-note" placeholder="Ghi chú (nếu có)..." rows="2" class="w-full px-4 py-3.5 bg-[#F9F8F7] border border-borderLight rounded-xl text-[14px] font-medium resize-none"></textarea>
                 
+                <!-- TÓM TẮT CHI PHÍ ĐƠN HÀNG -->
+                <div class="bg-[#F9F8F7] border border-borderLight rounded-xl p-3.5 space-y-1.5 text-[13px]">
+                    <div class="flex justify-between text-brandGray font-medium">
+                        <span>Tiền món ăn:</span>
+                        <span id="checkout-subtotal" class="font-bold text-brandDark">0đ</span>
+                    </div>
+                    <div class="flex justify-between text-brandGray font-medium">
+                        <span>Phí giao hàng:</span>
+                        <span id="checkout-shipping" class="font-bold text-greenText">Freeship (0đ)</span>
+                    </div>
+                    <div class="border-t border-borderLight pt-2 mt-1 flex justify-between items-center text-[15px]">
+                        <span class="font-extrabold text-brandDark">Tổng thanh toán:</span>
+                        <span id="checkout-final-total" class="font-black text-brandPink text-lg">0đ</span>
+                    </div>
+                </div>
+
                 <!-- Chọn Phương Thức Thanh Toán -->
-                <div class="pt-2">
+                <div class="pt-1">
                     <p class="text-[13px] font-bold text-brandDark mb-2">Phương thức thanh toán:</p>
                     <div class="grid grid-cols-2 gap-3">
                         <label class="cursor-pointer">
@@ -460,11 +504,33 @@
             }
         }
 
+        // Cập nhật tiền món, phí giao hàng (dưới 1,5km freeship; hơn 1,5km +10.000đ) và tổng thanh toán
+        function updateCheckoutTotal() {
+            const subtotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+            const shippingRadio = document.querySelector('input[name="shipping_distance"]:checked');
+            const shippingFee = shippingRadio ? Number(shippingRadio.value) : 0;
+            const finalTotal = subtotal + shippingFee;
+
+            document.getElementById('checkout-subtotal').textContent = formatPrice(subtotal);
+            
+            const shipEl = document.getElementById('checkout-shipping');
+            if (shippingFee === 0) {
+                shipEl.textContent = 'Freeship (0đ)';
+                shipEl.className = 'font-bold text-greenText';
+            } else {
+                shipEl.textContent = '+10.000đ';
+                shipEl.className = 'font-bold text-brandPink';
+            }
+
+            document.getElementById('checkout-final-total').textContent = formatPrice(finalTotal);
+            document.getElementById('qr-amount').textContent = formatPrice(finalTotal);
+        }
+
         function openCheckoutModal() { 
             if(cart.length === 0) return alert('Giỏ hàng trống bạn ơi!'); 
             
-            const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
-            document.getElementById('qr-amount').textContent = formatPrice(total);
+            document.querySelector('input[name="shipping_distance"][value="0"]').checked = true;
+            updateCheckoutTotal();
             
             toggleCart(); 
             document.getElementById('checkout-modal').classList.remove('hidden'); 
@@ -482,23 +548,29 @@
             const address = document.getElementById('cust-address').value.trim();
             const note = document.getElementById('cust-note').value.trim();
             
-            // 2. Tổng hợp danh sách món và tổng tiền từ giỏ hàng
+            // 2. Tính tiền món, phí ship và tổng thanh toán
+            const subtotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+            const shippingFee = Number(document.querySelector('input[name="shipping_distance"]:checked').value || 0);
+            const total = subtotal + shippingFee;
+            const shippingTag = shippingFee > 0 ? 'Hơn 1,5km - Phụ thu ship 10.000đ' : 'Dưới 1,5km - Freeship';
+
+            // 3. Tổng hợp danh sách món và địa chỉ kèm thông tin vận chuyển
             const itemsList = cart.map(i => `${i.quantity}x ${i.name}`).join(', ');
             const items = note ? `${itemsList} (Ghi chú: ${note})` : itemsList;
-            const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+            const fullAddress = `${address} (${shippingTag})`;
 
-            // 3. Xác định phương thức thanh toán
+            // 4. Xác định phương thức thanh toán
             const method = document.querySelector('input[name="payment_method"]:checked').value;
             const paymentMethod = method === 'qr' ? 'VietQR' : 'COD';
             const requiresInvoice = document.getElementById('require-invoice').checked;
             
-            // 4. Lưu đơn hàng sang localStorage thông qua hàm addNewOrder trong mockData.js
+            // 5. Lưu đơn hàng sang localStorage thông qua hàm addNewOrder trong mockData.js
             let orderCodeText = '';
             if (typeof addNewOrder === 'function') {
                 const savedOrder = addNewOrder({
                     customerName,
                     phone,
-                    address,
+                    address: fullAddress,
                     items,
                     total,
                     paymentMethod
@@ -507,8 +579,8 @@
             }
             
             let message = method === 'qr' 
-                ? `🎉 Đặt hàng thành công${orderCodeText}! Hãy hoàn tất quét mã QR nếu bạn chưa chuyển khoản nhé.` 
-                : `🎉 Đặt hàng thành công${orderCodeText}! Quán sẽ gọi xác nhận ngay.`;
+                ? `🎉 Đặt hàng thành công${orderCodeText}!\nTổng thanh toán: ${formatPrice(total)} (${shippingTag}).\nHãy hoàn tất quét mã QR nếu bạn chưa chuyển khoản nhé.` 
+                : `🎉 Đặt hàng thành công${orderCodeText}!\nTổng thanh toán: ${formatPrice(total)} (${shippingTag}).\nQuán sẽ gọi xác nhận ngay.`;
 
             if (requiresInvoice) {
                 message += '\n\n✅ Hóa đơn điện tử sẽ được gửi kèm và hạch toán tự động theo chuẩn mực VAS.';
@@ -521,6 +593,7 @@
             closeModal('checkout-modal');
             
             event.target.reset();
+            document.querySelector('input[name="shipping_distance"][value="0"]').checked = true;
             document.querySelector('input[value="cash"]').checked = true;
             toggleQR(false); 
             toggleInvoice(); 
