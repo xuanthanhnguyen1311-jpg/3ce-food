@@ -240,7 +240,7 @@
                     <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
                         <div>
                             <h3 class="text-lg font-black text-brandDark">Báo cáo Doanh thu & Lợi nhuận gộp theo Sản phẩm</h3>
-                            <p class="text-xs text-brandGray mt-0.5">Tự động tổng hợp từ các đơn hàng hợp lệ (không tính đơn đã hủy).</p>
+                            <p class="text-xs text-brandGray mt-0.5">Tự động tổng hợp từ các đơn hàng hợp lệ trong kỳ (không tính đơn đã hủy).</p>
                         </div>
                         <span class="bg-[#FDF5F8] text-brandPink text-xs font-extrabold px-3.5 py-1.5 rounded-full">
                             Cập nhật thời gian thực
@@ -276,15 +276,13 @@
                             <div class="flex justify-between items-start mb-6">
                                 <div>
                                     <h3 class="text-lg font-black text-brandDark">Biểu đồ Doanh thu theo Tháng (Năm 2026)</h3>
-                                    <p class="text-xs text-brandGray mt-0.5">Tháng 11/2026 tự động cộng dồn từ đơn hàng thực tế trên hệ thống.</p>
+                                    <p class="text-xs text-brandGray mt-0.5">Cột T11/2026 phản ánh trực tiếp Doanh thu kỳ hiện tại trên hệ thống.</p>
                                 </div>
                                 <span class="bg-greenBtn text-greenText text-[11px] font-extrabold px-3 py-1 rounded-full">Đơn vị: VNĐ</span>
                             </div>
 
                             <!-- Khu vực vẽ biểu đồ cột -->
-                            <div id="monthly-chart" class="h-64 flex items-end justify-between gap-3 pt-8 pb-2 px-2 border-b border-borderLight">
-                                <!-- Cột biểu đồ render bằng JS -->
-                            </div>
+                            <div id="monthly-chart" class="h-64 flex items-end justify-between gap-3 pt-8 pb-2 px-2 border-b border-borderLight"></div>
                         </div>
 
                         <div class="mt-4 pt-3 flex justify-between items-center text-xs text-brandGray font-medium">
@@ -293,20 +291,20 @@
                         </div>
                     </div>
 
-                    <!-- Bảng dự tính Thuế Thu Nhập Doanh Nghiệp (CIT 20%) -->
+                    <!-- Bảng dự tính Thuế Thu Nhập Doanh Nghiệp (CIT 20%) theo Doanh thu kỳ -->
                     <div class="lg:col-span-5 bg-white p-6 rounded-3xl border border-purple-200 shadow-sm space-y-5">
                         <div>
                             <span class="bg-purple-50 text-purple-700 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
                                 Chuẩn mực VAS & Luật Thuế TNDN
                             </span>
-                            <h3 class="text-lg font-black text-brandDark mt-2">Dự tính Thuế TNDN (Tháng 11/2026)</h3>
-                            <p class="text-xs text-brandGray">Tự động ước tính nghĩa vụ thuế dựa trên doanh thu thực tế và định mức chi phí.</p>
+                            <h3 class="text-lg font-black text-brandDark mt-2">Dự tính Thuế TNDN (Theo Doanh thu kỳ)</h3>
+                            <p class="text-xs text-brandGray">Tính trực tiếp trên Doanh thu kỳ này và định mức chi phí hoạt động.</p>
                         </div>
 
                         <!-- Bộ điều chỉnh tỷ lệ chi phí mô phỏng -->
                         <div class="bg-bgMain p-3.5 rounded-2xl border border-borderLight space-y-2">
                             <div class="flex justify-between text-xs font-bold text-brandDark">
-                                <span>Tỷ lệ Giá vốn + Chi phí vận hành:</span>
+                                <span>Tỷ lệ Giá vốn + Chi phí vận hành kỳ:</span>
                                 <span id="cost-ratio-label" class="text-brandPink">65%</span>
                             </div>
                             <input type="range" id="cost-ratio-slider" min="40" max="85" value="65" oninput="renderFinanceSection()" class="w-full accent-brandPink cursor-pointer">
@@ -316,11 +314,11 @@
                         <!-- Bảng P&L tóm tắt -->
                         <div class="space-y-3 text-xs">
                             <div class="flex justify-between py-2 border-b border-borderLight/60">
-                                <span class="font-semibold text-brandGray">1. Doanh thu thuần bán hàng (T11):</span>
+                                <span class="font-semibold text-brandGray">1. Doanh thu thuần kỳ này:</span>
                                 <span id="fin-rev" class="font-black text-brandDark">0đ</span>
                             </div>
                             <div class="flex justify-between py-2 border-b border-borderLight/60">
-                                <span class="font-semibold text-brandGray">2. Tổng chi phí được trừ ước tính:</span>
+                                <span class="font-semibold text-brandGray">2. Tổng chi phí được trừ kỳ này:</span>
                                 <span id="fin-cost" class="font-bold text-red-500">- 0đ</span>
                             </div>
                             <div class="flex justify-between py-2 border-b border-borderLight/60 bg-[#FAF8F5] px-2 rounded-lg">
@@ -448,7 +446,6 @@
         const STORAGE_KEY = "3ce_foods_orders";
         const INVENTORY_KEY = "3ce_foods_inventory";
 
-        // Bảng giá chuẩn khớp 100% với thực đơn bên index.html để tính doanh thu theo món
         const PRODUCT_PRICES = {
             "Mì trộn Indomie Long Môn Ngự Yến": 40000,
             "Mì trộn Indomie Tứ Hải Hội Tụ": 35000,
@@ -587,14 +584,14 @@
             { sku: "BB-01", name: "Hộp giấy Kraft & Ly nhựa nắp cầu 500ml", unit: "Bộ", stock: 320, minStock: 100 }
         ];
 
-        // Doanh thu lịch sử các tháng trước để hiển thị biểu đồ tăng trưởng (Đơn vị: VNĐ)
+        // Doanh thu lịch sử các tháng trước; T11/2026 sẽ hiển thị đúng Doanh thu kỳ này
         const HISTORICAL_MONTHLY_REVENUE = [
             { month: "T6/2026", baseRev: 14500000 },
             { month: "T7/2026", baseRev: 18200000 },
             { month: "T8/2026", baseRev: 21500000 },
             { month: "T9/2026", baseRev: 24800000 },
             { month: "T10/2026", baseRev: 28900000 },
-            { month: "T11/2026", baseRev: 31200000 } // Sẽ cộng thêm doanh thu đơn hàng thực tế trên hệ thống
+            { month: "T11/2026", baseRev: 0 }
         ];
 
         let currentFilter = "Tất cả";
@@ -686,11 +683,11 @@
             const orders = getOrders();
             const keyword = document.getElementById("admin-search").value.toLowerCase().trim();
 
-            // Cập nhật KPI trên cùng
+            // Cập nhật KPI tổng đơn, chờ xác nhận và Doanh thu kỳ này
             document.getElementById("kpi-total").textContent = orders.length;
             document.getElementById("kpi-pending").textContent = orders.filter(o => o.status === "Chờ xác nhận").length;
-            const liveOrderRev = orders.filter(o => o.status !== "Đã hủy").reduce((sum, o) => sum + Number(o.total || 0), 0);
-            document.getElementById("kpi-revenue").textContent = formatMoney(liveOrderRev);
+            const periodRev = orders.filter(o => o.status !== "Đã hủy").reduce((sum, o) => sum + Number(o.total || 0), 0);
+            document.getElementById("kpi-revenue").textContent = formatMoney(periodRev);
 
             // Lọc & Tìm kiếm
             const filtered = orders.filter(o => {
@@ -770,7 +767,6 @@
             const stats = {};
 
             validOrders.forEach(order => {
-                // Loại bỏ phần "(Ghi chú: ...)" trước khi tách các món
                 const cleanItemsStr = order.items.replace(/\(Ghi chú:.*?\)/g, "").trim();
                 const parts = cleanItemsStr.split(",").map(s => s.trim()).filter(Boolean);
 
@@ -817,31 +813,34 @@
         }
 
         // =========================================================================
-        // 7. RENDER PHÂN HỆ 3: DOANH THU THEO THÁNG & THUẾ TNDN DỰ KIẾN (20%)
+        // 7. RENDER PHÂN HỆ 3: DOANH THU THEO THÁNG & THUẾ TNDN THEO DOANH THU KỲ
         // =========================================================================
         function renderFinanceSection() {
             const validOrders = getOrders().filter(o => o.status !== "Đã hủy");
-            const liveOrderRev = validOrders.reduce((sum, o) => sum + Number(o.total || 0), 0);
+            // Doanh thu kỳ này (tổng giá trị các đơn hàng hợp lệ hiện có trên hệ thống)
+            const periodRev = validOrders.reduce((sum, o) => sum + Number(o.total || 0), 0);
 
-            // Cộng doanh thu đơn hàng thực tế trên web vào tháng hiện tại (T11/2026)
+            // Biểu đồ doanh thu các tháng (Cột T11/2026 lấy đúng bằng Doanh thu kỳ này)
             const monthlyData = HISTORICAL_MONTHLY_REVENUE.map((m, idx) => {
                 const isCurrentMonth = idx === HISTORICAL_MONTHLY_REVENUE.length - 1;
                 return {
                     month: m.month,
-                    revenue: isCurrentMonth ? m.baseRev + liveOrderRev : m.baseRev,
+                    revenue: isCurrentMonth ? periodRev : m.baseRev,
                     isCurrent: isCurrentMonth
                 };
             });
 
-            const maxRev = Math.max(...monthlyData.map(m => m.revenue));
+            const maxRev = Math.max(...monthlyData.map(m => m.revenue), 1);
             const sixMonthSum = monthlyData.reduce((sum, m) => sum + m.revenue, 0);
             document.getElementById("year-total-rev").textContent = `Tổng lũy kế 6 tháng: ${formatMoney(sixMonthSum)}`;
 
             // Vẽ biểu đồ cột
             const chartEl = document.getElementById("monthly-chart");
             chartEl.innerHTML = monthlyData.map(m => {
-                const heightPct = Math.round((m.revenue / maxRev) * 100);
-                const shortMoney = (m.revenue / 1000000).toFixed(1) + "tr";
+                const heightPct = m.revenue === 0 ? 2 : Math.max(6, Math.round((m.revenue / maxRev) * 100));
+                const shortMoney = m.revenue >= 1000000
+                    ? (m.revenue / 1000000).toFixed(1) + "tr"
+                    : Math.round(m.revenue / 1000) + "k";
                 return `
                     <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
                         <span class="text-[11px] font-extrabold ${m.isCurrent ? 'text-brandPink' : 'text-brandDark'}">${shortMoney}</span>
@@ -851,23 +850,22 @@
                 `;
             }).join("");
 
-            // Tính toán Bảng P&L & Thuế TNDN dự kiến cho tháng hiện tại (T11/2026)
-            const currentMonthRev = monthlyData[monthlyData.length - 1].revenue;
+            // Tính toán Bảng P&L & Thuế TNDN dự kiến trực tiếp trên Doanh thu kỳ này
             const costRatio = Number(document.getElementById("cost-ratio-slider").value);
             document.getElementById("cost-ratio-label").textContent = costRatio + "%";
 
-            const totalCost = Math.round(currentMonthRev * (costRatio / 100));
-            const ebt = Math.max(0, currentMonthRev - totalCost); // Lợi nhuận trước thuế
-            const corporateTax = Math.round(ebt * 0.20); // Thuế suất Thuế TNDN 20%
-            const pat = ebt - corporateTax; // Lợi nhuận sau thuế
+            const totalCost = Math.round(periodRev * (costRatio / 100));
+            const ebt = Math.max(0, periodRev - totalCost); // Lợi nhuận trước thuế kỳ này
+            const corporateTax = Math.round(ebt * 0.20); // Thuế TNDN dự kiến (20% trên EBT kỳ này)
+            const pat = ebt - corporateTax; // Lợi nhuận sau thuế kỳ này
 
-            document.getElementById("fin-rev").textContent = formatMoney(currentMonthRev);
+            document.getElementById("fin-rev").textContent = formatMoney(periodRev);
             document.getElementById("fin-cost").textContent = "- " + formatMoney(totalCost);
             document.getElementById("fin-ebt").textContent = formatMoney(ebt);
             document.getElementById("fin-tax").textContent = formatMoney(corporateTax);
             document.getElementById("fin-pat").textContent = formatMoney(pat);
 
-            // Cập nhật thẻ KPI Thuế TNDN ở đầu trang
+            // Đồng bộ thẻ KPI Thuế TNDN dự kiến ở đầu trang
             document.getElementById("kpi-tax").textContent = formatMoney(corporateTax);
         }
 
