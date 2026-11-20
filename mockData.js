@@ -1,178 +1,162 @@
-const STORAGE_KEY = "3ce_foods_orders";
+// =========================================================================
+// 1. CẤU HÌNH KẾT NỐI SUPABASE (THAY 2 DÒNG DƯỚI BẰNG MÃ Ở BƯỚC 1)
+// =========================================================================
+const SUPABASE_URL = "https://rvptgvbmeszqhucfhatu.supabase.co/rest/v1/";
+const SUPABASE_ANON_KEY = "sb_publishable_XvY--N5R_6jM4ceyW6sWFQ_acdDbGzp";
 
-// 1. Danh sách 10 đơn hàng mẫu (Mock Data) để bảng thống kê có sẵn số liệu đẹp mắt
-const DEFAULT_ORDERS = [
-  {
-    id: "3CE-109",
-    customerName: "Nguyễn Minh Anh",
-    phone: "0987654321",
-    address: "KTX Học viện Tài chính, Bắc Từ Liêm, Hà Nội",
-    items: "2x Hồng Nhan Tuyết Lệ – Trà đào, 1x Bánh tráng trộn",
-    total: 85000,
-    paymentMethod: "VietQR",
-    status: "Chờ xác nhận",
-    createdAt: "Hôm nay, 19:45",
-    isNew: false
-  },
-  {
-    id: "3CE-108",
-    customerName: "Trần Hoàng Nam",
-    phone: "0912345678",
-    address: "Số 18 Ngõ 58 Lê Văn Hiến, Hà Nội",
-    items: "2x Mì cay hải sản cấp độ 2, 2x Trà đào",
-    total: 140000,
-    paymentMethod: "COD",
-    status: "Đang giao",
-    createdAt: "Hôm nay, 19:20",
-    isNew: false
-  },
-  {
-    id: "3CE-107",
-    customerName: "Lê Thu Thảo",
-    phone: "0965432198",
-    address: "Tòa A2 Chung cư Ecohome 1, Hà Nội",
-    items: "1x Cơm gà xối mỡ, 1x Hồng Nhan Tuyết Lệ – Trà đào",
-    total: 75000,
-    paymentMethod: "VietQR",
-    status: "Hoàn thành",
-    createdAt: "Hôm nay, 18:15",
-    isNew: false
-  },
-  {
-    id: "3CE-106",
-    customerName: "Phạm Khánh Linh",
-    phone: "0934567890",
-    address: "Số 42 Đông Ngạc, Bắc Từ Liêm, Hà Nội",
-    items: "3x Mì cay bò Mỹ, 3x Khoai tây lắc phô mai",
-    total: 225000,
-    paymentMethod: "VietQR",
-    status: "Hoàn thành",
-    createdAt: "Hôm nay, 17:30",
-    isNew: false
-  },
-  {
-    id: "3CE-105",
-    customerName: "Vũ Đức Huy",
-    phone: "0978123456",
-    address: "Ngõ 120 Hoàng Quốc Việt, Cầu Giấy, Hà Nội",
-    items: "2x Cơm rang dưa bò, 2x Trà đào",
-    total: 130000,
-    paymentMethod: "COD",
-    status: "Hoàn thành",
-    createdAt: "Hôm qua, 20:10",
-    isNew: false
-  },
-  {
-    id: "3CE-104",
-    customerName: "Đặng Ngọc Mai",
-    phone: "0945678123",
-    address: "Số 15 Trần Cung, Cổ Nhuế, Hà Nội",
-    items: "1x Combo Ăn Vặt Sương Sương, 1x Trà đào",
-    total: 99000,
-    paymentMethod: "VietQR",
-    status: "Hoàn thành",
-    createdAt: "Hôm qua, 19:05",
-    isNew: false
-  },
-  {
-    id: "3CE-103",
-    customerName: "Bùi Quang Minh",
-    phone: "0909888777",
-    address: "Ký túc xá Đại học Mỏ - Địa chất",
-    items: "2x Mì cay xúc xích, 1x Nem chua rán",
-    total: 115000,
-    paymentMethod: "COD",
-    status: "Hoàn thành",
-    createdAt: "Hôm qua, 18:40",
-    isNew: false
-  },
-  {
-    id: "3CE-102",
-    customerName: "Hoàng Yến Nhi",
-    phone: "0988777666",
-    address: "Số 88 Phạm Văn Đồng, Hà Nội",
-    items: "4x Hồng Nhan Tuyết Lệ – Trà đào",
-    total: 120000,
-    paymentMethod: "VietQR",
-    status: "Hoàn thành",
-    createdAt: "Hôm qua, 15:20",
-    isNew: false
-  },
-  {
-    id: "3CE-101",
-    customerName: "Ngô Gia Bảo",
-    phone: "0911222333",
-    address: "Số 10 Phan Bá Vành, Hà Nội",
-    items: "1x Cơm đùi gà chiên mắm",
-    total: 45000,
-    paymentMethod: "COD",
-    status: "Đã hủy",
-    createdAt: "Hôm qua, 12:15",
-    isNew: false
-  },
-  {
-    id: "3CE-100",
-    customerName: "Đỗ Thanh Trúc",
-    phone: "0922333444",
-    address: "Khu đô thị Resco Cổ Nhuế, Hà Nội",
-    items: "2x Bánh tráng cuộn bơ, 2x Trà đào",
-    total: 110000,
-    paymentMethod: "VietQR",
-    status: "Hoàn thành",
-    createdAt: "Hôm qua, 11:30",
-    isNew: false
-  }
+// Khởi tạo kết nối tới Supabase
+const supabaseClient = window.supabase
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    : null;
+
+if (!supabaseClient) {
+    console.error("⚠️ Chưa nạp thư viện @supabase/supabase-js@2 phía trên mockData.js!");
+}
+
+// =========================================================================
+// 2. BẢNG GIÁ NIÊM YẾT 26 MÓN (DÙNG CHO BÁO CÁO DOANH THU SẢN PHẨM Ở ADMIN)
+// =========================================================================
+const PRODUCT_PRICES = {
+    "Mì trộn Indomie Long Môn Ngự Yến": 40000,
+    "Mì trộn Indomie Tứ Hải Hội Tụ": 35000,
+    "Mì trộn Indomie Thanh Vân Ngọc Thực": 20000,
+    "Mì cay Đế vương bò Wagyu": 65000,
+    "Mì cay thập cẩm Hải Sơn Thiên Địa": 80000,
+    "Mì cay Busan Xúc Xích": 45000,
+    "Mì cay bò Vương Giả Tứ Xuyên": 60000,
+    "Mì Hắc Long Bá Vương": 45000,
+    "Mì Ý Bò Bằm Hoàng Kim": 50000,
+    "Cơm Rang Kim Ngưu Khai Vị": 45000,
+    "Cơm Gà Kim Kê Ngự Yến": 50000,
+    "Bibimbap Kim Ngọc Hoàng Triều": 55000,
+    "Hồng Nhan Tuyết Lệ – Trà đào": 20000,
+    "Thanh Long Xuất Hải – Trà chanh": 15000,
+    "Bích Ngọc Tiên Trà – Trà tắc": 15000,
+    "Hỏa Diệm Sơn – Trà dâu": 25000,
+    "Tuyết Sơn Ngọc Ẩn – Trà sữa": 25000,
+    "Khoai tây chiên Kim Giáp Hoàng Kim": 25000,
+    "Khoai lắc phô mai Kim Ngọc Mãn Đường": 30000,
+    "Nem chua Trần Công Châu Hồng Môn": 6000,
+    "Phô mai que Bạch Ngọc Kim Tân": 8000,
+    "Khoai môn Lệ Phố Tử Ngọc": 30000,
+    "Ngô chiên Kim Châu Ngự Tiệc": 30000,
+    "Cút lộn xào me Hỏa Long Châu": 50000,
+    "Bánh tráng nướng Hỏa Phụng Hoàng Cung": 25000,
+    "Viên chiên Ngự Lâm Thập Bát Vị": 10000
+};
+
+// =========================================================================
+// 3. CÁC HÀM XỬ LÝ ĐƠN HÀNG QUA ĐÁM MÂY SUPABASE (DÙNG CHUNG CẢ LỚP)
+// =========================================================================
+
+// Lấy toàn bộ danh sách đơn hàng từ Supabase (mới nhất xếp trên cùng)
+async function getOrders() {
+    if (!supabaseClient) return [];
+
+    const { data, error } = await supabaseClient
+        .from("orders")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error("Lỗi khi tải danh sách đơn hàng từ Supabase:", error);
+        return [];
+    }
+
+    return data.map(row => {
+        const d = new Date(row.created_at);
+        const timeStr = d.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
+        const dateStr = d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" });
+
+        return {
+            id: row.id,
+            customerName: row.customer_name,
+            phone: row.phone,
+            address: row.address,
+            items: row.items,
+            total: Number(row.total),
+            paymentMethod: row.payment_method,
+            status: row.status,
+            isNew: row.is_new,
+            createdAt: `${timeStr} (${dateStr})`
+        };
+    });
+}
+
+// Đẩy đơn hàng mới từ trang bán hàng index.html lên Supabase
+async function addNewOrder(orderInput) {
+    if (!supabaseClient) throw new Error("Chưa kết nối Supabase");
+
+    const newId = "3CE-" + Math.floor(100 + Math.random() * 900);
+    const newRow = {
+        id: newId,
+        customer_name: orderInput.customerName,
+        phone: orderInput.phone,
+        address: orderInput.address,
+        items: orderInput.items,
+        total: Number(orderInput.total),
+        payment_method: orderInput.paymentMethod,
+        status: "Chờ xác nhận",
+        is_new: true
+    };
+
+    const { data, error } = await supabaseClient
+        .from("orders")
+        .insert([newRow])
+        .select()
+        .single();
+
+    if (error) {
+        console.error("Lỗi khi lưu đơn hàng lên Supabase:", error);
+        throw error;
+    }
+
+    return { ...orderInput, id: data.id };
+}
+
+// Cập nhật trạng thái đơn hàng từ trang quản trị admin.html
+async function updateOrderStatus(orderId, newStatus) {
+    if (!supabaseClient) return;
+
+    const { error } = await supabaseClient
+        .from("orders")
+        .update({ status: newStatus, is_new: false })
+        .eq("id", orderId);
+
+    if (error) {
+        console.error("Lỗi khi cập nhật trạng thái đơn hàng:", error);
+    }
+}
+
+// =========================================================================
+// 4. QUẢN LÝ TỒN KHO NGUYÊN VẬT LIỆU (GIỮ NGUYÊN CHO TAB KHO Ở ADMIN)
+// =========================================================================
+const INVENTORY_KEY = "3ce_foods_inventory";
+const DEFAULT_INVENTORY = [
+    { sku: "NVL-01", name: "Mì Indomie & Mì Koreno", unit: "Gói", stock: 120, minStock: 40 },
+    { sku: "NVL-02", name: "Thịt bò Wagyu & Ba chỉ bò Mỹ", unit: "Kg", stock: 8, minStock: 10 },
+    { sku: "NVL-03", name: "Đào ngâm hộp lớn & Trà đen đặc biệt", unit: "Hộp", stock: 18, minStock: 8 },
+    { sku: "NVL-04", name: "Khoai tây cọng & Phô mai que", unit: "Kg", stock: 15, minStock: 10 },
+    { sku: "NVL-05", name: "Trứng cút lộn & Sốt me đặc chế", unit: "Chục", stock: 9, minStock: 12 },
+    { sku: "NVL-06", name: "Gà góc tư & Gạo thơm dẻo", unit: "Kg", stock: 22, minStock: 10 },
+    { sku: "BB-01", name: "Hộp giấy Kraft & Ly nhựa nắp cầu 500ml", unit: "Cái", stock: 250, minStock: 100 }
 ];
 
-// 2. Hàm khởi tạo và lấy toàn bộ danh sách đơn hàng từ localStorage
-function getOrders() {
-  const savedData = localStorage.getItem(STORAGE_KEY);
-  if (!savedData) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ORDERS));
-    return DEFAULT_ORDERS;
-  }
-  return JSON.parse(savedData);
-}
-
-// 3. Hàm thêm đơn hàng mới từ trang bán hàng (index.html)
-function addNewOrder(orderInfo) {
-  const orders = getOrders();
-  const now = new Date();
-  const timeString = `Vừa xong (${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')})`;
-
-  const newOrder = {
-    id: "3CE-" + Math.floor(110 + Math.random() * 890),
-    customerName: orderInfo.customerName,
-    phone: orderInfo.phone,
-    address: orderInfo.address,
-    items: orderInfo.items,
-    total: orderInfo.total,
-    paymentMethod: orderInfo.paymentMethod || "COD",
-    status: "Chờ xác nhận",
-    createdAt: timeString,
-    isNew: true // Gắn cờ để trang Admin hiện nhãn "Đơn mới" nổi bật
-  };
-
-  orders.unshift(newOrder); // Đưa đơn mới lên đầu danh sách
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
-  return newOrder;
-}
-
-// 4. Hàm cập nhật trạng thái đơn hàng từ trang quản trị (admin.html)
-function updateOrderStatus(orderId, newStatus) {
-  const orders = getOrders();
-  const updatedOrders = orders.map(order => {
-    if (order.id === orderId) {
-      return { ...order, status: newStatus, isNew: false };
+function getInventory() {
+    const saved = localStorage.getItem(INVENTORY_KEY);
+    if (!saved) {
+        localStorage.setItem(INVENTORY_KEY, JSON.stringify(DEFAULT_INVENTORY));
+        return DEFAULT_INVENTORY;
     }
-    return order;
-  });
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedOrders));
-  return updatedOrders;
+    return JSON.parse(saved);
 }
 
-// 5. Hàm khôi phục dữ liệu mẫu ban đầu (Dùng để reset trước khi thuyết trình)
-function resetMockData() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ORDERS));
-  return DEFAULT_ORDERS;
+function adjustStock(sku, delta) {
+    const inv = getInventory();
+    const item = inv.find(i => i.sku === sku);
+    if (item) {
+        item.stock = Math.max(0, item.stock + delta);
+        localStorage.setItem(INVENTORY_KEY, JSON.stringify(inv));
+    }
+    return inv;
 }
