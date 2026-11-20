@@ -1,17 +1,8 @@
 // =========================================================================
-// 1. CẤU HÌNH KẾT NỐI SUPABASE (THAY 2 DÒNG DƯỚI BẰNG MÃ Ở BƯỚC 1)
+// 1. KHÓA LƯU TRỮ DÙNG CHUNG TRÊN TRÌNH DUYỆT (LOCALSTORAGE)
 // =========================================================================
-const SUPABASE_URL = "https://rvptgvbmeszqhucfhatu.supabase.co/rest/v1/";
-const SUPABASE_ANON_KEY = "sb_publishable_XvY--N5R_6jM4ceyW6sWFQ_acdDbGzp";
-
-// Khởi tạo kết nối tới Supabase
-const supabaseClient = window.supabase
-    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-    : null;
-
-if (!supabaseClient) {
-    console.error("⚠️ Chưa nạp thư viện @supabase/supabase-js@2 phía trên mockData.js!");
-}
+const STORAGE_KEY = "3ce_foods_orders";
+const INVENTORY_KEY = "3ce_foods_inventory";
 
 // =========================================================================
 // 2. BẢNG GIÁ NIÊM YẾT 26 MÓN (DÙNG CHO BÁO CÁO DOANH THU SẢN PHẨM Ở ADMIN)
@@ -46,92 +37,108 @@ const PRODUCT_PRICES = {
 };
 
 // =========================================================================
-// 3. CÁC HÀM XỬ LÝ ĐƠN HÀNG QUA ĐÁM MÂY SUPABASE (DÙNG CHUNG CẢ LỚP)
+// 3. DỮ LIỆU ĐƠN HÀNG MẪU & CÁC HÀM ĐỒNG BỘ GIỮA INDEX.HTML VÀ ADMIN.HTML
 // =========================================================================
-
-// Lấy toàn bộ danh sách đơn hàng từ Supabase (mới nhất xếp trên cùng)
-async function getOrders() {
-    if (!supabaseClient) return [];
-
-    const { data, error } = await supabaseClient
-        .from("orders")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-    if (error) {
-        console.error("Lỗi khi tải danh sách đơn hàng từ Supabase:", error);
-        return [];
+const DEFAULT_ORDERS = [
+    {
+        id: "3CE-108",
+        customerName: "Nguyễn Minh Anh",
+        phone: "0987654321",
+        address: "KTX B5 Học viện Tài chính, Đông Ngạc",
+        items: "1x Mì cay Đế vương bò Wagyu, 2x Hồng Nhan Tuyết Lệ – Trà đào",
+        total: 105000,
+        paymentMethod: "VietQR",
+        status: "Chờ xác nhận",
+        createdAt: "Hôm nay, 19:45",
+        isNew: false
+    },
+    {
+        id: "3CE-107",
+        customerName: "Trần Đức Huy",
+        phone: "0912345678",
+        address: "Ngõ 58 Lê Văn Hiến, Bắc Từ Liêm",
+        items: "2x Mì trộn Indomie Long Môn Ngự Yến, 1x Khoai lắc phô mai Kim Ngọc Mãn Đường",
+        total: 110000,
+        paymentMethod: "COD",
+        status: "Đang chế biến",
+        createdAt: "Hôm nay, 19:20",
+        isNew: false
+    },
+    {
+        id: "3CE-106",
+        customerName: "Lê Thu Hà",
+        phone: "0965432198",
+        address: "Chung cư Ecohome 2, Đông Ngạc",
+        items: "1x Cơm Gà Kim Kê Ngự Yến, 1x Tuyết Sơn Ngọc Ẩn – Trà sữa",
+        total: 75000,
+        paymentMethod: "VietQR",
+        status: "Đang giao",
+        createdAt: "Hôm nay, 18:50",
+        isNew: false
+    },
+    {
+        id: "3CE-105",
+        customerName: "Phạm Hoàng Nam",
+        phone: "0934567890",
+        address: "Cổng sau ĐH Mỏ - Địa chất",
+        items: "1x Cút lộn xào me Hỏa Long Châu, 2x Thanh Long Xuất Hải – Trà chanh",
+        total: 80000,
+        paymentMethod: "COD",
+        status: "Hoàn thành",
+        createdAt: "Hôm nay, 18:15",
+        isNew: false
     }
+];
 
-    return data.map(row => {
-        const d = new Date(row.created_at);
-        const timeStr = d.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
-        const dateStr = d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" });
-
-        return {
-            id: row.id,
-            customerName: row.customer_name,
-            phone: row.phone,
-            address: row.address,
-            items: row.items,
-            total: Number(row.total),
-            paymentMethod: row.payment_method,
-            status: row.status,
-            isNew: row.is_new,
-            createdAt: `${timeStr} (${dateStr})`
-        };
-    });
+// Lấy danh sách đơn hàng hiện tại từ localStorage
+function getOrders() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ORDERS));
+        return DEFAULT_ORDERS;
+    }
+    return JSON.parse(saved);
 }
 
-// Đẩy đơn hàng mới từ trang bán hàng index.html lên Supabase
-async function addNewOrder(orderInput) {
-    if (!supabaseClient) throw new Error("Chưa kết nối Supabase");
+// Đẩy đơn hàng mới từ index.html vào localStorage để admin.html tự nhận
+function addNewOrder(orderInput) {
+    const orders = getOrders();
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
 
-    const newId = "3CE-" + Math.floor(100 + Math.random() * 900);
-    const newRow = {
-        id: newId,
-        customer_name: orderInput.customerName,
+    const newOrder = {
+        id: "3CE-" + Math.floor(109 + Math.random() * 890),
+        customerName: orderInput.customerName,
         phone: orderInput.phone,
         address: orderInput.address,
         items: orderInput.items,
         total: Number(orderInput.total),
-        payment_method: orderInput.paymentMethod,
+        paymentMethod: orderInput.paymentMethod,
         status: "Chờ xác nhận",
-        is_new: true
+        createdAt: `Hôm nay, ${timeStr}`,
+        isNew: true
     };
 
-    const { data, error } = await supabaseClient
-        .from("orders")
-        .insert([newRow])
-        .select()
-        .single();
-
-    if (error) {
-        console.error("Lỗi khi lưu đơn hàng lên Supabase:", error);
-        throw error;
-    }
-
-    return { ...orderInput, id: data.id };
+    orders.unshift(newOrder);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+    return newOrder;
 }
 
-// Cập nhật trạng thái đơn hàng từ trang quản trị admin.html
-async function updateOrderStatus(orderId, newStatus) {
-    if (!supabaseClient) return;
-
-    const { error } = await supabaseClient
-        .from("orders")
-        .update({ status: newStatus, is_new: false })
-        .eq("id", orderId);
-
-    if (error) {
-        console.error("Lỗi khi cập nhật trạng thái đơn hàng:", error);
+// Cập nhật trạng thái đơn hàng từ admin.html
+function updateOrderStatus(orderId, newStatus) {
+    const orders = getOrders();
+    const target = orders.find(o => o.id === orderId);
+    if (target) {
+        target.status = newStatus;
+        target.isNew = false;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
     }
+    return orders;
 }
 
 // =========================================================================
-// 4. QUẢN LÝ TỒN KHO NGUYÊN VẬT LIỆU (GIỮ NGUYÊN CHO TAB KHO Ở ADMIN)
+// 4. QUẢN LÝ TỒN KHO NGUYÊN VẬT LIỆU
 // =========================================================================
-const INVENTORY_KEY = "3ce_foods_inventory";
 const DEFAULT_INVENTORY = [
     { sku: "NVL-01", name: "Mì Indomie & Mì Koreno", unit: "Gói", stock: 120, minStock: 40 },
     { sku: "NVL-02", name: "Thịt bò Wagyu & Ba chỉ bò Mỹ", unit: "Kg", stock: 8, minStock: 10 },
