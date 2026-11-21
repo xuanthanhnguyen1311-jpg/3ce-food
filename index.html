@@ -332,7 +332,8 @@
         </div>
     </div>
 
-    <!-- NHÚNG KHO DỮ LIỆU MẪU & CẦU NỐI LOCALSTORAGE -->
+    <!-- VỊ TRÍ 4.1: NẠP THƯ VIỆN SUPABASE PHÍA TRÊN MOCKDATA.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="mockData.js"></script>
 
     <!-- JAVASCRIPT XỬ LÝ GIAO DIỆN & ĐẶT HÀNG -->
@@ -482,57 +483,70 @@
         function openContactModal() { document.getElementById('contact-modal').classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-        function handleCheckout(event) {
+        // VỊ TRÍ 4.2: HÀM ĐẶT HÀNG BẤT ĐỒNG BỘ (ASYNC / AWAIT) ĐẨY ĐƠN LÊN SUPABASE
+        async function handleCheckout(event) {
             event.preventDefault(); 
             
-            // 1. Lấy dữ liệu khách hàng từ form
-            const customerName = document.getElementById('cust-name').value.trim();
-            const phone = document.getElementById('cust-phone').value.trim();
-            const address = document.getElementById('cust-address').value.trim();
-            const note = document.getElementById('cust-note').value.trim();
-            
-            // 2. Tổng hợp danh sách món và tổng tiền từ giỏ hàng
-            const itemsList = cart.map(i => `${i.quantity}x ${i.name}`).join(', ');
-            const items = note ? `${itemsList} (Ghi chú: ${note})` : itemsList;
-            const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = "⏳ Đang gửi đơn lên hệ thống...";
 
-            // 3. Xác định phương thức thanh toán
-            const method = document.querySelector('input[name="payment_method"]:checked').value;
-            const paymentMethod = method === 'qr' ? 'VietQR' : 'COD';
-            const requiresInvoice = document.getElementById('require-invoice').checked;
-            
-            // 4. Lưu đơn hàng sang localStorage thông qua hàm addNewOrder trong mockData.js
-            let orderCodeText = '';
-            if (typeof addNewOrder === 'function') {
-                const savedOrder = addNewOrder({
-                    customerName,
-                    phone,
-                    address,
-                    items,
-                    total,
-                    paymentMethod
-                });
-                orderCodeText = ` (Mã đơn: ${savedOrder.id})`;
+            try {
+                // 1. Lấy dữ liệu khách hàng từ form
+                const customerName = document.getElementById('cust-name').value.trim();
+                const phone = document.getElementById('cust-phone').value.trim();
+                const address = document.getElementById('cust-address').value.trim();
+                const note = document.getElementById('cust-note').value.trim();
+                
+                // 2. Tổng hợp danh sách món và tổng tiền từ giỏ hàng
+                const itemsList = cart.map(i => `${i.quantity}x ${i.name}`).join(', ');
+                const items = note ? `${itemsList} (Ghi chú: ${note})` : itemsList;
+                const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+                // 3. Xác định phương thức thanh toán
+                const method = document.querySelector('input[name="payment_method"]:checked').value;
+                const paymentMethod = method === 'qr' ? 'VietQR' : 'COD';
+                const requiresInvoice = document.getElementById('require-invoice').checked;
+                
+                // 4. Đợi lưu đơn hàng lên đám mây Supabase thông qua addNewOrder trong mockData.js
+                let orderCodeText = '';
+                if (typeof addNewOrder === 'function') {
+                    const savedOrder = await addNewOrder({
+                        customerName,
+                        phone,
+                        address,
+                        items,
+                        total,
+                        paymentMethod
+                    });
+                    orderCodeText = ` (Mã đơn: ${savedOrder.id})`;
+                }
+                
+                let message = method === 'qr' 
+                    ? `🎉 Đặt hàng thành công${orderCodeText}! Hãy hoàn tất quét mã QR nếu bạn chưa chuyển khoản nhé.\n(Lưu ý: Freeship đơn dưới 1,5km; phụ thu 10.000đ nếu hơn 1,5km).` 
+                    : `🎉 Đặt hàng thành công${orderCodeText}! Quán sẽ gọi xác nhận ngay.\n(Lưu ý: Freeship đơn dưới 1,5km; phụ thu 10.000đ nếu hơn 1,5km).`;
+
+                if (requiresInvoice) {
+                    message += '\n\n✅ Hóa đơn điện tử sẽ được gửi kèm và hạch toán tự động theo chuẩn mực VAS.';
+                }
+
+                alert(message);
+
+                cart = []; 
+                updateCartUI(); 
+                closeModal('checkout-modal');
+                
+                event.target.reset();
+                document.querySelector('input[value="cash"]').checked = true;
+                toggleQR(false); 
+                toggleInvoice();
+            } catch (err) {
+                alert("❌ Lỗi kết nối mạng khi gửi đơn hàng. Bạn vui lòng kiểm tra lại kết nối và bấm đặt lại nhé!");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             }
-            
-            let message = method === 'qr' 
-                ? `🎉 Đặt hàng thành công${orderCodeText}! Hãy hoàn tất quét mã QR nếu bạn chưa chuyển khoản nhé.\n(Lưu ý: Freeship đơn dưới 1,5km; phụ thu 10.000đ nếu hơn 1,5km).` 
-                : `🎉 Đặt hàng thành công${orderCodeText}! Quán sẽ gọi xác nhận ngay.\n(Lưu ý: Freeship đơn dưới 1,5km; phụ thu 10.000đ nếu hơn 1,5km).`;
-
-            if (requiresInvoice) {
-                message += '\n\n✅ Hóa đơn điện tử sẽ được gửi kèm và hạch toán tự động theo chuẩn mực VAS.';
-            }
-
-            alert(message);
-
-            cart = []; 
-            updateCartUI(); 
-            closeModal('checkout-modal');
-            
-            event.target.reset();
-            document.querySelector('input[value="cash"]').checked = true;
-            toggleQR(false); 
-            toggleInvoice(); 
         }
 
         document.addEventListener('DOMContentLoaded', () => {
