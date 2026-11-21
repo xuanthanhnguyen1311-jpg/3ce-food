@@ -1,7 +1,7 @@
 // ==========================================
 // CẤU HÌNH KẾT NỐI SUPABASE CHO 3CEFOODS.SHOP
 // ==========================================
-const SUPABASE_URL = "https://rvptgvbmeszqhucfhatu.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://rvptgvbmeszqhucfhatu.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_XvY--N5R_6jM4ceyW6sWFQ_acdDbGzp";
 
 // Khởi tạo client kết nối (dùng tên supabaseClient để tránh trùng biến toàn cục)
