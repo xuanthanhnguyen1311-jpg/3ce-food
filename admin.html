@@ -114,7 +114,7 @@
                         <i class="fas fa-sync-alt"></i> Làm mới
                     </button>
                     <button onclick="handleReset()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-brandDark font-bold text-xs rounded-xl transition-all flex items-center gap-1.5">
-                        <i class="fas fa-undo"></i> Khôi phục mẫu
+                        <i class="fas fa-undo"></i> Khôi phục kho mẫu
                     </button>
                     <button onclick="lockAdmin()" class="px-4 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold text-xs rounded-xl transition-all flex items-center gap-1.5">
                         <i class="fas fa-lock"></i> Khóa
@@ -403,6 +403,10 @@
         </div>
     </div>
 
+    <!-- ĐIỂM 1: NẠP THƯ VIỆN SUPABASE PHÍA TRÊN MOCKDATA.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="mockData.js"></script>
+
     <script>
         // =========================================================================
         // 1. XÁC THỰC MẬT KHẨU QUẢN TRỊ (123456789)
@@ -410,7 +414,7 @@
         const ADMIN_PASSWORD = "123456789";
         const AUTH_SESSION_KEY = "3ce_admin_authenticated";
 
-        function handleLogin(event) {
+        async function handleLogin(event) {
             event.preventDefault();
             const inputPass = document.getElementById("admin-password").value;
             const errorMsg = document.getElementById("login-error");
@@ -418,7 +422,7 @@
             if (inputPass === ADMIN_PASSWORD) {
                 sessionStorage.setItem(AUTH_SESSION_KEY, "true");
                 errorMsg.classList.add("hidden");
-                unlockDashboard();
+                await unlockDashboard();
             } else {
                 errorMsg.classList.remove("hidden");
                 document.getElementById("admin-password").value = "";
@@ -426,10 +430,10 @@
             }
         }
 
-        function unlockDashboard() {
+        async function unlockDashboard() {
             document.getElementById("login-screen").classList.add("hidden");
             document.getElementById("admin-wrapper").classList.remove("hidden");
-            renderAll();
+            await renderAll();
         }
 
         function lockAdmin() {
@@ -441,150 +445,10 @@
         }
 
         // =========================================================================
-        // 2. DỮ LIỆU MẪU ĐƠN HÀNG, BẢNG GIÁ MÓN & TỒN KHO
+        // 2. DỮ LIỆU DOANH THU LỊCH SỬ & BIẾN LỌC HIỂN THỊ
+        // (PRODUCT_PRICES, getOrders, updateOrderStatus, getInventory, adjustStock
+        // đã được nạp trực tiếp từ tệp mockData.js kết nối Supabase)
         // =========================================================================
-        const STORAGE_KEY = "3ce_foods_orders";
-        const INVENTORY_KEY = "3ce_foods_inventory";
-
-        const PRODUCT_PRICES = {
-            "Mì trộn Indomie Long Môn Ngự Yến": 40000,
-            "Mì trộn Indomie Tứ Hải Hội Tụ": 35000,
-            "Mì trộn Indomie Thanh Vân Ngọc Thực": 20000,
-            "Mì cay Đế vương bò Wagyu": 65000,
-            "Mì cay thập cẩm Hải Sơn Thiên Địa": 80000,
-            "Mì cay Busan Xúc Xích": 45000,
-            "Mì cay bò Vương Giả Tứ Xuyên": 60000,
-            "Mì Hắc Long Bá Vương": 45000,
-            "Mì Ý Bò Bằm Hoàng Kim": 50000,
-            "Cơm Rang Kim Ngưu Khai Vị": 45000,
-            "Cơm Gà Kim Kê Ngự Yến": 50000,
-            "Bibimbap Kim Ngọc Hoàng Triều": 55000,
-            "Hồng Nhan Tuyết Lệ – Trà đào": 20000,
-            "Thanh Long Xuất Hải – Trà chanh": 15000,
-            "Bích Ngọc Tiên Trà – Trà tắc": 15000,
-            "Hỏa Diệm Sơn – Trà dâu": 25000,
-            "Tuyết Sơn Ngọc Ẩn – Trà sữa": 25000,
-            "Khoai tây chiên Kim Giáp Hoàng Kim": 25000,
-            "Khoai lắc phô mai Kim Ngọc Mãn Đường": 30000,
-            "Nem chua Trần Công Châu Hồng Môn": 6000,
-            "Phô mai que Bạch Ngọc Kim Tân": 8000,
-            "Khoai môn Lệ Phố Tử Ngọc": 30000,
-            "Ngô chiên Kim Châu Ngự Tiệc": 30000,
-            "Cút lộn xào me Hỏa Long Châu": 50000,
-            "Bánh tráng nướng Hỏa Phụng Hoàng Cung": 25000,
-            "Viên chiên Ngự Lâm Thập Bát Vị": 10000
-        };
-
-        const DEFAULT_ORDERS = [
-            {
-                id: "3CE-108",
-                customerName: "Nguyễn Minh Anh",
-                phone: "0987654321",
-                address: "KTX Học viện Tài chính, Bắc Từ Liêm, Hà Nội",
-                items: "2x Hồng Nhan Tuyết Lệ – Trà đào, 1x Bánh tráng nướng Hỏa Phụng Hoàng Cung",
-                total: 65000,
-                paymentMethod: "VietQR",
-                status: "Chờ xác nhận",
-                createdAt: "Hôm nay, 20:15",
-                isNew: false
-            },
-            {
-                id: "3CE-107",
-                customerName: "Trần Hoàng Nam",
-                phone: "0912345678",
-                address: "Số 18 Ngõ 58 Lê Văn Hiến, Đông Ngạc, Hà Nội",
-                items: "1x Mì cay Đế vương bò Wagyu, 1x Thanh Long Xuất Hải – Trà chanh",
-                total: 80000,
-                paymentMethod: "COD",
-                status: "Đang chế biến",
-                createdAt: "Hôm nay, 19:50",
-                isNew: false
-            },
-            {
-                id: "3CE-106",
-                customerName: "Lê Thu Thảo",
-                phone: "0965432198",
-                address: "Tòa A2 Chung cư Ecohome 1, Hà Nội",
-                items: "2x Mì trộn Indomie Long Môn Ngự Yến, 2x Hồng Nhan Tuyết Lệ – Trà đào",
-                total: 120000,
-                paymentMethod: "VietQR",
-                status: "Đang giao",
-                createdAt: "Hôm nay, 19:20",
-                isNew: false
-            },
-            {
-                id: "3CE-105",
-                customerName: "Phạm Khánh Linh",
-                phone: "0934567890",
-                address: "Số 42 Đông Ngạc, Bắc Từ Liêm, Hà Nội",
-                items: "1x Mì cay thập cẩm Hải Sơn Thiên Địa, 1x Khoai lắc phô mai Kim Ngọc Mãn Đường",
-                total: 110000,
-                paymentMethod: "VietQR",
-                status: "Hoàn thành",
-                createdAt: "Hôm nay, 18:10",
-                isNew: false
-            },
-            {
-                id: "3CE-104",
-                customerName: "Vũ Đức Huy",
-                phone: "0978123456",
-                address: "Ngõ 120 Hoàng Quốc Việt, Cầu Giấy, Hà Nội",
-                items: "2x Cơm Gà Kim Kê Ngự Yến, 2x Tuyết Sơn Ngọc Ẩn – Trà sữa",
-                total: 150000,
-                paymentMethod: "COD",
-                status: "Hoàn thành",
-                createdAt: "Hôm qua, 20:05",
-                isNew: false
-            },
-            {
-                id: "3CE-103",
-                customerName: "Đặng Ngọc Mai",
-                phone: "0945678123",
-                address: "Số 15 Trần Cung, Cổ Nhuế, Hà Nội",
-                items: "1x Mì trộn Indomie Tứ Hải Hội Tụ, 3x Phô mai que Bạch Ngọc Kim Tân",
-                total: 59000,
-                paymentMethod: "VietQR",
-                status: "Hoàn thành",
-                createdAt: "Hôm qua, 19:15",
-                isNew: false
-            },
-            {
-                id: "3CE-102",
-                customerName: "Bùi Quang Minh",
-                phone: "0909888777",
-                address: "Ký túc xá Đại học Mỏ - Địa chất",
-                items: "2x Cút lộn xào me Hỏa Long Châu, 2x Bích Ngọc Tiên Trà – Trà tắc",
-                total: 130000,
-                paymentMethod: "COD",
-                status: "Hoàn thành",
-                createdAt: "Hôm qua, 18:30",
-                isNew: false
-            },
-            {
-                id: "3CE-101",
-                customerName: "Ngô Gia Bảo",
-                phone: "0911222333",
-                address: "Số 10 Phan Bá Vành, Hà Nội",
-                items: "1x Mì Hắc Long Bá Vương",
-                total: 45000,
-                paymentMethod: "COD",
-                status: "Đã hủy",
-                createdAt: "Hôm qua, 14:20",
-                isNew: false
-            }
-        ];
-
-        const DEFAULT_INVENTORY = [
-            { sku: "NVL-01", name: "Mì Indomie & Mì Koreno (Gói)", unit: "Gói", stock: 145, minStock: 50 },
-            { sku: "NVL-02", name: "Thịt bò Wagyu & Ba chỉ bò Mỹ", unit: "Kg", stock: 12, minStock: 10 },
-            { sku: "NVL-03", name: "Đào ngâm hộp lớn & Trà đen đặc biệt", unit: "Hộp", stock: 6, minStock: 10 },
-            { sku: "NVL-04", name: "Khoai tây cọng đông lạnh & Phô mai que", unit: "Túi", stock: 28, minStock: 15 },
-            { sku: "NVL-05", name: "Trứng cút lộn & Sốt me đặc chế", unit: "Phần", stock: 8, minStock: 12 },
-            { sku: "NVL-06", name: "Gà góc tư & Gạo thơm dẻo", unit: "Phần", stock: 42, minStock: 20 },
-            { sku: "BB-01", name: "Hộp giấy Kraft & Ly nhựa nắp cầu 500ml", unit: "Bộ", stock: 320, minStock: 100 }
-        ];
-
-        // Doanh thu lịch sử các tháng trước; T11/2026 sẽ hiển thị đúng Doanh thu kỳ này
         const HISTORICAL_MONTHLY_REVENUE = [
             { month: "T6/2026", baseRev: 14500000 },
             { month: "T7/2026", baseRev: 18200000 },
@@ -611,62 +475,31 @@
         }
 
         // =========================================================================
-        // 4. ĐỌC & CẬP NHẬT DỮ LIỆU TỪ LOCALSTORAGE
+        // 4. ĐIỂM 3: XỬ LÝ CẬP NHẬT TRẠNG THÁI ĐƠN HÀNG BẤT ĐỒNG BỘ (ASYNC / AWAIT)
         // =========================================================================
-        function getOrders() {
-            const raw = localStorage.getItem(STORAGE_KEY);
-            if (!raw) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ORDERS));
-                return DEFAULT_ORDERS;
-            }
+        async function handleStatusChange(id, newStatus) {
             try {
-                const parsed = JSON.parse(raw);
-                return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_ORDERS;
-            } catch (e) {
-                return DEFAULT_ORDERS;
+                await updateOrderStatus(id, newStatus);
+                await renderAll();
+            } catch (err) {
+                alert("❌ Lỗi khi cập nhật trạng thái đơn hàng trên hệ thống!");
             }
         }
 
-        function getInventory() {
-            const raw = localStorage.getItem(INVENTORY_KEY);
-            if (!raw) {
-                localStorage.setItem(INVENTORY_KEY, JSON.stringify(DEFAULT_INVENTORY));
-                return DEFAULT_INVENTORY;
-            }
-            try {
-                return JSON.parse(raw);
-            } catch (e) {
-                return DEFAULT_INVENTORY;
-            }
-        }
-
-        function updateOrderStatus(id, newStatus) {
-            const orders = getOrders().map(o => o.id === id ? { ...o, status: newStatus, isNew: false } : o);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
-            renderAll();
-        }
-
-        function adjustStock(sku, delta) {
-            const inv = getInventory().map(item => {
-                if (item.sku === sku) {
-                    return { ...item, stock: Math.max(0, item.stock + delta) };
-                }
-                return item;
-            });
-            localStorage.setItem(INVENTORY_KEY, JSON.stringify(inv));
+        function handleStockChange(sku, delta) {
+            adjustStock(sku, delta);
             renderInventorySection();
         }
 
-        function handleReset() {
-            if (confirm("Khôi phục lại toàn bộ dữ liệu mẫu (Đơn hàng & Tồn kho) ban đầu?")) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ORDERS));
+        async function handleReset() {
+            if (confirm("Khôi phục lại dữ liệu tồn kho nguyên vật liệu mẫu ban đầu và tải lại đơn hàng mới nhất?")) {
                 localStorage.setItem(INVENTORY_KEY, JSON.stringify(DEFAULT_INVENTORY));
-                renderAll();
+                await renderAll();
             }
         }
 
         // =========================================================================
-        // 5. RENDER KPI & PHÂN HỆ 1: BẢNG ĐƠN HÀNG
+        // 5. RENDER KPI & PHÂN HỆ 1: BẢNG ĐƠN HÀNG (ASYNC / AWAIT)
         // =========================================================================
         function getBadge(status) {
             const styles = {
@@ -679,8 +512,8 @@
             return `<span class="px-3 py-1 rounded-full text-[11px] font-extrabold ${styles[status] || 'bg-gray-100 text-gray-600'}">${status}</span>`;
         }
 
-        function renderOrdersTable() {
-            const orders = getOrders();
+        async function renderOrdersTable() {
+            const orders = await getOrders();
             const keyword = document.getElementById("admin-search").value.toLowerCase().trim();
 
             // Cập nhật KPI tổng đơn, chờ xác nhận và Doanh thu kỳ này
@@ -731,14 +564,14 @@
                     <td class="p-4 text-right whitespace-nowrap">
                         <div class="inline-flex items-center gap-1.5">
                             ${order.status === "Chờ xác nhận" ? `
-                                <button onclick="updateOrderStatus('${order.id}', 'Đang chế biến')" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl">Duyệt bếp</button>
-                                <button onclick="updateOrderStatus('${order.id}', 'Đã hủy')" class="px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold rounded-xl">Hủy</button>
+                                <button onclick="handleStatusChange('${order.id}', 'Đang chế biến')" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl">Duyệt bếp</button>
+                                <button onclick="handleStatusChange('${order.id}', 'Đã hủy')" class="px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold rounded-xl">Hủy</button>
                             ` : ''}
                             ${order.status === "Đang chế biến" ? `
-                                <button onclick="updateOrderStatus('${order.id}', 'Đang giao')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl">Giao Ship</button>
+                                <button onclick="handleStatusChange('${order.id}', 'Đang giao')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl">Giao Ship</button>
                             ` : ''}
                             ${order.status === "Đang giao" ? `
-                                <button onclick="updateOrderStatus('${order.id}', 'Hoàn thành')" class="px-3 py-1.5 bg-[#4C8F66] hover:bg-[#3d7552] text-white text-xs font-bold rounded-xl">Hoàn thành</button>
+                                <button onclick="handleStatusChange('${order.id}', 'Hoàn thành')" class="px-3 py-1.5 bg-[#4C8F66] hover:bg-[#3d7552] text-white text-xs font-bold rounded-xl">Hoàn thành</button>
                             ` : ''}
                             <button onclick="openReceipt('${order.id}')" title="In phiếu đơn" class="px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-brandDark text-xs font-bold rounded-xl">
                                 <i class="fas fa-print"></i>
@@ -749,21 +582,22 @@
             `).join("");
         }
 
-        function setFilter(status) {
+        async function setFilter(status) {
             currentFilter = status;
             document.querySelectorAll(".filter-btn").forEach(btn => {
                 btn.className = btn.textContent.trim() === status
                     ? "filter-btn px-4 py-2 rounded-full text-xs font-bold bg-brandPink text-white shadow-sm"
                     : "filter-btn px-4 py-2 rounded-full text-xs font-bold bg-bgMain text-brandGray hover:bg-pink-50";
             });
-            renderOrdersTable();
+            await renderOrdersTable();
         }
 
         // =========================================================================
-        // 6. RENDER PHÂN HỆ 2: DOANH THU THEO SẢN PHẨM
+        // 6. RENDER PHÂN HỆ 2: DOANH THU THEO SẢN PHẨM (ASYNC / AWAIT)
         // =========================================================================
-        function renderProductRevenue() {
-            const validOrders = getOrders().filter(o => o.status !== "Đã hủy");
+        async function renderProductRevenue() {
+            const allOrders = await getOrders();
+            const validOrders = allOrders.filter(o => o.status !== "Đã hủy");
             const stats = {};
 
             validOrders.forEach(order => {
@@ -813,14 +647,13 @@
         }
 
         // =========================================================================
-        // 7. RENDER PHÂN HỆ 3: DOANH THU THEO THÁNG & THUẾ TNDN THEO DOANH THU KỲ
+        // 7. RENDER PHÂN HỆ 3: DOANH THU THEO THÁNG & THUẾ TNDN (ASYNC / AWAIT)
         // =========================================================================
-        function renderFinanceSection() {
-            const validOrders = getOrders().filter(o => o.status !== "Đã hủy");
-            // Doanh thu kỳ này (tổng giá trị các đơn hàng hợp lệ hiện có trên hệ thống)
+        async function renderFinanceSection() {
+            const allOrders = await getOrders();
+            const validOrders = allOrders.filter(o => o.status !== "Đã hủy");
             const periodRev = validOrders.reduce((sum, o) => sum + Number(o.total || 0), 0);
 
-            // Biểu đồ doanh thu các tháng (Cột T11/2026 lấy đúng bằng Doanh thu kỳ này)
             const monthlyData = HISTORICAL_MONTHLY_REVENUE.map((m, idx) => {
                 const isCurrentMonth = idx === HISTORICAL_MONTHLY_REVENUE.length - 1;
                 return {
@@ -834,7 +667,6 @@
             const sixMonthSum = monthlyData.reduce((sum, m) => sum + m.revenue, 0);
             document.getElementById("year-total-rev").textContent = `Tổng lũy kế 6 tháng: ${formatMoney(sixMonthSum)}`;
 
-            // Vẽ biểu đồ cột
             const chartEl = document.getElementById("monthly-chart");
             chartEl.innerHTML = monthlyData.map(m => {
                 const heightPct = m.revenue === 0 ? 2 : Math.max(6, Math.round((m.revenue / maxRev) * 100));
@@ -850,14 +682,13 @@
                 `;
             }).join("");
 
-            // Tính toán Bảng P&L & Thuế TNDN dự kiến trực tiếp trên Doanh thu kỳ này
             const costRatio = Number(document.getElementById("cost-ratio-slider").value);
             document.getElementById("cost-ratio-label").textContent = costRatio + "%";
 
             const totalCost = Math.round(periodRev * (costRatio / 100));
-            const ebt = Math.max(0, periodRev - totalCost); // Lợi nhuận trước thuế kỳ này
-            const corporateTax = Math.round(ebt * 0.20); // Thuế TNDN dự kiến (20% trên EBT kỳ này)
-            const pat = ebt - corporateTax; // Lợi nhuận sau thuế kỳ này
+            const ebt = Math.max(0, periodRev - totalCost);
+            const corporateTax = Math.round(ebt * 0.20);
+            const pat = ebt - corporateTax;
 
             document.getElementById("fin-rev").textContent = formatMoney(periodRev);
             document.getElementById("fin-cost").textContent = "- " + formatMoney(totalCost);
@@ -865,7 +696,6 @@
             document.getElementById("fin-tax").textContent = formatMoney(corporateTax);
             document.getElementById("fin-pat").textContent = formatMoney(pat);
 
-            // Đồng bộ thẻ KPI Thuế TNDN dự kiến ở đầu trang
             document.getElementById("kpi-tax").textContent = formatMoney(corporateTax);
         }
 
@@ -902,8 +732,8 @@
                             }
                         </td>
                         <td class="p-4 text-right whitespace-nowrap space-x-1">
-                            <button onclick="adjustStock('${item.sku}', 10)" class="px-3 py-1.5 bg-[#4C8F66] hover:bg-[#3d7552] text-white text-xs font-bold rounded-xl">+10 Nhập</button>
-                            <button onclick="adjustStock('${item.sku}', -1)" class="px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-brandDark text-xs font-bold rounded-xl">-1 Xuất</button>
+                            <button onclick="handleStockChange('${item.sku}', 10)" class="px-3 py-1.5 bg-[#4C8F66] hover:bg-[#3d7552] text-white text-xs font-bold rounded-xl">+10 Nhập</button>
+                            <button onclick="handleStockChange('${item.sku}', -1)" class="px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-brandDark text-xs font-bold rounded-xl">-1 Xuất</button>
                         </td>
                     </tr>
                 `;
@@ -911,10 +741,11 @@
         }
 
         // =========================================================================
-        // 9. IN PHIẾU & ĐỒNG BỘ TỔNG THỂ
+        // 9. IN PHIẾU & ĐIỂM 2: ĐỒNG BỘ TỔNG THỂ RENDERALL() (ASYNC / AWAIT)
         // =========================================================================
-        function openReceipt(id) {
-            const order = getOrders().find(o => o.id === id);
+        async function openReceipt(id) {
+            const orders = await getOrders();
+            const order = orders.find(o => o.id === id);
             if (!order) return;
             document.getElementById("receipt-content").innerHTML = `
                 <div class="flex justify-between"><span>Mã đơn hàng:</span><b>${order.id}</b></div>
@@ -940,22 +771,36 @@
             document.getElementById("receipt-modal").classList.add("hidden");
         }
 
-        function renderAll() {
-            renderOrdersTable();
-            renderProductRevenue();
-            renderFinanceSection();
+        async function renderAll() {
+            await Promise.all([
+                renderOrdersTable(),
+                renderProductRevenue(),
+                renderFinanceSection()
+            ]);
             renderInventorySection();
         }
 
-        window.addEventListener("storage", (e) => {
-            if ((e.key === STORAGE_KEY || e.key === INVENTORY_KEY) && sessionStorage.getItem(AUTH_SESSION_KEY) === "true") {
-                renderAll();
-            }
-        });
+        // =========================================================================
+        // 10. ĐIỂM 4: KÊNH SUPABASE REALTIME TỰ ĐỘNG NHẬN ĐƠN MỚI TỪ CẢ LỚP
+        // =========================================================================
+        if (typeof supabaseClient !== "undefined" && supabaseClient) {
+            supabaseClient
+                .channel("3ce-orders-realtime")
+                .on(
+                    "postgres_changes",
+                    { event: "*", schema: "public", table: "orders" },
+                    () => {
+                        if (sessionStorage.getItem(AUTH_SESSION_KEY) === "true") {
+                            renderAll();
+                        }
+                    }
+                )
+                .subscribe();
+        }
 
-        document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", async () => {
             if (sessionStorage.getItem(AUTH_SESSION_KEY) === "true") {
-                unlockDashboard();
+                await unlockDashboard();
             } else {
                 document.getElementById("admin-password").focus();
             }
